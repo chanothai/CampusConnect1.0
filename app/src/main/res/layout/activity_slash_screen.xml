@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.company.zicure.registerkey.SlashScreenActivity">
+
+    <ImageView
+        android:id="@+id/img_logo"
+        android:layout_width="256dp"
+        android:layout_height="256dp"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:alpha="0"
+        android:padding="@dimen/padding_small"
+        android:src="@drawable/icon_header"
+        android:layout_centerInParent="true"/>
+
+</RelativeLayout>

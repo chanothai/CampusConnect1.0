@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_weight="1"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/padding_top_five">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/identity_card"
+            android:inputType="number"
+            android:maxLines="1"
+            android:maxLength="13"
+            android:imeOptions="actionNext"
+            android:padding="@dimen/padding_large"
+            android:background="@drawable/background_edit_login"
+            android:hint="@string/identity_card_th" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/padding_top_five">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/birth_date"
+            android:maxLines="1"
+            android:padding="@dimen/padding_large"
+            android:background="@drawable/background_edit_login"
+            android:hint="@string/birth_date_th"
+            />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/padding_top_five">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/phone_number"
+            android:inputType="number"
+            android:maxLines="1"
+            android:padding="@dimen/padding_large"
+            android:imeOptions="actionDone"
+            android:maxLength="12"
+            android:background="@drawable/background_edit_login"
+            android:hint="@string/phone_number_th" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:id="@+id/btn_register"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/size_text_small"
+        android:textStyle="bold"
+        android:padding="@dimen/padding_large"
+        android:layout_marginTop="@dimen/padding_large"
+        android:text="@string/confirm"
+        android:textColor="@android:color/white"
+        android:background="@drawable/selector_btn_register" />
+
+
+</LinearLayout>

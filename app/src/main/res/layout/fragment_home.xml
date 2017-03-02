@@ -1,0 +1,50 @@
+<com.baoyz.widget.PullRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swipeContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <android.support.v4.widget.NestedScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/scrollViewMenu"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@color/color_bg"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <include
+                layout="@layout/layout_viewpager_banner"/>
+
+            <Button
+                android:id="@+id/btn_setting"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2.7"
+                android:scaleType="fitXY"
+                android:text="@string/iconnect"
+                android:layout_marginStart="@dimen/padding_small"
+                android:layout_marginEnd="@dimen/padding_small"
+                android:layout_marginTop="@dimen/padding_medium"
+                android:layout_marginBottom="@dimen/padding_small"
+                android:textSize="@dimen/size_text_small"
+                android:padding="@dimen/padding_small"
+                android:drawableStart="@drawable/ic_2"
+                android:textColor="@android:color/white"
+                android:background="@drawable/select_btn_iconnect"/>
+
+            <include
+                layout="@layout/layout_recyclerview_vertical" />
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+</com.baoyz.widget.PullRefreshLayout>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageButton
+        android:id="@+id/img_btn_select_item"
+        android:layout_width="192dp"
+        android:layout_height="192dp"
+        android:scaleType="fitXY"
+        android:adjustViewBounds="true"
+        android:src="@drawable/ic_add_a_photo"
+        android:padding="@dimen/padding_sixteen"
+        android:layout_below="@+id/topic_upload"
+        android:background="@drawable/selector_btn_register"
+        android:layout_marginStart="@dimen/margin_left_fifteen"/>
+
+</LinearLayout>

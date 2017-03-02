@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical"
+    android:layout_weight="3">
+
+    <TextView
+        android:id="@+id/header_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/connect_account"
+        android:textStyle="bold"
+        android:textColor="@color/colorGreenNormal"
+        android:textSize="@dimen/size_text_large"/>
+
+    <TextView
+        android:id="@+id/header_detail_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/size_text_small"
+        android:text="@string/header_login" />
+
+</LinearLayout>

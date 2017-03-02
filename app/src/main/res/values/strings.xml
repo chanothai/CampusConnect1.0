@@ -1,0 +1,106 @@
+<resources>
+    <string name="app_name">Connect</string>
+    <string name="username">USERNAME</string>
+    <string name="device_type">DEVICE TYPE</string>
+    <string name="device_id">DEVICE ID</string>
+    <string name="register">REGISTER</string>
+    <string name="url_generateKey">http://192.168.10.23:81/</string>
+    <string name="store_login">com.zicure.login</string>
+    <string name="priKey">private_key</string>
+    <string name="pubKey">public_key</string>
+    <string name="btn_login">Log In</string>
+    <string name="hint_username">USERNAME</string>
+    <string name="hint_password">PASSWORD</string>
+    <string name="pubServ_key">pubServ_key</string>
+    <string name="detail_link">SignUP/ForgotPassword?</string>
+    <string name="signup_link">SignUp</string>
+    <string name="forgot_password_link">ForgotPassword?</string>
+    <string name="news">News</string>
+    <string name="map">Map</string>
+    <string name="emergency">Emergency</string>
+    <string name="tracking">Tracking</string>
+    <string name="action_setings">Setting</string>
+    <string name="dialog_loading">Loading</string>
+    <string name="url_map_service">hungary.ar-bro.net</string>
+
+    <string name="staticKey">APuT9Gt43aGNLUwn+ewtjzV+1cXjdLcSe/TYXf7n8Vs=</string>
+    <!--APuT9Gt43aGNLUwn+ewtjzV+1cXjdLcSe/TYXf7n8Vs=-->
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="bundle_newsheader">news_header</string>
+    <string name="bundle_newsdate">news_date</string>
+    <string name="bundle_newsdetail">news_detail</string>
+    <string name="bundle_newsimage">news_image</string>
+    <string name="bundle_newsrating">news_rating</string>
+    <string name="campus_logo">Connect</string>
+    <string name="topic_emergency_id">Emergency ID:</string>
+    <string name="topic_emergency_name">Name:</string>
+    <string name="emergency_date">Date:</string>
+    <string name="tracking_tel">Tel:</string>
+    <string name="emer_id">emer_id</string>
+    <string name="emer_message">emer_message</string>
+    <string name="emer_lat">emer_lat</string>
+    <string name="emer_long">emer_long</string>
+
+    <!--Slide menu-->
+    <string name="slide_menu_home">หน้าแรก</string>
+    <string name="slide_menu_student">ข้อมูลนักศึกษา</string>
+    <string name="slide_menu_learning">ตารางเรียน</string>
+    <string name="slide_menu_exam">ตารางสอบ</string>
+    <string name="slide_menu_calender">ปฏิทินการศึกษา</string>
+    <string name="slide_menu_transcript">ผลการศึกษา</string>
+    <string name="slide_menu_activity">ข้อมูลกิจกรรม</string>
+    <string name="slide_menu_due">ตรวจสอบหนี้ค้างชำระ</string>
+    <string name="slide_menu_edit">แก้ไขข้อมูล</string>
+    <string name="iconnect">คลิกที่นี้เพื่อเปิดใช้งาน iConnect</string>
+    <string name="message_dialog">ก่อนใช้ Connect เช็คสักนิด ไม่ลืมเปิดบลูทูธ!</string>
+    <string name="message_dialog_2">เพื่อให้การใช้งาน Connect คุ้มค่ายิ่งกว่าทุกครั้งที่ใช้แอพนี้ อย่าลืมเปิด Bluetooth แค่นี้ สิทธิประโยชน์คุ้มค่ามากมาย จะส่งตรงถึงมือคุณผ่าน iConnect</string>
+    <string name="d_bluetooth">บลูทูธ</string>
+    <string name="d_location">ตำแหน่งและที่ตั้ง</string>
+    <string name="d_notification">การแจ้งเตือน</string>
+    <string name="menu_calendar">Calendar</string>
+    <string name="menu_subject">E-learning</string>
+    <string name="menu_news">News</string>
+
+
+    //url login demo
+    <string name="url_calendar">http://bloc.pakgon.com/Events/calendar</string>
+    <string name="url_news">http://bloc.pakgon.com/news/feednews</string>
+    <string name="url_subject">http://bloc.pakgon.com/News/subject</string>
+
+    //url for server
+    <string name="url_server">http://bloc.pakgon.com/</string>
+    <string name="url_identity_server">http://180.180.244.228:9005/</string>
+
+
+    //Form Register Thai
+    <string name="identity_card_th">หมายเลขบัตรประชาชน</string>
+    <string name="birth_date_th">วัน-เดือน-ปีเกิด</string>
+    <string name="phone_number_th">หมายเลขโทรศัพท์</string>
+
+    //Form Register English
+    <string name="identity_card">Identification Card</string>
+    <string name="birth_date">Birth Date</string>
+    <string name="phone_number">Phone Number</string>
+
+    //Validate
+    <string name="confirm">CONFIRM</string>
+
+    //Form Header Account
+    <string name="connect_account">Connect Account</string>
+
+    //Content Header
+    <string name="header_login">Enter your number to access you drive history, favorites, and, points.</string>
+    <string name="header_register">Ent</string>
+    <string name="ePayment">E-payment</string>
+    <string name="key_iv">ByteIV</string>
+    <string name="content_alert_idcard">กรุณาใส่เลขบัตรประชาชนให้ครบ 13 หลัก</string>
+    <string name="content_alert_phone">กรุณากรอกเบอร์โทรศัพท์ให้ครบ 10 หลัก</string>
+    <string name="tag_home_fragment">tagHomeFragment</string>
+    <string name="content_alert_OTP">กรุณากรอก OTP ให้ครบ 4 หลัก</string>
+    <string name="preference_file_key">file_key</string>
+    <string name="token_login">token</string>
+    <string name="dynamic_key">dynamic_key</string>
+    <string name="phone_key">phone_key</string>
+</resources>

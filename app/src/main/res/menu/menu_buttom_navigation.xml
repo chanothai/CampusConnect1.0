@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/item_home"
+        android:enabled="true"
+        android:icon="@drawable/news"
+        android:title="Home" />
+
+    <item
+        android:id="@+id/item_qr"
+        android:enabled="true"
+        android:icon="@drawable/map"
+        android:title="Scan" />
+
+    <item
+        android:id="@+id/item_card"
+        android:enabled="true"
+        android:icon="@drawable/emergency"
+        android:title="Card" />
+</menu>

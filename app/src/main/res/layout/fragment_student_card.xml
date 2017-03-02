@@ -1,0 +1,196 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorPrimary"
+    tools:context="com.company.zicure.registerkey.fragment.StudentCardFragment">
+
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/form_profile_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        card_view:cardUseCompatPadding="true"
+        card_view:cardElevation="8dp"
+        android:layout_marginBottom="96dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true">
+
+        <LinearLayout
+            android:padding="@dimen/padding_tablet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="IDENTIFICATION NUMBER"
+                    android:textStyle="bold"
+                    android:textSize="22sp"
+                    android:textColor="@color/color_text"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="5921699681"
+                    android:textStyle="bold"
+                    android:textSize="28sp"
+                    android:textColor="@color/color_text"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="นาย"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/size_detail"
+                    android:textColor="@color/color_text"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="นักศึกษาปริญญา"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/size_detail"
+                        android:textColor="@color/color_text"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="คณะ"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/size_detail"
+                        android:textColor="@color/color_text"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="สาขา"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/size_detail"
+                        android:textColor="@color/color_text"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="ภาค"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/size_detail"
+                        android:textColor="@color/color_text"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="00/2016"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/size_detail"
+                        android:textColor="@color/color_text"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="00/2020"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/size_detail"
+                        android:textColor="@color/color_text"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:text="ISSUED"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/size_detail"
+                        android:textColor="@color/color_text"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="EXPIRED"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/size_detail"
+                        android:textColor="@color/color_text"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <ImageView
+        android:layout_width="500dp"
+        android:layout_height="500dp"
+        android:id="@+id/profile_student"
+        android:scaleType="fitXY"
+        android:tint="@color/color_bg"
+        android:padding="16dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:src="@drawable/ic_image_timer_auto" />
+
+    <ImageView
+        android:id="@+id/img_qr_code"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:scaleType="fitXY"
+        android:layout_marginEnd="@dimen/padding_eight"
+        android:layout_above="@+id/form_profile_card"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/ic_qrcode" />
+</RelativeLayout>

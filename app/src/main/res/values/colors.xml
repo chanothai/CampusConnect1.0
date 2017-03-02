@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#000000</color>
+    <color name="colorPrimaryDark">#4793CD</color>
+    <color name="colorAccent">#FF4081</color>
+
+
+    <color name="transparent">#00000000</color>
+
+    <color name="colorGreenNormal">#4793CD</color>
+    <color name="colorGreenGradient">#4CA1BD</color>
+    <color name="colorGreenPress">#034C64</color>
+
+    <color name="colorGrayCorner">#616161</color>
+    <color name="colorBackgroundGray">#efefef</color>
+
+    <color name="text_link">#ff6c00</color>
+    <color name="text_link_highlight">#ffcc00</color>
+
+    <color name="color_news">#9fa7a7</color>
+    <color name="color_news_press">#7A8989</color>
+    <color name="color_news_gradient">#D7D9D9</color>
+
+    <color name="color_dot_active">#ffffff</color>
+    <color name="color_dot_inactive">#878787</color>
+
+    <color name="color_text">#4793CD</color>
+
+    <color name="color_bg">#e4e4e4</color>
+
+</resources>

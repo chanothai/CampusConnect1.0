@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RadioButton
+        android:id="@+id/radio_choice"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/space_between_list_tablet"
+        android:visibility="gone"
+
+        android:text="TEST"/>
+
+    <CheckBox
+        android:id="@+id/checkbox_choice"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="@dimen/space_between_list_tablet"
+        android:text="TEST"/>
+
+</RelativeLayout>
