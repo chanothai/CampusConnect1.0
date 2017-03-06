@@ -3,7 +3,7 @@
     package="com.roughike.bottombar.test" >
 
     <uses-sdk
-        android:minSdkVersion="21"
+        android:minSdkVersion="20"
         android:targetSdkVersion="24" />
 
     <instrumentation

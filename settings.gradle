@@ -1,1 +1,1 @@
-include ':app', ':bottom-bar', ':servey'
+include ':app', ':bottom-bar'

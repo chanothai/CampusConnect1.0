@@ -2,6 +2,7 @@ package com.company.zicure.registerkey.fragment;
 
 
 import android.app.Dialog;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -220,8 +221,13 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
                                 transaction.commit();
                             }
                             else if (checkMenu.equalsIgnoreCase(getString(R.string.ePayment))){
-                                Intent intent = getContext().getPackageManager().getLaunchIntentForPackage("com.company.zicure.payment");
-                                intent.addCategory(Intent.CATEGORY_LAUNCHER);
+//                                 Intent intent = getContext().getPackageManager().getLaunchIntentForPackage("com.company.zicure.payment");
+//                                 intent.addCategory(Intent.CATEGORY_LAUNCHER);
+//                                 startActivity(intent);
+                                String packageName = "com.company.zicure.payment";
+                                String fullClassName = "com.company.zicure.payment.activity.AuthActivity";
+                                Intent intent = new Intent();
+                                intent.setComponent(new ComponentName(packageName, fullClassName));
                                 startActivity(intent);
                             }
                         }

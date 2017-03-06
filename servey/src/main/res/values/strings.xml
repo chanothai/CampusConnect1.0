@@ -1,9 +1,0 @@
-<resources>
-    <string name="app_name">Survey</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="url_question">http://180.180.244.228:9005/</string>
-
-
-</resources>
