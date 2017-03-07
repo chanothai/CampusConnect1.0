@@ -3,6 +3,8 @@ package com.company.zicure.registerkey;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.TypedArray;
+import android.graphics.Rect;
 import android.location.Location;
 import android.net.Uri;
 import android.os.BatteryManager;
@@ -10,6 +12,7 @@ import android.os.Build;
 import android.os.PersistableBundle;
 import android.provider.Settings;
 import android.support.annotation.IdRes;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -21,8 +24,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,13 +62,17 @@ import io.nlopez.smartlocation.location.config.LocationAccuracy;
 import io.nlopez.smartlocation.location.config.LocationParams;
 import io.nlopez.smartlocation.location.providers.LocationGooglePlayServicesWithFallbackProvider;
 
-public class MainMenuActivity extends BaseActivity implements OnLocationUpdatedListener,OnTabSelectListener,OnTabReselectListener {
+public class MainMenuActivity extends BaseActivity implements OnLocationUpdatedListener,OnTabSelectListener,OnTabReselectListener, View.OnClickListener {
 
     //layout coordinator cover material layout
     @Bind(R.id.rootLayout)
     CoordinatorLayout coordinatorLayout;
+    @Bind(R.id.layout_menu)
+    RelativeLayout layoutMenu;
 
     //toolbar
+    @Bind(R.id.appbar_layout)
+    AppBarLayout appBarLayout;
     @Bind(R.id.toolbar)
     Toolbar toolbarMenu;
     @Bind(R.id.title_toolbar)
@@ -77,11 +88,14 @@ public class MainMenuActivity extends BaseActivity implements OnLocationUpdatedL
     //list view slide menu
     @Bind(R.id.list_slide_menu)
     RecyclerView listSlideMenu;
+    @Bind(R.id.layout_ghost)
+    FrameLayout layoutGhost;
+    @Bind(R.id.control_slide)
+    FrameLayout controlSlide;
 
-    //img_close in slide menu
-    @Bind(R.id.img_close)
-    ImageView imgCloseMenu;
 
+    //store position
+    private int currentPositionMenu = 0;
     //list slide menu
     ArrayList<SlideMenuDetail> arrMenu = null;
 
@@ -92,9 +106,6 @@ public class MainMenuActivity extends BaseActivity implements OnLocationUpdatedL
     private HomeFragment homeFragment = null;
     private ScanQRFragment scanQRFragment = null;
     private StudentCardFragment studentCardFragment = null;
-
-    private Uri uri = null;
-    private ChromeService chromeService = null;
 
     private static final int PORT = 5055;
     private static final String DEVICEID = "218989";
@@ -116,6 +127,7 @@ public class MainMenuActivity extends BaseActivity implements OnLocationUpdatedL
         ButterKnife.bind(this);
         EventBusCart.getInstance().getEventBus().register(this);
 
+        layoutGhost.setOnClickListener(this);
         if (savedInstanceState == null){
             setToolbar();
             bottomBar.setOnTabSelectListener(this);
@@ -125,12 +137,8 @@ public class MainMenuActivity extends BaseActivity implements OnLocationUpdatedL
             setSlideMenuAdapter();
         }
 
-        imgCloseMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setToggle();
-            }
-        });
+        setOnTouchView();
+
     }
 
     public void setToolbar(){
@@ -138,17 +146,61 @@ public class MainMenuActivity extends BaseActivity implements OnLocationUpdatedL
         titleToolbar.setText(getString(R.string.campus_logo));
         imgToggle.setImageResource(R.drawable.ic_action_toc);
         imgToggle.setColorFilter(ContextCompat.getColor(this, R.color.color_text));
-        imgToggle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setToggle();
-            }
-        });
+        imgToggle.setOnClickListener(this);
         setSupportActionBar(toolbarMenu);
     }
 
-    public void setToggle(){
-        root.toggleMenu();
+    private void setOnTouchView(){
+        controlSlide.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent event) {
+                view.setEnabled(true);
+                drag(event, coordinatorLayout);
+                return false;
+            }
+        });
+    }
+
+    @TargetApi(21)
+    private void drag(final MotionEvent event, final View v){
+        int[] locations = null;
+        int x = 0;
+        int widthScreenMenu = layoutMenu.getRootView().getWidth();
+        int widthScreenContent = coordinatorLayout.getRootView().getWidth() - 140; //150 is margin, - 10 is shadow
+        switch(event.getAction()){
+            case MotionEvent.ACTION_MOVE:
+            {
+                locations = new int[2];
+                v.getLocationOnScreen(locations);
+                x = locations[0];
+
+
+                int leftMargin = (int) event.getRawX();
+                int haftScreen = widthScreenMenu / 2;
+                if (leftMargin > haftScreen){
+                    controlSlide.setEnabled(false);
+                    setToggle(widthScreenContent - haftScreen);
+                }else if(leftMargin < (haftScreen)){
+                    v.setTranslationX(leftMargin);
+                }
+
+                Log.d("MoveAction", String.valueOf(x));
+                break;
+            }
+            case MotionEvent.ACTION_UP:
+            {
+                break;
+            }
+            case MotionEvent.ACTION_DOWN:
+            {
+                Log.d("MoveDown", "down");
+                break;
+            }
+        }
+    }
+
+    public void setToggle(int widthScreen){
+        root.toggleMenu(widthScreen);
     }
     @Override
     protected void onDestroy() {
@@ -158,8 +210,6 @@ public class MainMenuActivity extends BaseActivity implements OnLocationUpdatedL
 
     @Override
     public void onBackPressed() {
-//        openActivity(LoginActivity.class, true);
-//        overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
         int count = getFragmentManager().getBackStackEntryCount();
         if (count > 0){
         }
@@ -176,12 +226,6 @@ public class MainMenuActivity extends BaseActivity implements OnLocationUpdatedL
     protected void onStop() {
         super.onStop();
 //        SmartLocation.with(this).location().stop();
-    }
-
-    public HomeFragment setHomeFragment(){
-        FragmentManager fm = getSupportFragmentManager();
-        HomeFragment homeFragment = (HomeFragment) fm.findFragmentByTag(getString(R.string.tag_home_fragment));
-        return homeFragment;
     }
 
     public void getLocation(){
@@ -236,7 +280,7 @@ public class MainMenuActivity extends BaseActivity implements OnLocationUpdatedL
 
     @TargetApi(Build.VERSION_CODES.ECLAIR)
     private double getBatteryLevel() {
-        if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.ECLAIR) {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.ECLAIR) {
             Intent batteryIntent = registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
             int level = batteryIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0);
             int scale = batteryIntent.getIntExtra(BatteryManager.EXTRA_SCALE, 1);
@@ -336,35 +380,35 @@ public class MainMenuActivity extends BaseActivity implements OnLocationUpdatedL
                     public void onItemClick(View view, int position) {
                         if (title.equalsIgnoreCase(getString(R.string.slide_menu_home))){
                             bottomBar.selectTabAtPosition(0);
-                            setToggle();
+                            setToggle(0);
                         }
                         else if (title.equalsIgnoreCase(getString(R.string.slide_menu_student))){
                             bottomBar.selectTabAtPosition(2);
-                            setToggle();
+                            setToggle(0);
                         }
 
                         else if (title.equalsIgnoreCase(getString(R.string.slide_menu_learning))){
-                            setToggle();
+                            setToggle(0);
                             getAppCalendar();
                         }
 
                         else if (title.equalsIgnoreCase(getString(R.string.slide_menu_exam))){
-                            setToggle();
+                            setToggle(0);
                             getAppCalendar();
                         }
                         else if (title.equalsIgnoreCase(getString(R.string.slide_menu_calender))){
-                            setToggle();
+                            setToggle(0);
                             getAppCalendar();
                         }
                         else if (title.equalsIgnoreCase(getString(R.string.slide_menu_transcript))){
-                            setToggle();
+                            setToggle(0);
                             getAppCalendar();
                         }
                         else if (title.equalsIgnoreCase(getString(R.string.slide_menu_due))){
-                            setToggle();
+                            setToggle(0);
                         }
                         else if (title.equalsIgnoreCase(getString(R.string.slide_menu_edit))){
-                            setToggle();
+                            setToggle(0);
                         }
                     }
                 });
@@ -386,5 +430,12 @@ public class MainMenuActivity extends BaseActivity implements OnLocationUpdatedL
     @Override
     public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
         super.onSaveInstanceState(outState, outPersistentState);
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.img_toggle || view.getId() == R.id.layout_ghost){
+            setToggle(0);
+        }
     }
 }

@@ -4,32 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorBackgroundGray"
     tools:context="com.company.zicure.registerkey.MainMenuActivity">
 
-    <include layout="@layout/content_drawer_navigation"/>
 
-    <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/rootLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <include
+        layout="@layout/content_drawer_navigation"/>
 
-        <include layout="@layout/layout_appbar"/>
+    <include
+        layout="@layout/layout_main_menu"/>
 
-        <include layout="@layout/content_main_menu" />
-
-        <com.roughike.bottombar.BottomBar
-            android:id="@+id/bottomBar"
-            android:layout_width="match_parent"
-            android:layout_height="64dp"
-            android:layout_gravity="bottom"
-            android:background="@android:color/white"
-            app:bb_tabXmlResource="@xml/bottombar_tabs"
-            app:bb_behavior="underNavbar|shy|shifting"
-            app:bb_inActiveTabAlpha="0.3"
-            app:bb_inActiveTabColor="@color/colorPrimaryDark"
-            app:bb_activeTabColor="@color/colorPrimaryDark"
-            />
-    </android.support.design.widget.CoordinatorLayout>
 </com.company.zicure.registerkey.view.viewgroup.FlyOutContainer>

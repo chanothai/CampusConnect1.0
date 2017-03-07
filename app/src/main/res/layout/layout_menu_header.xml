@@ -7,14 +7,6 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark"
     android:padding="@dimen/padding_large">
 
-    <ImageView
-        android:id="@+id/img_close"
-        android:layout_width="@dimen/scale_icon_tablet"
-        android:layout_height="@dimen/scale_icon_tablet"
-        android:layout_alignParentEnd="true"
-        android:scaleType="fitXY"
-        android:src="@drawable/close"/>
-
     <com.company.zicure.registerkey.CircleImageView
         android:id="@+id/img_profile"
         android:layout_width="@dimen/size_image_circle"
