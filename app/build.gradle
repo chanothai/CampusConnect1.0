@@ -55,4 +55,6 @@ dependencies {
 
     compile 'org.parceler:parceler-api:1.1.6'
     apt 'org.parceler:parceler:1.1.6'
+
+    compile project(path: ':profile')
 }

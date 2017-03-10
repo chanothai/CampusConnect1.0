@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/RegisterKey.iml" filepath="$PROJECT_DIR$/RegisterKey.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/bottom-bar/bottom-bar.iml" filepath="$PROJECT_DIR$/bottom-bar/bottom-bar.iml" />
+      <module fileurl="file://$PROJECT_DIR$/profile/profile.iml" filepath="$PROJECT_DIR$/profile/profile.iml" />
     </modules>
   </component>
 </project>

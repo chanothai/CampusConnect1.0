@@ -4,27 +4,31 @@
     android:id="@+id/layout_menu"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@android:color/white">
 
-    <include layout="@layout/layout_menu_header"/>
-    <View
-        android:id="@+id/line_drawer"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"
-        android:layout_below="@+id/header_drawer"/>
-
-    <android.support.v7.widget.RecyclerView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/list_slide_menu"
-        android:layout_below="@id/line_drawer"/>
+        android:orientation="vertical">
 
-    <View
-        android:layout_width="5dp"
+        <include
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            layout="@layout/layout_menu_header"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/list_slide_menu"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/layout_shadow_menu"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/dropshadow"
-        android:layout_alignParentEnd="true"/>
+        android:background="@android:color/black"
+        android:alpha="1"/>
 
 </RelativeLayout>

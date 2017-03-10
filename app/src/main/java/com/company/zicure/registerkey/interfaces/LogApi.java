@@ -2,6 +2,7 @@ package com.company.zicure.registerkey.interfaces;
 
 import com.company.zicure.registerkey.models.BaseResponse;
 import com.company.zicure.registerkey.models.LoginModel;
+import com.company.zicure.registerkey.models.UserRequest;
 import com.company.zicure.registerkey.models.otp.OTPModel;
 import com.company.zicure.registerkey.models.UserModel;
 
@@ -21,4 +22,7 @@ public interface LogApi {
 
     @POST("API/checkOTP.json")
     Call<BaseResponse> validateOTP(@Body OTPModel otpModel);
+
+    @POST("")
+    Call<BaseResponse> callUserDetail(@Body UserRequest userRequest);
 }

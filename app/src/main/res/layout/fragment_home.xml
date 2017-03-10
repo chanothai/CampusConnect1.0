@@ -1,4 +1,4 @@
-<com.baoyz.widget.PullRefreshLayout
+<android.support.v4.widget.SwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/swipeContainer"
@@ -14,37 +14,17 @@
         android:layout_height="match_parent"
         android:fillViewport="true">
 
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/layout_manage_home"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:background="@color/color_bg"
+            android:background="@android:color/white"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <include
-                layout="@layout/layout_viewpager_banner"/>
+            <include layout="@layout/layout_viewpager_banner"/>
+            <include layout="@layout/layout_recyclerview_vertical" />
 
-            <Button
-                android:id="@+id/btn_setting"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="2.7"
-                android:scaleType="fitXY"
-                android:text="@string/iconnect"
-                android:layout_marginStart="@dimen/padding_small"
-                android:layout_marginEnd="@dimen/padding_small"
-                android:layout_marginTop="@dimen/padding_medium"
-                android:layout_marginBottom="@dimen/padding_small"
-                android:textSize="@dimen/size_text_small"
-                android:padding="@dimen/padding_small"
-                android:drawableStart="@drawable/ic_2"
-                android:textColor="@android:color/white"
-                android:background="@drawable/select_btn_iconnect"/>
-
-            <include
-                layout="@layout/layout_recyclerview_vertical" />
-
-        </LinearLayout>
+        </RelativeLayout>
 
     </android.support.v4.widget.NestedScrollView>
-</com.baoyz.widget.PullRefreshLayout>
+</android.support.v4.widget.SwipeRefreshLayout>

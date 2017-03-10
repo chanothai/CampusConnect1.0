@@ -2,6 +2,7 @@ package com.company.zicure.registerkey.utilize;
 
 import com.company.zicure.registerkey.models.DateModel;
 import com.company.zicure.registerkey.models.LocationModel;
+import com.company.zicure.registerkey.models.UserResponse;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -13,4 +14,6 @@ public class ListModel {
 
     @SerializedName("date")
     public DateModel dateModel;
+
+    public UserResponse userResponse;
 }

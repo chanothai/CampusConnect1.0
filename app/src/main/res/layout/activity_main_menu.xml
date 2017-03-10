@@ -4,14 +4,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackgroundGray"
+    android:background="@android:color/background_dark"
     tools:context="com.company.zicure.registerkey.MainMenuActivity">
 
 
     <include
         layout="@layout/content_drawer_navigation"/>
 
-    <include
-        layout="@layout/layout_main_menu"/>
+
+    <RelativeLayout
+        android:id="@+id/liner_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <View
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/dropshadow"
+            android:id="@+id/shadow" />
+
+        <include
+            layout="@layout/layout_main_menu"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignStart="@id/shadow" />
+    </RelativeLayout>
+
 
 </com.company.zicure.registerkey.view.viewgroup.FlyOutContainer>

@@ -103,4 +103,9 @@
     <string name="token_login">token</string>
     <string name="dynamic_key">dynamic_key</string>
     <string name="phone_key">phone_key</string>
+    <string name="menu_feed_th">ฟีด</string>
+    <string name="setting_menu_th">การตั้งค่า</string>
+    <string name="logout_menu_th">ออกจากระบบ</string>
+    <string name="user_detail_th">ข้อมูลส่วนตัว</string>
+    <string name="edit_user_th">แก้ไขข้อมูล</string>
 </resources>

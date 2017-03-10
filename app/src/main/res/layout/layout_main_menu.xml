@@ -24,7 +24,7 @@
 
     <FrameLayout
         android:id="@+id/control_slide"
-        android:layout_width="10dp"
+        android:layout_width="30dp"
         android:layout_height="match_parent"
         android:clickable="true"
         android:background="@android:color/transparent"/>

@@ -7,6 +7,7 @@ import com.company.zicure.registerkey.R;
 import com.company.zicure.registerkey.interfaces.LogApi;
 import com.company.zicure.registerkey.models.BaseResponse;
 import com.company.zicure.registerkey.models.LoginModel;
+import com.company.zicure.registerkey.models.UserRequest;
 import com.company.zicure.registerkey.models.otp.OTPModel;
 import com.company.zicure.registerkey.models.UserModel;
 import com.company.zicure.registerkey.utilize.EventBusCart;
@@ -102,6 +103,25 @@ public class ClientHttp {
             public void onFailure(Call<BaseResponse> call, Throwable t) {
                 t.printStackTrace();
                 setResponse("Connect Error");
+            }
+        });
+    }
+
+    private void requestUserDetail(UserRequest userRequest){
+        Call<BaseResponse> callUserDetail = service.callUserDetail(userRequest);
+        callUserDetail.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                try {
+                    EventBusCart.getInstance().getEventBus().post(response.body());
+                }catch (NullPointerException e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                t.printStackTrace();
             }
         });
     }

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#ffffff</color>
+    <color name="colorPrimaryDark">#1E88E5</color>
+    <color name="colorAccent">#EC407A</color>
+
+    <color name="textColorPrimary">#FFFFFF</color>
+    <color name="windowBackground">#F5F5F5</color>
+    <color name="navigationBarColor">#000000</color>
+
+    <color name="colorBlueStrongNormal">#1976D2</color>
+    <color name="colorBlueStrongPress">#0D47A1</color>
+    <color name="colorBlueStrongGradient">#42A5F5</color>
+
+    <color name="colorBlueNormal">#00BCD4</color>
+
+    <color name="tab_interActive">#F8BBD0</color>
+    <color name="tab_active">#EC407A</color>
+</resources>

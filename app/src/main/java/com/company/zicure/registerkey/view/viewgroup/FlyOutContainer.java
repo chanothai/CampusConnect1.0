@@ -4,12 +4,10 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.os.Handler;
+import android.support.design.widget.CoordinatorLayout;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
-import android.view.animation.Interpolator;
-import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -27,30 +25,28 @@ public class FlyOutContainer extends LinearLayout {
 	private FrameLayout layoutGhost = null;
 	private RelativeLayout layoutMenu = null;
 	private FrameLayout controlSlide = null;
-	//
-	public static int checkMenu = 0;
+	private CoordinatorLayout coordinatorLayout = null;
+	private FrameLayout layoutShadowMenu = null;
+
 
 	// Layout Constants
 	protected static final int menuMargin = 150;
+	private int marginIn = 20;
+	private double limitSpeedTouch = 100;
+
+	private static int currentWidth = 0;
 
 	public enum MenuState {
-		CLOSED, OPEN, CLOSING, OPENING
+		CLOSED, OPEN
 	}
 
 
 	// Position information attributes
 	protected int currentContentOffset = 0;
-	protected MenuState menuCurrentState = MenuState.CLOSED;
+	public static MenuState menuCurrentState = MenuState.CLOSED;
 
-	// Animation objects
-	protected Scroller menuAnimationScroller = new Scroller(this.getContext(),
-			new DecelerateInterpolator());
-	protected Runnable menuAnimationRunnable = new AnimationRunnable();
-	protected Handler menuAnimationHandler = new Handler();
+	private int animationDuration = 300;
 
-	// Animation constants
-	private static final int menuAnimationDuration = 400;
-	private static final int menuAnimationPollingInterval = 2;
 
 	public FlyOutContainer(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
@@ -75,7 +71,10 @@ public class FlyOutContainer extends LinearLayout {
 		//bind view
 		controlSlide = (FrameLayout) content.findViewById(R.id.control_slide);
 		layoutGhost = (FrameLayout) content.findViewById(R.id.layout_ghost);
+		coordinatorLayout = (CoordinatorLayout) content.findViewById(R.id.rootLayout);
+
 		layoutMenu = (RelativeLayout) menu.findViewById(R.id.layout_menu);
+		layoutShadowMenu = (FrameLayout) menu.findViewById(R.id.layout_shadow_menu);
 	}
 
 	@Override
@@ -92,50 +91,108 @@ public class FlyOutContainer extends LinearLayout {
 	}
 
 	private void openning(){
-		this.menuCurrentState = MenuState.OPENING; //Content is opening
-		checkMenu = 1;
+		setMarginLayout(20);
+		menuCurrentState = MenuState.OPEN; //Content is opening
 		layoutGhost.setVisibility(View.VISIBLE);
 	}
 
 	private void closing(){
-		this.menuCurrentState = MenuState.CLOSING;
-		checkMenu = 0;
+		menuCurrentState = MenuState.CLOSED;
 		layoutGhost.setVisibility(View.GONE);
 	}
 
-	public void toggleMenu(int width) {
-		switch (this.menuCurrentState) {
-			case CLOSED:
-				controlSlide.setEnabled(true);
-				openning();
-				if (width > 0){
-					this.menuAnimationScroller.startScroll(0, 0, width,
-							0, menuAnimationDuration);
+	public void setAlphaMenu(int value){
+		int newValue = getMenuWidth() - value;
+		double d = (double) newValue;
+		double result = d / 1000;
+		layoutShadowMenu.setAlpha((float) result);
+	}
+
+	public void setAnimation(int target){
+		AnimatorSet animTogether = new AnimatorSet();
+		ObjectAnimator animSlideMenu = null;
+		ObjectAnimator animAlpha = null;
+		if (menuCurrentState == MenuState.OPEN){
+			if (target <= getMenuWidth() && target > (getMenuWidth() / 2)){
+				if (currentWidth > 0){
+					animSlideMenu = ObjectAnimator.ofFloat(content, View.TRANSLATION_X, currentWidth, target);
 				}else{
-					this.menuAnimationScroller.startScroll(0, 0, this.getMenuWidth(),
-							0, menuAnimationDuration);
+					animSlideMenu = ObjectAnimator.ofFloat(content, View.TRANSLATION_X, 0, target);
 				}
-				break;
-			case OPEN:
-				closing();
-				if (width > 0){
-					this.menuAnimationScroller.startScroll(width,
-							0, width, 0, menuAnimationDuration);
+			}else{
+				animSlideMenu = ObjectAnimator.ofFloat(content, View.TRANSLATION_X, currentWidth, target);
+			}
+
+			animAlpha = ObjectAnimator.ofFloat(layoutShadowMenu, View.ALPHA, 0f);
+		}
+		else if (menuCurrentState == MenuState.CLOSED){
+			if (target <= (getMenuWidth() / 2) && target > 0){
+				animSlideMenu = ObjectAnimator.ofFloat(content, View.TRANSLATION_X, target, 0);
+			}else{
+				if (currentWidth > 0){
+					animSlideMenu = ObjectAnimator.ofFloat(content, View.TRANSLATION_X, currentWidth ,target);
+				}else{
+					animSlideMenu = ObjectAnimator.ofFloat(content, View.TRANSLATION_X, getMenuWidth() ,target);
 				}
-				else{
-					this.menuAnimationScroller.startScroll(this.currentContentOffset,
-							0, -this.currentContentOffset, 0, menuAnimationDuration);
+			}
+			setMarginLayout(0);
+			animAlpha = ObjectAnimator.ofFloat(layoutShadowMenu, View.ALPHA, 1f);
+		}
+
+		animTogether.playTogether(animSlideMenu, animAlpha);
+		animTogether.setDuration(animationDuration);
+		animTogether.setInterpolator(new DecelerateInterpolator());
+		animTogether.start();
+	}
+
+	private void setMarginLayout(int left){
+		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) coordinatorLayout.getLayoutParams();
+		params.leftMargin = left;
+		coordinatorLayout.setLayoutParams(params);
+	}
+
+	public void toggleMenu(int width, double speedTouch) {
+		switch (menuCurrentState) {
+			case CLOSED:
+				if (width <= (getMenuWidth()/ 2) && width > 0){
+					currentWidth = width;
+					if (speedTouch > limitSpeedTouch){
+						openning();
+						setAnimation(getMenuWidth() - marginIn);
+					}else{
+						setAnimation(0);
+						layoutGhost.setVisibility(View.GONE);
+					}
+				}else{
+					openning();
+					currentWidth = width;
+					adjustContentPosition();
 				}
 
+				break;
+			case OPEN:
+				if (width >= (getMenuWidth() / 2) && width <= getMenuWidth()){
+					currentWidth = width;
+					if (speedTouch < -100) {
+						closing();
+						adjustContentPosition();
+					}else{
+						if (width == getMenuWidth() - marginIn){
+							closing();
+							adjustContentPosition();
+						}else{
+							setAnimation(getMenuWidth() - marginIn);
+						}
+					}
+				}else{
+					closing();
+					currentWidth = width;
+					adjustContentPosition();
+				}
 				break;
 			default:
 				return;
 		}
-
-		this.menuAnimationHandler.postDelayed(this.menuAnimationRunnable,
-				menuAnimationPollingInterval);
-
-		this.invalidate();
 	}
 
 	private int getMenuWidth() {
@@ -150,45 +207,24 @@ public class FlyOutContainer extends LinearLayout {
 		this.menu.getLayoutParams().height = this.getHeight();
 	}
 
-	private void adjustContentPosition(boolean isAnimationOngoing) {
-		int scrollerOffset = this.menuAnimationScroller.getCurrX();
-
-		this.content.offsetLeftAndRight(scrollerOffset
-				- this.currentContentOffset);
-
-		this.currentContentOffset = scrollerOffset;
-
-		this.invalidate();
-
-		if (isAnimationOngoing)
-			this.menuAnimationHandler.postDelayed(this.menuAnimationRunnable,
-					menuAnimationPollingInterval);
-		else
-			this.onMenuTransitionComplete();
-	}
-
-	private void onMenuTransitionComplete() {
-		switch (this.menuCurrentState) {
-			case OPENING:
-				this.menuCurrentState = MenuState.OPEN;
-				break;
-			case CLOSING:
-				this.menuCurrentState = MenuState.CLOSED;
-				break;
-			default:
-				return;
-		}
-	}
-
-	protected class AnimationRunnable implements Runnable {
-
-		@Override
-		public void run() {
-			FlyOutContainer.this
-					.adjustContentPosition(FlyOutContainer.this.menuAnimationScroller
-							.computeScrollOffset());
+	private void adjustContentPosition() {
+		int scrollerOffset;
+		if (currentWidth > 0){
+			if (menuCurrentState ==  MenuState.CLOSED){
+				scrollerOffset = 0;
+			}else{
+				int result = (currentWidth + ((getMenuWidth() - marginIn) - currentWidth));
+				scrollerOffset = result;
+			}
+		}else{
+			if (menuCurrentState == MenuState.OPEN){
+				scrollerOffset = getMenuWidth() - marginIn;
+			}else{
+				scrollerOffset = 0;
+			}
 		}
 
+		setAnimation(scrollerOffset);
 	}
 
 

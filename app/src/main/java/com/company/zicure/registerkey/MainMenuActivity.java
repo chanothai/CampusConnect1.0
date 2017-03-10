@@ -1,37 +1,31 @@
 package com.company.zicure.registerkey;
 
 import android.annotation.TargetApi;
-import android.content.Intent;
-import android.content.IntentFilter;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.graphics.Rect;
-import android.location.Location;
-import android.net.Uri;
-import android.os.BatteryManager;
-import android.os.Build;
 import android.os.PersistableBundle;
-import android.provider.Settings;
 import android.support.annotation.IdRes;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.VelocityTrackerCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.MotionEvent;
+import android.view.VelocityTracker;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.company.zicure.registerkey.adapter.SlideMenuAdapter;
 import com.company.zicure.registerkey.common.BaseActivity;
@@ -42,10 +36,7 @@ import com.company.zicure.registerkey.fragment.StudentCardFragment;
 import com.company.zicure.registerkey.holder.SlideMenuHolder;
 import com.company.zicure.registerkey.interfaces.ItemClickListener;
 import com.company.zicure.registerkey.models.drawer.SlideMenuDetail;
-import com.company.zicure.registerkey.network.ChromeService;
 import com.company.zicure.registerkey.utilize.EventBusCart;
-import com.company.zicure.registerkey.utilize.ModelCart;
-import com.company.zicure.registerkey.utilize.NextzyUtil;
 import com.company.zicure.registerkey.view.viewgroup.FlyOutContainer;
 import com.google.gson.Gson;
 import com.roughike.bottombar.BottomBar;
@@ -56,19 +47,17 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import io.nlopez.smartlocation.OnLocationUpdatedListener;
-import io.nlopez.smartlocation.SmartLocation;
-import io.nlopez.smartlocation.location.config.LocationAccuracy;
-import io.nlopez.smartlocation.location.config.LocationParams;
-import io.nlopez.smartlocation.location.providers.LocationGooglePlayServicesWithFallbackProvider;
+import profilemof.zicure.company.com.profilemof.activity.ProfileActivity;
 
-public class MainMenuActivity extends BaseActivity implements OnLocationUpdatedListener,OnTabSelectListener,OnTabReselectListener, View.OnClickListener {
+public class MainMenuActivity extends BaseActivity implements OnTabSelectListener,OnTabReselectListener, View.OnClickListener {
 
     //layout coordinator cover material layout
-    @Bind(R.id.rootLayout)
-    CoordinatorLayout coordinatorLayout;
+    @Bind(R.id.liner_content)
+    RelativeLayout linearLayout;
     @Bind(R.id.layout_menu)
     RelativeLayout layoutMenu;
+    @Bind(R.id.rootLayout)
+    CoordinatorLayout coordinatorLayout;
 
     //toolbar
     @Bind(R.id.appbar_layout)
@@ -93,11 +82,12 @@ public class MainMenuActivity extends BaseActivity implements OnLocationUpdatedL
     @Bind(R.id.control_slide)
     FrameLayout controlSlide;
 
-
-    //store position
-    private int currentPositionMenu = 0;
     //list slide menu
-    ArrayList<SlideMenuDetail> arrMenu = null;
+    private ArrayList<SlideMenuDetail> arrMenu = null;
+    @Bind(R.id.child_header_drawer)
+    RelativeLayout childHeaderDrawer;
+    @Bind(R.id.header_drawer)
+    RelativeLayout headerDrawer;
 
     //view layout
     private FlyOutContainer root;
@@ -110,14 +100,9 @@ public class MainMenuActivity extends BaseActivity implements OnLocationUpdatedL
     private static final int PORT = 5055;
     private static final String DEVICEID = "218989";
 
-
-    //data test
-    int[] imgsIconMenu = {R.drawable.ic_action_home, R.drawable.ic_2,R.drawable.ic_3,R.drawable.ic_4, R.drawable.ic_5, R.drawable.ic_6,
-    R.drawable.ic_7, R.drawable.ic_8, R.drawable.ic_9};
-
-    int[] titleMenu = {R.string.slide_menu_home, R.string.slide_menu_student, R.string.slide_menu_learning,
-            R.string.slide_menu_exam, R.string.slide_menu_calender, R.string.slide_menu_transcript,
-            R.string.slide_menu_activity, R.string.slide_menu_due, R.string.slide_menu_edit};
+    private int widthScreenMenu;
+    private int haftScreen;
+    private VelocityTracker velocityTracker = null; // get speed for touch
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,7 +112,6 @@ public class MainMenuActivity extends BaseActivity implements OnLocationUpdatedL
         ButterKnife.bind(this);
         EventBusCart.getInstance().getEventBus().register(this);
 
-        layoutGhost.setOnClickListener(this);
         if (savedInstanceState == null){
             setToolbar();
             bottomBar.setOnTabSelectListener(this);
@@ -141,13 +125,57 @@ public class MainMenuActivity extends BaseActivity implements OnLocationUpdatedL
 
     }
 
+    public void setLayoutHeadDrawer(){
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) childHeaderDrawer.getLayoutParams();
+        params.topMargin = getStatusBarHeight();
+        childHeaderDrawer.setLayoutParams(params);
+
+        LinearLayout.LayoutParams paramHead = (LinearLayout.LayoutParams) headerDrawer.getLayoutParams();
+        paramHead.bottomMargin = getStatusBarHeight();
+        headerDrawer.setLayoutParams(paramHead);
+
+        LinearLayout.LayoutParams paramsMenu = (LinearLayout.LayoutParams) listSlideMenu.getLayoutParams();
+        paramsMenu.topMargin = getStatusBarHeight() * -1;
+        listSlideMenu.setLayoutParams(paramsMenu);
+    }
+
+    private int convertPxtoDp(int value){
+        Resources resources = getResources();
+        float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value,resources.getDisplayMetrics());
+        return (int)px;
+    }
+
     public void setToolbar(){
+        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
+        params.height = getActionBarHeight() + getStatusBarHeight() + 10;
+        appBarLayout.setLayoutParams(params);
         toolbarMenu.setTitle("");
+        toolbarMenu.setPadding(0, getStatusBarHeight() + 10 , 0,0);
         titleToolbar.setText(getString(R.string.campus_logo));
         imgToggle.setImageResource(R.drawable.ic_action_toc);
         imgToggle.setColorFilter(ContextCompat.getColor(this, R.color.color_text));
         imgToggle.setOnClickListener(this);
         setSupportActionBar(toolbarMenu);
+
+        setLayoutHeadDrawer();
+    }
+
+    private int getActionBarHeight(){
+        int actionBarHeight = 0;
+        final TypedArray styleAttributes = getTheme().obtainStyledAttributes(new int[]{android.R.attr.actionBarSize});
+        actionBarHeight = (int) styleAttributes.getDimension(0,0);
+        styleAttributes.recycle();
+
+        return actionBarHeight;
+    }
+
+    private int getStatusBarHeight(){
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0){
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
     }
 
     private void setOnTouchView(){
@@ -155,52 +183,108 @@ public class MainMenuActivity extends BaseActivity implements OnLocationUpdatedL
             @Override
             public boolean onTouch(View view, MotionEvent event) {
                 view.setEnabled(true);
-                drag(event, coordinatorLayout);
+                drag(event, linearLayout);
+                return false;
+            }
+        });
+
+        layoutGhost.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                drag(motionEvent, linearLayout);
                 return false;
             }
         });
     }
 
+    private void setMotionEventUp(int margin, double speedTouch){
+        int marginIn = 20;
+        margin -= marginIn;
+        if (margin >= widthScreenMenu){
+            setToggle(widthScreenMenu - marginIn, speedTouch);
+        }else{
+            setToggle(margin, speedTouch);
+        }
+        layoutGhost.setEnabled(true);
+    }
+
+    private void setMotionEventMove(int margin, View v){
+        int marginIn = 20;
+        margin -= marginIn;
+
+        if (margin >= (widthScreenMenu - marginIn)){
+            v.setTranslationX(widthScreenMenu - marginIn);
+
+            layoutGhost.setEnabled(true);
+
+        }else {
+            v.setTranslationX(margin);
+            if (FlyOutContainer.menuCurrentState == FlyOutContainer.MenuState.CLOSED){
+                layoutGhost.setEnabled(false);
+            }
+        }
+
+        setMarginLayout(20);
+        root.setAlphaMenu(margin);
+        layoutGhost.setVisibility(View.VISIBLE);
+    }
+
     @TargetApi(21)
     private void drag(final MotionEvent event, final View v){
-        int[] locations = null;
-        int x = 0;
-        int widthScreenMenu = layoutMenu.getRootView().getWidth();
-        int widthScreenContent = coordinatorLayout.getRootView().getWidth() - 140; //150 is margin, - 10 is shadow
-        switch(event.getAction()){
-            case MotionEvent.ACTION_MOVE:
-            {
-                locations = new int[2];
-                v.getLocationOnScreen(locations);
-                x = locations[0];
+        int index = event.getActionIndex();
+        int action = event.getActionMasked();
+        int pointerId = event.getPointerId(index);
 
-
-                int leftMargin = (int) event.getRawX();
-                int haftScreen = widthScreenMenu / 2;
-                if (leftMargin > haftScreen){
-                    controlSlide.setEnabled(false);
-                    setToggle(widthScreenContent - haftScreen);
-                }else if(leftMargin < (haftScreen)){
-                    v.setTranslationX(leftMargin);
+        int margin = 0;
+        int marginEnd = 150;
+        widthScreenMenu = layoutMenu.getRootView().getWidth() - marginEnd;
+        haftScreen = (widthScreenMenu - marginEnd) / 2;
+        switch(action){
+            case MotionEvent.ACTION_MOVE: {
+                velocityTracker.addMovement(event);
+                velocityTracker.computeCurrentVelocity(1000);
+                margin = (int) event.getRawX();
+                setMotionEventMove(margin, v);
+                break;
+            }
+            case MotionEvent.ACTION_UP: {
+                margin = (int) event.getRawX();
+                Log.d("velocity", "X velocity: " + VelocityTrackerCompat.getXVelocity(velocityTracker, pointerId));
+                double speedTouch = VelocityTrackerCompat.getXVelocity(velocityTracker, pointerId);
+                setMotionEventUp(margin, speedTouch);
+                break;
+            }
+            case MotionEvent.ACTION_DOWN:{
+                if (velocityTracker == null){
+                    velocityTracker = velocityTracker.obtain();
+                }else{
+                    velocityTracker.clear();
                 }
+                velocityTracker.addMovement(event);
 
-                Log.d("MoveAction", String.valueOf(x));
-                break;
-            }
-            case MotionEvent.ACTION_UP:
-            {
-                break;
-            }
-            case MotionEvent.ACTION_DOWN:
-            {
+                margin = (int) event.getRawX();
+                if (margin >= widthScreenMenu){
+
+                }
                 Log.d("MoveDown", "down");
+                break;
+            }
+            case MotionEvent.ACTION_CANCEL:{
+                velocityTracker.recycle();
                 break;
             }
         }
     }
 
-    public void setToggle(int widthScreen){
-        root.toggleMenu(widthScreen);
+    public void setToggle(int widthScreen, double speedTouch){
+        root.toggleMenu(widthScreen, speedTouch);
+    }
+
+    private void setMarginLayout(int left){
+        //hide shadow
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) coordinatorLayout.getLayoutParams();
+        params.leftMargin = left;
+        coordinatorLayout.setLayoutParams(params);
     }
     @Override
     protected void onDestroy() {
@@ -219,196 +303,70 @@ public class MainMenuActivity extends BaseActivity implements OnLocationUpdatedL
     @Override
     protected void onStart() {
         super.onStart();
-//        getLocation();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-//        SmartLocation.with(this).location().stop();
     }
 
-    public void getLocation(){
-        try{
-            if (SmartLocation.with(this).location().state().isNetworkAvailable()){
-                if(SmartLocation.with(this).location().state().locationServicesEnabled()) {
-                    if (SmartLocation.with(this).location().state().isGpsAvailable()){
-                        LocationParams params = new LocationParams.Builder()
-                                .setAccuracy(LocationAccuracy.HIGH)
-                                .setInterval(10000)
-                                .build();
-
-                        SmartLocation.with(this)
-                                .location(new LocationGooglePlayServicesWithFallbackProvider(this))
-                                .config(params)
-                                .start(this);
-                    }
-                }else{ //if not denied
-                    //Intent to setting location service
-                    startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), 0);
-                }
-            }else{
-                startActivityForResult(new Intent(Settings.ACTION_NETWORK_OPERATOR_SETTINGS), 1);
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    //Location Listener ***************************************************************************
-    @Override
-    public void onLocationUpdated(Location location) {
-        try{
-            double latitude = location.getLatitude();
-            double longitude = location.getLongitude();
-
-            ModelCart.getInstance().getModel().locationModel.latLocate = latitude;
-            ModelCart.getInstance().getModel().locationModel.longLocate = longitude;
-
-            float accuracy = location.getAccuracy();
-            float bearing = location.getBearing();
-            String provider = location.getProvider();
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        Position position = new Position(DEVICEID, location, getBatteryLevel());
-        send(position);
-    }
-
-    //******************************************************
-
-    @TargetApi(Build.VERSION_CODES.ECLAIR)
-    private double getBatteryLevel() {
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.ECLAIR) {
-            Intent batteryIntent = registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
-            int level = batteryIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0);
-            int scale = batteryIntent.getIntExtra(BatteryManager.EXTRA_SCALE, 1);
-            return (level * 100.0) / scale;
-        } else {
-            return 0;
-        }
-    }
-
-    private void send(final Position position) {
-        String request = ProtocolFormatter.formatRequest(getString(R.string.url_map_service), PORT, false, position);
-        RequestManager.sendRequestAsync(request, new RequestManager.RequestHandler() {
-            @Override
-            public void onComplete(boolean success) {
-                if (success) {
-                    Log.d("Position", "send success");
-                } else {
-                    Log.d("Position", "send fails");
-                }
-            }
-        });
-    }
 
     //Bottom navigation listener *******************************************
     @Override
     public void onTabSelected(@IdRes int tabId) {
-        if (tabId == R.id.tab_home){
-            homeFragment = new HomeFragment();
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.container, homeFragment,getString(R.string.tag_home_fragment));
-            transaction.commit();
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+        if (count > 0){
+            count--;
         }
-
-        else if (tabId == R.id.tab_card){
-            studentCardFragment = new StudentCardFragment();
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.container, studentCardFragment);
-            transaction.commit();
-        }
-
-        else if (tabId == R.id.tab_scan){
-            scanQRFragment = new ScanQRFragment();
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.container, scanQRFragment);
-            transaction.commit();
+        try{
+            if (tabId == R.id.tab_home) {
+                homeFragment = new HomeFragment();
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.container, homeFragment, getString(R.string.tag_home_fragment));
+                transaction.commit();
+            }
+        }catch (NullPointerException e){
+            e.printStackTrace();
         }
     }
 
     @Override
     public void onTabReSelected(@IdRes int tabId) {
-        if (tabId == R.id.tab_home){
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.container, HomeFragment.newInstance(""), getString(R.string.tag_home_fragment));
-            transaction.commit();
 
-            int count = getFragmentManager().getBackStackEntryCount();
-            if (count > 0){
-                this.onBackPressed();
-            }
-        }
-        if (tabId == R.id.tab_card){
-            Toast.makeText(getApplicationContext(), "TAB: "+ "Student card", Toast.LENGTH_SHORT).show();
-        }
-
-        if (tabId == R.id.tab_scan){
-            Toast.makeText(getApplicationContext(), "TAB: "+ "Scan QR code", Toast.LENGTH_SHORT).show();
-        }
     }
 
     // set view adapter of slide menu0--------------------------------------->
     public void setSlideMenuAdapter(){
         arrMenu = new ArrayList<SlideMenuDetail>();
 
-        for (int i = 0; i < imgsIconMenu.length; i++){
-            SlideMenuDetail menu = new SlideMenuDetail();
-            menu.setImage(imgsIconMenu[i]);
-            menu.setTitle(getString(titleMenu[i]));
-            arrMenu.add(menu);
-        }
-
         Gson gson = new Gson();
         String strJson = gson.toJson(arrMenu);
         Log.d("SlideMenu", strJson);
 
+        String[] arrTitle = {getString(R.string.menu_feed_th),getString(R.string.user_detail_th),getString(R.string.edit_user_th),getString(R.string.setting_menu_th), getString(R.string.logout_menu_th)};
+        int[] arrImg = {R.drawable.ic_news_feed,R.drawable.ic_profile_user,  R.drawable.ic_edit_user, R.drawable.ic_setting,R.drawable.ic_log_out};
+        for (int i = 0; i < arrTitle.length; i++){
+            SlideMenuDetail menu = new SlideMenuDetail();
+            menu.setTitle(arrTitle[i]);
+            menu.setImage(arrImg[i]);
+            arrMenu.add(menu);
+        }
+
         SlideMenuAdapter slideMenuAdapter = new SlideMenuAdapter(this, arrMenu) {
             @Override
             public void onBindViewHolder(SlideMenuHolder holder, int position) {
-                if (position == 0){
-                    holder.imgIcon.setColorFilter(ContextCompat.getColor(getContext(), R.color.color_text));
-                }
-                final String title = arrMenu.get(position).getTitle();
-                holder.subTitle.setText(title);
-                holder.imgIcon.setImageResource(arrMenu.get(position).getImage());
-
+                holder.subTitle.setText(getTitle(position));
+                holder.imgIcon.setImageResource(getImage(position));
                 holder.setItemOnClickListener(new ItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        if (title.equalsIgnoreCase(getString(R.string.slide_menu_home))){
-                            bottomBar.selectTabAtPosition(0);
-                            setToggle(0);
+                        if (getTitle(position).equalsIgnoreCase(getString(R.string.user_detail_th))){
+                            openActivity(ProfileActivity.class);
+                            overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_scale_out);
                         }
-                        else if (title.equalsIgnoreCase(getString(R.string.slide_menu_student))){
-                            bottomBar.selectTabAtPosition(2);
-                            setToggle(0);
-                        }
-
-                        else if (title.equalsIgnoreCase(getString(R.string.slide_menu_learning))){
-                            setToggle(0);
-                            getAppCalendar();
-                        }
-
-                        else if (title.equalsIgnoreCase(getString(R.string.slide_menu_exam))){
-                            setToggle(0);
-                            getAppCalendar();
-                        }
-                        else if (title.equalsIgnoreCase(getString(R.string.slide_menu_calender))){
-                            setToggle(0);
-                            getAppCalendar();
-                        }
-                        else if (title.equalsIgnoreCase(getString(R.string.slide_menu_transcript))){
-                            setToggle(0);
-                            getAppCalendar();
-                        }
-                        else if (title.equalsIgnoreCase(getString(R.string.slide_menu_due))){
-                            setToggle(0);
-                        }
-                        else if (title.equalsIgnoreCase(getString(R.string.slide_menu_edit))){
-                            setToggle(0);
+                        else if (getTitle(position).equalsIgnoreCase(getString(R.string.menu_feed_th))){
+                            callHomeFragment();
+                            setToggle(0,0);
                         }
                     }
                 });
@@ -420,6 +378,11 @@ public class MainMenuActivity extends BaseActivity implements OnLocationUpdatedL
     }
     //<=======================================================================
 
+    private void callHomeFragment(){
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, new HomeFragment());
+        transaction.commit();
+    }
     public void getAppCalendar(){
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, AppMenuFragment.newInstance(getString(R.string.url_calendar), ""));
@@ -434,8 +397,8 @@ public class MainMenuActivity extends BaseActivity implements OnLocationUpdatedL
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.img_toggle || view.getId() == R.id.layout_ghost){
-            setToggle(0);
+        if (view.getId() == R.id.img_toggle){
+            setToggle(0,0);
         }
     }
 }

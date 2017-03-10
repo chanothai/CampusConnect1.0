@@ -25,7 +25,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/ic_logoiconnect2"
             android:scaleType="fitXY" />
 
         <TextView
@@ -69,8 +68,7 @@
             <ImageView
                 android:layout_width="@dimen/scale_icon_tablet"
                 android:layout_height="@dimen/scale_icon_tablet"
-                android:scaleType="fitXY"
-                android:src="@drawable/ic_bluetooth"/>
+                android:scaleType="fitXY" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -103,8 +101,7 @@
             <ImageView
                 android:layout_width="@dimen/scale_icon_tablet"
                 android:layout_height="@dimen/scale_icon_tablet"
-                android:scaleType="fitXY"
-                android:src="@drawable/ic_location"/>
+                android:scaleType="fitXY" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -136,8 +133,7 @@
             <ImageView
                 android:layout_width="@dimen/scale_icon_tablet"
                 android:layout_height="@dimen/scale_icon_tablet"
-                android:scaleType="fitXY"
-                android:src="@drawable/ic_notification"/>
+                android:scaleType="fitXY" />
 
             <TextView
                 android:layout_width="match_parent"

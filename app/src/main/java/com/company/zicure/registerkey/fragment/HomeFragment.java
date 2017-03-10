@@ -4,6 +4,7 @@ package com.company.zicure.registerkey.fragment;
 import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -11,17 +12,21 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.text.Html;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,7 +48,7 @@ import java.util.TimerTask;
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment implements ViewPager.OnPageChangeListener, View.OnClickListener{
+public class HomeFragment extends Fragment implements ViewPager.OnPageChangeListener, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "checkScroll";
@@ -76,12 +81,10 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
     //pager banner
     private ViewPager viewPagerBanner;
 
-    private Button btnSetting;
-
     private NestedScrollView scrollViewMenu;
 
     //Swipe for pull to refresh
-    PullRefreshLayout swipeRefreshLayout;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     //dialog setting
     private Dialog dialog = null;
@@ -89,6 +92,9 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
     //view switch
     private SwitchCompat swBluetooth = null;
     private ImageView imgClose = null;
+
+    private Handler handler = null;
+    private Runnable updateView = null;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -125,9 +131,8 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
         recyclerViewMenu = (RecyclerView) root.findViewById(R.id.recycler_menu);
         viewPagerBanner = (ViewPager) root.findViewById(R.id.view_pager_banner);
         dotLayout = (LinearLayout)root.findViewById(R.id.layoutDot);
-        btnSetting = (Button) root.findViewById(R.id.btn_setting);
         scrollViewMenu = (NestedScrollView) root.findViewById(R.id.scrollViewMenu);
-        swipeRefreshLayout = (PullRefreshLayout) root.findViewById(R.id.swipeContainer);
+        swipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.swipeContainer);
         return root;
     }
 
@@ -135,30 +140,32 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         strMenu = new String[]{getString(R.string.menu_calendar), getString(R.string.menu_news), getString(R.string.menu_subject),getString(R.string.ePayment)};
-        btnSetting.setOnClickListener(this);
         recyclerViewMenu.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         if (savedInstanceState == null){
             //set layout app
             setAdapterView();
             setBannerPager();
             createDialog();
-            runScrollViewUp();
+            resizeViewPager();
         }
 
-        swipeRefreshLayout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                NextzyUtil.launchDelay(new NextzyUtil.LaunchCallback() {
-                    @Override
-                    public void onLaunchCallback() {
-                        swipeRefreshLayout.setRefreshing(false);
-                        Toast.makeText(getActivity(), "Load Complete", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-        });
+        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setColorSchemeColors(
+                getResources().getColor(android.R.color.holo_blue_bright),
+                getResources().getColor(android.R.color.holo_green_light),
+                getResources().getColor(android.R.color.holo_orange_light),
+                getResources().getColor(android.R.color.holo_red_light));
+    }
 
-        swipeRefreshLayout.setRefreshStyle(PullRefreshLayout.STYLE_MATERIAL);
+    private void resizeViewPager(){
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int height = displayMetrics.heightPixels;
+
+        int newHeight = height / 3;
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) viewPagerBanner.getLayoutParams();
+        params.height = newHeight;
+        viewPagerBanner.setLayoutParams(params);
     }
 
     private void createDialog(){
@@ -198,38 +205,34 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
                 holder.setItemOnClickListener(new ItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        if (FlyOutContainer.checkMenu == 1){
-
-                        }else{
-                            String checkMenu = getItemName(position);
-                            if (checkMenu.equalsIgnoreCase(getString(R.string.menu_calendar))){
-                                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                                transaction.replace(R.id.container, AppMenuFragment.newInstance(getString(R.string.url_calendar), ""));
-                                transaction.addToBackStack(null);
-                                transaction.commit();
-                            }
-                            else if (checkMenu.equalsIgnoreCase(getString(R.string.menu_news))){
-                                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                                transaction.replace(R.id.container, AppMenuFragment.newInstance(getString(R.string.url_news), ""));
-                                transaction.addToBackStack(null);
-                                transaction.commit();
-                            }
-                            else if (checkMenu.equalsIgnoreCase(getString(R.string.menu_subject))){
-                                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                                transaction.replace(R.id.container, AppMenuFragment.newInstance(getString(R.string.url_subject), ""));
-                                transaction.addToBackStack(null);
-                                transaction.commit();
-                            }
-                            else if (checkMenu.equalsIgnoreCase(getString(R.string.ePayment))){
+                        String checkMenu = getItemName(position);
+                        if (checkMenu.equalsIgnoreCase(getString(R.string.menu_calendar))){
+                            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                            transaction.replace(R.id.container, AppMenuFragment.newInstance(getString(R.string.url_calendar), ""));
+                            transaction.addToBackStack(null);
+                            transaction.commit();
+                        }
+                        else if (checkMenu.equalsIgnoreCase(getString(R.string.menu_news))){
+                            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                            transaction.replace(R.id.container, AppMenuFragment.newInstance(getString(R.string.url_news), ""));
+                            transaction.addToBackStack(null);
+                            transaction.commit();
+                        }
+                        else if (checkMenu.equalsIgnoreCase(getString(R.string.menu_subject))){
+                            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                            transaction.replace(R.id.container, AppMenuFragment.newInstance(getString(R.string.url_subject), ""));
+                            transaction.addToBackStack(null);
+                            transaction.commit();
+                        }
+                        else if (checkMenu.equalsIgnoreCase(getString(R.string.ePayment))){
 //                                 Intent intent = getContext().getPackageManager().getLaunchIntentForPackage("com.company.zicure.payment");
 //                                 intent.addCategory(Intent.CATEGORY_LAUNCHER);
 //                                 startActivity(intent);
-                                String packageName = "com.company.zicure.payment";
-                                String fullClassName = "com.company.zicure.payment.activity.AuthActivity";
-                                Intent intent = new Intent();
-                                intent.setComponent(new ComponentName(packageName, fullClassName));
-                                startActivity(intent);
-                            }
+                            String packageName = "com.company.zicure.payment";
+                            String fullClassName = "com.company.zicure.payment.activity.AuthActivity";
+                            Intent intent = new Intent();
+                            intent.setComponent(new ComponentName(packageName, fullClassName));
+                            startActivity(intent);
                         }
                     }
                 });
@@ -244,7 +247,6 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
     @Override
     public void onResume() {
         super.onResume();
-        //run pager
         runViewPager();
     }
 
@@ -287,34 +289,29 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
 
     // Run auto change view pager ----------------------------------->
     public void runViewPager(){
-        NextzyUtil.launchDelay(new NextzyUtil.LaunchCallback() {
+        time = new Timer();
+        handler = new Handler();
+        updateView = new Runnable() {
             @Override
-            public void onLaunchCallback() {
-                final Handler handler = new Handler();
-                final Runnable updateView = new Runnable() {
-                    @Override
-                    public void run() {
-                        if (currentPager <= 0){
-                            currentPager = 0;
-                            viewPagerBanner.setCurrentItem(currentPager++);
-                        }else if (currentPager == 1){
-                            viewPagerBanner.setCurrentItem(currentPager++);
-                        }else if (currentPager == 2){
-                            viewPagerBanner.setCurrentItem(currentPager);
-                            currentPager = 0;
-                        }
-                    }
-                };
-
-                time = new Timer();
-                time.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        handler.post(updateView);
-                    }
-                },300,5000);
+            public void run() {
+                if (currentPager <= 0){
+                    currentPager = 0;
+                    viewPagerBanner.setCurrentItem(currentPager++);
+                }else if (currentPager == 1){
+                    viewPagerBanner.setCurrentItem(currentPager++);
+                }else if (currentPager == 2){
+                    viewPagerBanner.setCurrentItem(currentPager);
+                    currentPager = 0;
+                }
             }
-        });
+        };
+
+        time.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                handler.post(updateView);
+            }
+        },300,5000);
     }
 
     public void stopViewPager(){
@@ -350,14 +347,11 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
 
     @Override
     public void onClick(View view) {
-        int tag = view.getId();
-        switch (tag){
-            case R.id.btn_setting:
-                dialog.show();
-                break;
-            case R.id.img_close:
-                dialog.cancel();
-                break;
-        }
+
+    }
+
+    @Override
+    public void onRefresh() {
+        swipeRefreshLayout.setRefreshing(false);
     }
 }

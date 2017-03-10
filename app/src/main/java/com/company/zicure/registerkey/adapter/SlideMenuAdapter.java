@@ -44,4 +44,12 @@ abstract public class SlideMenuAdapter extends RecyclerView.Adapter<SlideMenuHol
     public int getItemCount() {
         return arrMenu.size();
     }
+
+    public String getTitle(int positon){
+        return arrMenu.get(positon).getTitle();
+    }
+
+    public int getImage(int position){
+        return arrMenu.get(position).getImage();
+    }
 }
