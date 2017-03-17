@@ -60,12 +60,18 @@ public class OTPActivity extends BaseActivity implements EditText.OnEditorAction
             result.setOtp(strOTP);
             otpRequest.setResult(result);
 
+            String str = new Gson().toJson(otpRequest);
+            Log.d("OTPRequest", str);
+
             Gson gson = new GsonBuilder().disableHtmlEscaping().create();
             String resultEncrypt = EncryptionAES.newInstance(ModelCart.getInstance().getKeyModel().getKey()).encrypt(gson.toJson(otpRequest));
             Log.d("OTPModel", resultEncrypt);
 
             OTPModel otpModel = new OTPModel();
             otpModel.setEncryptOTP(resultEncrypt);
+
+            str = new Gson().toJson(otpModel);
+            Log.d("OTPRequest", str);
 
             showLoadingDialog();
             ClientHttp.getInstance(this).validateOTP(otpModel);
@@ -76,6 +82,8 @@ public class OTPActivity extends BaseActivity implements EditText.OnEditorAction
 
     @Subscribe
     public void onEvent(BaseResponse baseResponse){
+        String str = new Gson().toJson(baseResponse);
+        Log.d("BaseResponse", str);
         BaseResponse.Result result = baseResponse.getResult();
         if (!result.getSuccess().isEmpty()) {
             String[] arrStr = result.getSuccess().split(getString(R.string.key_iv));

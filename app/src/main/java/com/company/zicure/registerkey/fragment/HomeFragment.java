@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,12 +32,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.baoyz.widget.PullRefreshLayout;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.company.zicure.registerkey.R;
 import com.company.zicure.registerkey.adapter.BannerViewPagerAdapter;
 import com.company.zicure.registerkey.adapter.MainMenuAdapter;
 import com.company.zicure.registerkey.holder.MainMenuHolder;
 import com.company.zicure.registerkey.interfaces.ItemClickListener;
 import com.company.zicure.registerkey.utilize.NextzyUtil;
+import com.company.zicure.registerkey.utilize.ResizeScreen;
 import com.company.zicure.registerkey.view.viewgroup.FlyOutContainer;
 
 import java.util.Timer;
@@ -158,12 +162,10 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
     }
 
     private void resizeViewPager(){
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int height = displayMetrics.heightPixels;
-
-        int newHeight = height / 3;
+        ResizeScreen resizeScreen = new ResizeScreen(getActivity());
+        int newHeight = resizeScreen.widthScreen(2);
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) viewPagerBanner.getLayoutParams();
+        params.width = RelativeLayout.LayoutParams.MATCH_PARENT;
         params.height = newHeight;
         viewPagerBanner.setLayoutParams(params);
     }
@@ -199,8 +201,13 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
             //Data is bound to view
             @Override
             public void onBindViewHolder(final MainMenuHolder holder, int position) {
+                setLayoutParams(holder);
                 holder.topicMenu.setText(strMenu[position]);
-                holder.imgBtnMenu.setImageResource(imgsMenu[position]);
+                Glide.with(getActivity())
+                        .load(imgsMenu[position])
+                        .fitCenter()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(holder.imgBtnMenu);
 
                 holder.setItemOnClickListener(new ItemClickListener() {
                     @Override
@@ -228,14 +235,22 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
 //                                 Intent intent = getContext().getPackageManager().getLaunchIntentForPackage("com.company.zicure.payment");
 //                                 intent.addCategory(Intent.CATEGORY_LAUNCHER);
 //                                 startActivity(intent);
-                            String packageName = "com.company.zicure.payment";
-                            String fullClassName = "com.company.zicure.payment.activity.AuthActivity";
-                            Intent intent = new Intent();
-                            intent.setComponent(new ComponentName(packageName, fullClassName));
-                            startActivity(intent);
+//                            String packageName = "com.company.zicure.payment";
+//                            String fullClassName = "com.company.zicure.payment.activity.AuthActivity";
+//                            Intent intent = new Intent();
+//                            intent.setComponent(new ComponentName(packageName, fullClassName));
+//                            startActivity(intent);
                         }
                     }
+
                 });
+            }
+
+            private void setLayoutParams(MainMenuHolder holder){
+                ResizeScreen resizeScreen = new ResizeScreen(getActivity());
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) holder.imgBtnMenu.getLayoutParams();
+                params.height = resizeScreen.heightScreen(3);
+                holder.imgBtnMenu.setLayoutParams(params);
             }
         };
 

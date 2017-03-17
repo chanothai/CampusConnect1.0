@@ -1,29 +1,43 @@
 package profilemof.zicure.company.com.profilemof.activity;
 
+import android.Manifest;
+import android.annotation.TargetApi;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.joooonho.SelectableRoundedImageView;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import gallery.zicure.company.com.gallery.util.PermissionKeyNumber;
+import gallery.zicure.company.com.gallery.dialog.DialogSelectGallery;
 import profilemof.zicure.company.com.profilemof.R;
 import profilemof.zicure.company.com.profilemof.adapter.ViewPagerAdapter;
 import profilemof.zicure.company.com.profilemof.fragment.AddCashFragment;
 import profilemof.zicure.company.com.profilemof.fragment.UserDetailFragment;
 import profilemof.zicure.company.com.profilemof.utilize.ModelCartProfile;
+import profilemof.zicure.company.com.profilemof.utilize.ResizeScreen;
 
-public class ProfileActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener{
+public class ProfileActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener, View.OnClickListener{
     private Toolbar toolbar = null;
     private TabLayout tabLayout = null;
     private ViewPager viewPager = null;
-    private CircleImageView imgProfile = null;
+    private SelectableRoundedImageView imgProfile = null;
+    private CircleImageView imgEditProfile = null;
     private TextView accountProfile = null;
 
 
@@ -47,8 +61,26 @@ public class ProfileActivity extends AppCompatActivity implements TabLayout.OnTa
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         viewPager = (ViewPager) findViewById(R.id.viewPager);
-        imgProfile = (CircleImageView) findViewById(R.id.img_profile);
+        imgProfile = (SelectableRoundedImageView) findViewById(R.id.img_profile);
         accountProfile = (TextView) findViewById(R.id.account_profile);
+        imgEditProfile = (CircleImageView) findViewById(R.id.img_edit_profile);
+        imgEditProfile.setOnClickListener(this);
+
+        resizeImage();
+    }
+
+
+    private void resizeImage(){
+        ResizeScreen resizeScreen = new ResizeScreen(this);
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) imgProfile.getLayoutParams();
+        params.height = resizeScreen.widthScreen(3);
+        params.width = resizeScreen.widthScreen(3);
+        imgProfile.setLayoutParams(params);
+
+        RelativeLayout.LayoutParams params2 = (RelativeLayout.LayoutParams) imgEditProfile.getLayoutParams();
+        params2.height = imgProfile.getLayoutParams().height / 3;
+        params2.width = imgProfile.getLayoutParams().width / 3;
+        imgEditProfile.setLayoutParams(params2);
     }
 
     private void setStatusBarTint(){
@@ -66,13 +98,14 @@ public class ProfileActivity extends AppCompatActivity implements TabLayout.OnTa
 
     private void initialTab(){
         tabLayout.setupWithViewPager(viewPager);
-        TabLayout.Tab tab = tabLayout.getTabAt(1);
+        TabLayout.Tab tab = tabLayout.getTabAt(0);
         tab.select();
         tabLayout.setOnTabSelectedListener(this);
     }
 
     private void setImgProfile(){
         try{
+            imgEditProfile.setImageResource(R.drawable.ic_google_images);
             if (ModelCartProfile.getInstance().getAccount().equals(getString(R.string.account1))){
                 imgProfile.setImageResource(R.drawable.base);
                 accountProfile.setText(getString(R.string.account1));
@@ -85,7 +118,6 @@ public class ProfileActivity extends AppCompatActivity implements TabLayout.OnTa
             imgProfile.setImageResource(R.mipmap.ic_launcher);
             accountProfile.setText("");
         }
-
     }
 
     private void setToolbar(){
@@ -112,7 +144,24 @@ public class ProfileActivity extends AppCompatActivity implements TabLayout.OnTa
         viewPager.setAdapter(adapter);
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (PermissionKeyNumber.getInstance().getPermissionCameraKey() == requestCode){
+            if (grantResults[0] != -1){
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, PermissionKeyNumber.getInstance().getPermissionCameraKey());
+            }
+        }
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == -1){
+            Log.d("Activity Result", requestCode +"," + resultCode +"," + data.toString());
+        }
+    }
 
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
@@ -148,6 +197,14 @@ public class ProfileActivity extends AppCompatActivity implements TabLayout.OnTa
     public void onBackPressed() {
         super.onBackPressed();
         finishActivity();
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.img_edit_profile){
+            DialogSelectGallery dialog = new DialogSelectGallery(this);
+            dialog.showDialog();
+        }
     }
 }
 

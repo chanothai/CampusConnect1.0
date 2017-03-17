@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/header_drawer"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@drawable/bg_material_profile"
     android:padding="@dimen/padding_large">
 
@@ -12,15 +12,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.company.zicure.registerkey.CircleImageView
+        <com.joooonho.SelectableRoundedImageView
             android:id="@+id/img_profile"
             android:layout_width="@dimen/size_image_circle"
             android:layout_height="@dimen/size_image_circle"
             android:src="@drawable/yajai"
-            app:civ_fill_color="@android:color/white"
-            app:civ_border_width="@dimen/stroke_corner_size"
-            app:civ_border_color="@android:color/white"
             android:scaleType="centerCrop"
+            app:sriv_border_color="@android:color/white"
+            app:sriv_border_width="1dp"
+            app:sriv_oval="true"
             android:layout_alignParentStart="true" />
 
         <LinearLayout

@@ -87,7 +87,7 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener,Te
 //        strUser = editUser.getText().toString().trim();
 //        strPass = editPass.getText().toString().trim();
         strUser = "082-445-6225";
-        strPass = "1234";
+        strPass = "082-445-6225";
 
         if (strUser.length() == 12 && !strPass.isEmpty()){
             LoginRequest loginRequest = new LoginRequest();
@@ -97,12 +97,17 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener,Te
 
             loginRequest.setResult(result);
 
+            String str = new Gson().toJson(loginRequest);
+            Log.d("LoginRequest",  str);
+
             Gson gson = new GsonBuilder().disableHtmlEscaping().create();
             String resultEncrypt = EncryptionAES.newInstance(ModelCart.getInstance().getKeyModel().getKey()).encrypt(gson.toJson(loginRequest));
             Log.d("LoginModel", resultEncrypt);
 
             final LoginModel loginModel = new LoginModel();
             loginModel.setLogin(resultEncrypt);
+            str = new Gson().toJson(loginModel);
+            Log.d("LoginRequest",  str);
 
             showLoadingDialog();
             ClientHttp.getInstance(getApplicationContext()).login(loginModel);
@@ -142,6 +147,8 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener,Te
 
     @Subscribe
     public void onEvent(BaseResponse baseResponse){
+        String str = new Gson().toJson(baseResponse);
+        Log.d("BaseResponse", str);
         BaseResponse.Result result = baseResponse.getResult();
         if (!result.getSuccess().isEmpty()){
             String[] arrStr = result.getSuccess().split(getString(R.string.key_iv));

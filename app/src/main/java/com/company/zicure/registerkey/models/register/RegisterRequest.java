@@ -21,7 +21,7 @@ public class RegisterRequest {
     public class Result{
         @SerializedName("citizen_id")
         private String citizenId;
-        @SerializedName("birthdate")
+        @SerializedName("birth_date")
         private String birthDate;
         @SerializedName("phone")
         private String phone;

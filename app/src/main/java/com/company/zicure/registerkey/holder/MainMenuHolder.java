@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -20,7 +21,7 @@ public class MainMenuHolder extends RecyclerView.ViewHolder implements View.OnCl
 
     //View
     public TextView topicMenu;
-    public ImageButton imgBtnMenu;
+    public ImageView imgBtnMenu;
     public RelativeLayout cardMenu;
     //Interface
     public ItemClickListener itemClickListener;
@@ -28,10 +29,9 @@ public class MainMenuHolder extends RecyclerView.ViewHolder implements View.OnCl
     public MainMenuHolder(View itemView) {
         super(itemView);
         topicMenu = (TextView) itemView.findViewById(R.id.topic_menu);
-        imgBtnMenu = (ImageButton) itemView.findViewById(R.id.img_btn_menu);
+        imgBtnMenu = (ImageView) itemView.findViewById(R.id.img_btn_menu);
         cardMenu = (RelativeLayout) itemView.findViewById(R.id.item_card_main_menu);
 
-        imgBtnMenu.setOnClickListener(this);
         itemView.setOnClickListener(this);
     }
 

@@ -25,7 +25,7 @@ import profilemof.zicure.company.com.profilemof.R;
  * Use the {@link AddCashFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AddCashFragment extends Fragment {
+public class AddCashFragment extends Fragment implements ViewTreeObserver.OnGlobalLayoutListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -40,6 +40,9 @@ public class AddCashFragment extends Fragment {
     //View
     private ImageView imgQrCode = null;
 
+    private ViewTreeObserver viewTreeObserver = null;
+    private int width = 0;
+    private int height = 0;
 
     public AddCashFragment() {
         // Required empty public constructor
@@ -78,24 +81,21 @@ public class AddCashFragment extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_add_cash, container, false);
         imgQrCode = (ImageView) root.findViewById(R.id.qrCode);
+
         return root;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        calPayoutParams();
+        if (savedInstanceState == null){
+            calPayoutParams();
+        }
     }
 
     private void calPayoutParams(){
-        ViewTreeObserver observer = imgQrCode.getViewTreeObserver();
-        observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                generateQRCode(imgQrCode.getWidth(), imgQrCode.getHeight());
-                Log.d("LayoutParam", String.valueOf(imgQrCode.getWidth())+ " , "+ String.valueOf(imgQrCode.getHeight()));
-            }
-        });
+        viewTreeObserver = imgQrCode.getViewTreeObserver();
+        viewTreeObserver.addOnGlobalLayoutListener(this);
     }
 
     private void generateQRCode(int width, int height){
@@ -112,4 +112,12 @@ public class AddCashFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onGlobalLayout() {
+        width = imgQrCode.getMeasuredWidth();
+        height = imgQrCode.getMeasuredHeight();
+        generateQRCode(width, height);
+        Log.d("LayoutParam", String.valueOf(width+ " , "+ height));
+        imgQrCode.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+    }
 }

@@ -3,6 +3,7 @@ package com.company.zicure.registerkey;
 import android.annotation.TargetApi;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.os.Build;
 import android.os.PersistableBundle;
 import android.support.annotation.IdRes;
 import android.support.design.widget.AppBarLayout;
@@ -37,8 +38,10 @@ import com.company.zicure.registerkey.holder.SlideMenuHolder;
 import com.company.zicure.registerkey.interfaces.ItemClickListener;
 import com.company.zicure.registerkey.models.drawer.SlideMenuDetail;
 import com.company.zicure.registerkey.utilize.EventBusCart;
+import com.company.zicure.registerkey.utilize.ResizeScreen;
 import com.company.zicure.registerkey.view.viewgroup.FlyOutContainer;
 import com.google.gson.Gson;
+import com.joooonho.SelectableRoundedImageView;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabReselectListener;
 import com.roughike.bottombar.OnTabSelectListener;
@@ -81,6 +84,8 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
     FrameLayout layoutGhost;
     @Bind(R.id.control_slide)
     FrameLayout controlSlide;
+    @Bind(R.id.img_profile)
+    SelectableRoundedImageView imgProfile;
 
     //list slide menu
     private ArrayList<SlideMenuDetail> arrMenu = null;
@@ -110,14 +115,13 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
         root = (FlyOutContainer) getLayoutInflater().inflate(R.layout.activity_main_menu, null);
         setContentView(root);
         ButterKnife.bind(this);
+        bottomBar.setOnTabSelectListener(this);
+        bottomBar.setOnTabReselectListener(this);
         EventBusCart.getInstance().getEventBus().register(this);
 
         if (savedInstanceState == null){
             setToolbar();
-            bottomBar.setOnTabSelectListener(this);
-            bottomBar.setOnTabReselectListener(this);
             //set slide menu
-            listSlideMenu.setLayoutManager(new LinearLayoutManager(this));
             setSlideMenuAdapter();
         }
 
@@ -126,15 +130,27 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
     }
 
     public void setLayoutHeadDrawer(){
+        ResizeScreen resizeScreen = new ResizeScreen(this);
+
+        RelativeLayout.LayoutParams paramsIMG = (RelativeLayout.LayoutParams) imgProfile.getLayoutParams();
+        paramsIMG.height = resizeScreen.widthScreen(5);
+        paramsIMG.width = resizeScreen.widthScreen(5);
+        imgProfile.setLayoutParams(paramsIMG);
+
+        RelativeLayout.LayoutParams paramHeader = (RelativeLayout.LayoutParams) headerDrawer.getLayoutParams();
+        paramHeader.height = resizeScreen.widthScreen(2);
+        paramHeader.width = RelativeLayout.LayoutParams.MATCH_PARENT;
+        headerDrawer.setLayoutParams(paramHeader);
+
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) childHeaderDrawer.getLayoutParams();
-        params.topMargin = getStatusBarHeight();
+        params.topMargin = getStatusBarHeight() + convertPxtoDp(8);
         childHeaderDrawer.setLayoutParams(params);
 
-        LinearLayout.LayoutParams paramHead = (LinearLayout.LayoutParams) headerDrawer.getLayoutParams();
+        RelativeLayout.LayoutParams paramHead = (RelativeLayout.LayoutParams) headerDrawer.getLayoutParams();
         paramHead.bottomMargin = getStatusBarHeight();
         headerDrawer.setLayoutParams(paramHead);
 
-        LinearLayout.LayoutParams paramsMenu = (LinearLayout.LayoutParams) listSlideMenu.getLayoutParams();
+        RelativeLayout.LayoutParams paramsMenu = (RelativeLayout.LayoutParams) listSlideMenu.getLayoutParams();
         paramsMenu.topMargin = getStatusBarHeight() * -1;
         listSlideMenu.setLayoutParams(paramsMenu);
     }
@@ -146,18 +162,23 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
     }
 
     public void setToolbar(){
-        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
-        params.height = getActionBarHeight() + getStatusBarHeight() + 10;
-        appBarLayout.setLayoutParams(params);
-        toolbarMenu.setTitle("");
-        toolbarMenu.setPadding(0, getStatusBarHeight() + 10 , 0,0);
-        titleToolbar.setText(getString(R.string.campus_logo));
-        imgToggle.setImageResource(R.drawable.ic_action_toc);
-        imgToggle.setColorFilter(ContextCompat.getColor(this, R.color.color_text));
-        imgToggle.setOnClickListener(this);
-        setSupportActionBar(toolbarMenu);
+        if (Build.VERSION.SDK_INT >= 21){
+            CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
+            params.height = getActionBarHeight() + getStatusBarHeight() + 10;
+            appBarLayout.setLayoutParams(params);
+            toolbarMenu.setPadding(0, getStatusBarHeight() + 10 , 0,0);
 
-        setLayoutHeadDrawer();
+            toolbarMenu.setTitle("");
+            titleToolbar.setText(getString(R.string.campus_logo));
+            imgToggle.setImageResource(R.drawable.ic_action_toc);
+            imgToggle.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent));
+            imgToggle.setOnClickListener(this);
+            setSupportActionBar(toolbarMenu);
+
+            setLayoutHeadDrawer();
+        }else{
+            appBarLayout.setVisibility(View.GONE);
+        }
     }
 
     private int getActionBarHeight(){
@@ -262,10 +283,6 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
                 }
                 velocityTracker.addMovement(event);
 
-                margin = (int) event.getRawX();
-                if (margin >= widthScreenMenu){
-
-                }
                 Log.d("MoveDown", "down");
                 break;
             }
@@ -344,7 +361,7 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
         Log.d("SlideMenu", strJson);
 
         String[] arrTitle = {getString(R.string.menu_feed_th),getString(R.string.user_detail_th),getString(R.string.edit_user_th),getString(R.string.setting_menu_th), getString(R.string.logout_menu_th)};
-        int[] arrImg = {R.drawable.ic_news_feed,R.drawable.ic_profile_user,  R.drawable.ic_edit_user, R.drawable.ic_setting,R.drawable.ic_log_out};
+        int[] arrImg = {R.drawable.ic_news_feed,R.drawable.ic_user_profile,  R.drawable.ic_edit_user, R.drawable.ic_setting,R.drawable.ic_log_out};
         for (int i = 0; i < arrTitle.length; i++){
             SlideMenuDetail menu = new SlideMenuDetail();
             menu.setTitle(arrTitle[i]);
@@ -372,6 +389,7 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
                 });
             }
         };
+        listSlideMenu.setLayoutManager(new LinearLayoutManager(this));
         listSlideMenu.setAdapter(slideMenuAdapter);
         listSlideMenu.setItemAnimator(new DefaultItemAnimator());
 //        listSlideMenu.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));

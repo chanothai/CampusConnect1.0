@@ -52,12 +52,27 @@ public class ClientHttp {
                 Log.d("RegisterResponse", new Gson().toJson(response.body()));
                 if (response.body() != null){
                     EventBusCart.getInstance().getEventBus().post(response.body());
+                }else{
+                    BaseResponse baseResponse = new BaseResponse();
+                    BaseResponse.Result result = new BaseResponse().new Result();
+                    result.setError("Data null");
+                    result.setSuccess("");
+                    baseResponse.setResult(result);
+
+                    EventBusCart.getInstance().getEventBus().post(baseResponse);
                 }
             }
 
             @Override
             public void onFailure(Call<BaseResponse> call, Throwable t) {
                 t.printStackTrace();
+                BaseResponse baseResponse = new BaseResponse();
+                BaseResponse.Result result = new BaseResponse().new Result();
+                result.setError("Connect Error");
+                result.setSuccess("");
+                baseResponse.setResult(result);
+
+                EventBusCart.getInstance().getEventBus().post(baseResponse);
             }
         });
     }

@@ -1,6 +1,5 @@
 package com.company.zicure.registerkey;
 
-import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -9,8 +8,6 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.company.zicure.registerkey.common.BaseActivity;
-import com.company.zicure.registerkey.utilize.NextzyUtil;
-import com.company.zicure.registerkey.utilize.PermissionManager;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

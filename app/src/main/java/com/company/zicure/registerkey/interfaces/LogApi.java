@@ -14,13 +14,13 @@ import retrofit2.http.POST;
  * Created by BallOmO on 10/11/2016 AD.
  */
 public interface LogApi {
-    @POST("API/login.json")
+    @POST("Api/login.json")
     Call<BaseResponse> responseLogin(@Body LoginModel loginModel);
 
-    @POST("API/registerUser.json")
+    @POST("Api/registerUser.json")
     Call<BaseResponse> callRegister(@Body UserModel userRegister);
 
-    @POST("API/checkOTP.json")
+    @POST("Api/checkOTP.json")
     Call<BaseResponse> validateOTP(@Body OTPModel otpModel);
 
     @POST("")

@@ -38,6 +38,7 @@
         app:bb_tabXmlResource="@xml/bottombar_tabs"
         app:bb_behavior="underNavbar|shy|shifting"
         app:bb_inActiveTabAlpha="0.3"
-        app:bb_inActiveTabColor="@color/colorPrimaryDark"
-        app:bb_activeTabColor="@color/colorPrimaryDark" />
+        app:bb_inActiveTabColor="@color/colorAccent"
+        app:bb_activeTabColor="@color/colorPrimary" />
+
 </android.support.design.widget.CoordinatorLayout>

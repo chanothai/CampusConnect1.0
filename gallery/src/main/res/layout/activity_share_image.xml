@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="gallery.zicure.company.com.gallery.activity.ShareImageActivity">
+
+    <include layout="@layout/layout_appbar_gallery"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <com.joooonho.SelectableRoundedImageView
+            android:id="@+id/imageShare"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_launcher"
+            android:transitionName="shareView"
+            app:sriv_border_color="@android:color/white"
+            android:layout_centerInParent="true"
+            app:sriv_border_width="1dp"
+            app:sriv_oval="true"/>
+
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

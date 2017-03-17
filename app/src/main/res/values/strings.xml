@@ -28,37 +28,9 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="bundle_newsheader">news_header</string>
-    <string name="bundle_newsdate">news_date</string>
-    <string name="bundle_newsdetail">news_detail</string>
-    <string name="bundle_newsimage">news_image</string>
-    <string name="bundle_newsrating">news_rating</string>
     <string name="campus_logo">Connect</string>
-    <string name="topic_emergency_id">Emergency ID:</string>
-    <string name="topic_emergency_name">Name:</string>
-    <string name="emergency_date">Date:</string>
-    <string name="tracking_tel">Tel:</string>
-    <string name="emer_id">emer_id</string>
-    <string name="emer_message">emer_message</string>
-    <string name="emer_lat">emer_lat</string>
-    <string name="emer_long">emer_long</string>
 
     <!--Slide menu-->
-    <string name="slide_menu_home">หน้าแรก</string>
-    <string name="slide_menu_student">ข้อมูลนักศึกษา</string>
-    <string name="slide_menu_learning">ตารางเรียน</string>
-    <string name="slide_menu_exam">ตารางสอบ</string>
-    <string name="slide_menu_calender">ปฏิทินการศึกษา</string>
-    <string name="slide_menu_transcript">ผลการศึกษา</string>
-    <string name="slide_menu_activity">ข้อมูลกิจกรรม</string>
-    <string name="slide_menu_due">ตรวจสอบหนี้ค้างชำระ</string>
-    <string name="slide_menu_edit">แก้ไขข้อมูล</string>
-    <string name="iconnect">คลิกที่นี้เพื่อเปิดใช้งาน iConnect</string>
-    <string name="message_dialog">ก่อนใช้ Connect เช็คสักนิด ไม่ลืมเปิดบลูทูธ!</string>
-    <string name="message_dialog_2">เพื่อให้การใช้งาน Connect คุ้มค่ายิ่งกว่าทุกครั้งที่ใช้แอพนี้ อย่าลืมเปิด Bluetooth แค่นี้ สิทธิประโยชน์คุ้มค่ามากมาย จะส่งตรงถึงมือคุณผ่าน iConnect</string>
-    <string name="d_bluetooth">บลูทูธ</string>
-    <string name="d_location">ตำแหน่งและที่ตั้ง</string>
-    <string name="d_notification">การแจ้งเตือน</string>
     <string name="menu_calendar">Calendar</string>
     <string name="menu_subject">E-learning</string>
     <string name="menu_news">News</string>
@@ -70,8 +42,8 @@
     <string name="url_subject">http://bloc.pakgon.com/News/subject</string>
 
     //url for server
-    <string name="url_server">http://bloc.pakgon.com/</string>
-    <string name="url_identity_server">http://180.180.244.228:9005/</string>
+    <string name="url_server">http://api.psp.pakgon.com/</string>
+    <string name="url_identity_server">http://api.psp.pakgon.com/</string>
 
 
     //Form Register Thai

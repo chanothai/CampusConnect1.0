@@ -20,6 +20,7 @@ public class BannerViewPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
+
         return BannerFragment.newInstance(imgBanner[position]);
     }
 

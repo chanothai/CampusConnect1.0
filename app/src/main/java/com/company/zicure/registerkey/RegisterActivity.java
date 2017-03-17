@@ -96,6 +96,9 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
             result.setPhone(strPhone);
             request.setResult(result);
 
+            String str = new Gson().toJson(request);
+            Log.d("RegisterRequest", str);
+
             Gson gson = new GsonBuilder().disableHtmlEscaping().create();
             String resultEncrypt = EncryptionAES.newInstance(ModelCart.getInstance().getKeyModel().getKey()).encrypt(gson.toJson(request));
             Log.d("User", resultEncrypt);
@@ -103,11 +106,13 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
             UserModel userModel = new UserModel();
             userModel.setUser(resultEncrypt);
 
+            str = new Gson().toJson(userModel);
+            Log.d("RegisterRequest", str);
+
             showLoadingDialog();
             ClientHttp.getInstance(context).register(userModel);
 
-        }else{
-            Toast.makeText(this, "กรุณากรอกข้อมูลให้ครบถ้วน", Toast.LENGTH_LONG).show();
+             Toast.makeText(this, "กรุณากรอกข้อมูลให้ครบถ้วน", Toast.LENGTH_LONG).show();
             if (strIdCard.length() < 13 ){
                 idCard.requestFocus();
             }
@@ -129,6 +134,9 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
 
     @Subscribe
     public void onEvent(BaseResponse registerResponse){
+        String str = new Gson().toJson(registerResponse);
+        Log.d("registerResponse", str);
+
         BaseResponse.Result result = registerResponse.getResult();
         if (!result.getSuccess().isEmpty()){
             String[] arrStr = result.getSuccess().split(getString(R.string.key_iv));
@@ -151,10 +159,11 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
     @Subscribe
     public void onEvent(DateModel date){
         String strDay = "", strMonth = "";
-        if (date.getDay() < 10){
+        if (date.getDay() < 10 || date.getMonth() < 10){
             strDay = "0" + date.getDay();
             strMonth = "0" + date.getMonth();
-        }else{
+        }
+        else{
             strDay = String.valueOf(date.getDay());
             strMonth = String.valueOf(date.getMonth());
         }

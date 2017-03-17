@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Gallery</string>
+    <string name="select_photo_th">เลือกรูปภาพ</string>
+    <string name="profile_picture">รูปโปรไฟล์</string>
+    <string name="use_th">ใช้</string>
+    <string name="title_album_th">เลือกอัลบั้ม</string>
+    <string name="take_photo_th">ถ่ายรูป</string>
+    <string name="select_album_th">เลือกจากอัลบั้ม</string>
+</resources>

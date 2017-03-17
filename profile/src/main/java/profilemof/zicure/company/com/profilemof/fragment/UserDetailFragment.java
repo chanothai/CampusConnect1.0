@@ -90,13 +90,13 @@ public class UserDetailFragment extends Fragment {
         listTopic = new ArrayList<>();
         listContent = new ArrayList<>();
 
-        listTopic.add(0, "รหัสบัตรประชาชน");
-        listTopic.add(1, "ชื่อ");
-        listTopic.add(2, "นามสกุล");
-        listTopic.add(3, "วันเกิด");
+        listTopic.add(0, getString(R.string.id_card_th));
+        listTopic.add(1, getString(R.string.firstname_th));
+        listTopic.add(2, getString(R.string.lastname_th));
+        listTopic.add(3, getString(R.string.birthday_th));
         listTopic.add(4, "ศาสนา");
-        listTopic.add(5, "ที่อยู่");
-        listTopic.add(6, "เบอร์โทรศัพท์");
+        listTopic.add(5, getString(R.string.address_th));
+        listTopic.add(6, getString(R.string.number_phone_th));
 
         listContent.add(0, "1992333000144");
         listContent.add(1, "บุญรอด");

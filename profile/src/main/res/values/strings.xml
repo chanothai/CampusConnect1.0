@@ -10,4 +10,10 @@
     <string name="account2">000000000000000002</string>
     <string name="account3">000000000000000003</string>
     <string name="btn_txt_back">ย้อนกลับ</string>
+    <string name="id_card_th">รหัสบัตร</string>
+    <string name="firstname_th">ชื่อ</string>
+    <string name="lastname_th">นามสกุล</string>
+    <string name="birthday_th">วันเกิด</string>
+    <string name="address_th">ที่อยู่</string>
+    <string name="number_phone_th">เบอร์โทรศัพท์</string>
 </resources>

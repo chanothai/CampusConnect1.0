@@ -19,9 +19,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/title_toolbar"
-            android:textColor="@color/color_text"
+            android:textColor="@color/colorAccent"
             android:layout_gravity="center_horizontal"
-            android:textSize="@dimen/size_text_header"
+            android:textSize="@dimen/size_text_medium"
             android:textStyle="bold"
             android:text="Title" />
 
@@ -29,6 +29,7 @@
             android:id="@+id/img_toggle"
             android:layout_width="32dp"
             android:layout_height="40dp"
+            android:src="@drawable/ic_action_toc"
             android:paddingTop="@dimen/padding_eight"
             android:paddingBottom="@dimen/padding_eight"
             android:paddingEnd="@dimen/padding_eight"

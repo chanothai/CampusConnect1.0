@@ -2,13 +2,18 @@ package com.company.zicure.registerkey.fragment;
 
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.company.zicure.registerkey.R;
+import com.company.zicure.registerkey.utilize.ResizeScreen;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -57,8 +62,34 @@ public class BannerFragment extends Fragment {
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_banner, container, false);
         imgBanner = (ImageView)root.findViewById(R.id.img_banner);
-        imgBanner.setImageResource(pager);
         return root;
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState == null){
+            setLayoutParamsBanner();
+            setImageBanner();
+        }
+    }
+
+    private void setLayoutParamsBanner(){
+        ResizeScreen resizeScreen = new ResizeScreen(getActivity());
+        int height = resizeScreen.widthScreen(2);
+        int widht = resizeScreen.widthScreen(1);
+
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) imgBanner.getLayoutParams();
+        params.height = height;
+        params.width = widht;
+        imgBanner.setLayoutParams(params);
+    }
+
+    private void setImageBanner(){
+        Glide.with(getActivity())
+                .load(pager)
+                .fitCenter()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(imgBanner);
+    }
 }
