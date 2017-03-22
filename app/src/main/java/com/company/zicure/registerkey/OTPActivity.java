@@ -1,7 +1,5 @@
 package com.company.zicure.registerkey;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -13,7 +11,7 @@ import android.widget.Toast;
 
 import com.company.zicure.registerkey.common.BaseActivity;
 import com.company.zicure.registerkey.models.BaseResponse;
-import com.company.zicure.registerkey.models.otp.OTPModel;
+import com.company.zicure.registerkey.models.DataModel;
 import com.company.zicure.registerkey.models.otp.OTPRequest;
 import com.company.zicure.registerkey.network.ClientHttp;
 import com.company.zicure.registerkey.security.EncryptionAES;
@@ -22,6 +20,8 @@ import com.company.zicure.registerkey.utilize.ModelCart;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.squareup.otto.Subscribe;
+
+import org.json.JSONObject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -34,6 +34,7 @@ public class OTPActivity extends BaseActivity implements EditText.OnEditorAction
     @Bind(R.id.btn_otp)
     Button btnOTP;
 
+    private String username;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,7 +44,8 @@ public class OTPActivity extends BaseActivity implements EditText.OnEditorAction
 
         editOTP.setOnEditorActionListener(this);
         if (savedInstanceState == null){
-
+            Bundle bundle = getIntent().getExtras();
+            username = bundle.getString("username");
         }
     }
 
@@ -56,9 +58,10 @@ public class OTPActivity extends BaseActivity implements EditText.OnEditorAction
         String strOTP = editOTP.getText().toString().trim();
         if (strOTP.length() == 4){
             OTPRequest otpRequest = new OTPRequest();
-            OTPRequest.Result result = otpRequest.new Result();
+            OTPRequest.User result = new OTPRequest.User();
+            result.setUsername(username);
             result.setOtp(strOTP);
-            otpRequest.setResult(result);
+            otpRequest.setUser(result);
 
             String str = new Gson().toJson(otpRequest);
             Log.d("OTPRequest", str);
@@ -67,8 +70,8 @@ public class OTPActivity extends BaseActivity implements EditText.OnEditorAction
             String resultEncrypt = EncryptionAES.newInstance(ModelCart.getInstance().getKeyModel().getKey()).encrypt(gson.toJson(otpRequest));
             Log.d("OTPModel", resultEncrypt);
 
-            OTPModel otpModel = new OTPModel();
-            otpModel.setEncryptOTP(resultEncrypt);
+            DataModel otpModel = new DataModel();
+            otpModel.setData(resultEncrypt);
 
             str = new Gson().toJson(otpModel);
             Log.d("OTPRequest", str);
@@ -81,24 +84,38 @@ public class OTPActivity extends BaseActivity implements EditText.OnEditorAction
     }
 
     @Subscribe
-    public void onEvent(BaseResponse baseResponse){
+    public void onEventCheckOTP(BaseResponse baseResponse){
         String str = new Gson().toJson(baseResponse);
         Log.d("BaseResponse", str);
         BaseResponse.Result result = baseResponse.getResult();
         if (!result.getSuccess().isEmpty()) {
-            String[] arrStr = result.getSuccess().split(getString(R.string.key_iv));
+            String[] arrStr = result.geteResult().split(getString(R.string.key_iv));
             String decrypt = EncryptionAES.newInstance(ModelCart.getInstance().getKeyModel().getKey()).decrypt(arrStr[0], arrStr[1].getBytes());//(text, key
             Log.d("EncryptCart", "DecryptData: " + decrypt);
-            if (!decrypt.isEmpty()) {
-                Toast.makeText(this, decrypt, Toast.LENGTH_SHORT).show();
-                openActivity(LoginActivity.class, true);
-                overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
-            }
 
-            dismissDialog();
+            if (decrypt != null){
+                decodeJson(decrypt);
+            }
         }else {
             Toast.makeText(getApplicationContext(), result.getError(), Toast.LENGTH_SHORT).show();
-            dismissDialog();
+        }
+        dismissDialog();
+    }
+
+    private void decodeJson(String decrypt){
+        try{
+            JSONObject jsonObject = new JSONObject(decrypt);
+            String success = jsonObject.getString("Success");
+            if (!success.isEmpty()){
+                Toast.makeText(this, success, Toast.LENGTH_SHORT).show();
+                openActivity(LoginActivity.class, true);
+                overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
+            }else{
+                String error = jsonObject.getString("Error");
+                Toast.makeText(getApplicationContext(), error, Toast.LENGTH_LONG).show();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 

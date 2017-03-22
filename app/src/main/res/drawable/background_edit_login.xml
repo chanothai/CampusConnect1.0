@@ -5,12 +5,4 @@
     <solid
         android:color="@android:color/white"/>
 
-    <stroke
-        android:color="@color/colorGrayCorner"
-        android:width="@dimen/stroke_corner_size"/>
-
-
-    <corners
-        android:radius="@dimen/corner_radius_fifteen"/>
-
 </shape>

@@ -6,12 +6,15 @@ import android.util.Log;
 import com.company.zicure.registerkey.R;
 import com.company.zicure.registerkey.interfaces.LogApi;
 import com.company.zicure.registerkey.models.BaseResponse;
-import com.company.zicure.registerkey.models.LoginModel;
+import com.company.zicure.registerkey.models.ResponseUserInfo;
 import com.company.zicure.registerkey.models.UserRequest;
-import com.company.zicure.registerkey.models.otp.OTPModel;
-import com.company.zicure.registerkey.models.UserModel;
+import com.company.zicure.registerkey.models.DataModel;
 import com.company.zicure.registerkey.utilize.EventBusCart;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,11 +33,13 @@ public class ClientHttp {
 
     private Retrofit retrofit = null;
     private LogApi service = null;
+    private Gson gson = null;
 
     public ClientHttp(Context context){
         this.context = context;
         retrofit = RetrofitAPI.newInstance(context.getString(R.string.url_identity_server)).getRetrofit();
         service = retrofit.create(LogApi.class);
+        gson = new GsonBuilder().disableHtmlEscaping().create();
     }
 
     public static ClientHttp getInstance(Context context){
@@ -44,17 +49,17 @@ public class ClientHttp {
         return me;
     }
 
-    public void register(UserModel user){
+    public void register(DataModel user){
         Call<BaseResponse> callRegis = service.callRegister(user);
         callRegis.enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-                Log.d("RegisterResponse", new Gson().toJson(response.body()));
+                Log.d("RegisterResponse",gson.toJson(response.body()));
                 if (response.body() != null){
                     EventBusCart.getInstance().getEventBus().post(response.body());
                 }else{
                     BaseResponse baseResponse = new BaseResponse();
-                    BaseResponse.Result result = new BaseResponse().new Result();
+                    BaseResponse.Result result = new BaseResponse.Result();
                     result.setError("Data null");
                     result.setSuccess("");
                     baseResponse.setResult(result);
@@ -67,7 +72,7 @@ public class ClientHttp {
             public void onFailure(Call<BaseResponse> call, Throwable t) {
                 t.printStackTrace();
                 BaseResponse baseResponse = new BaseResponse();
-                BaseResponse.Result result = new BaseResponse().new Result();
+                BaseResponse.Result result = new BaseResponse.Result();
                 result.setError("Connect Error");
                 result.setSuccess("");
                 baseResponse.setResult(result);
@@ -77,8 +82,8 @@ public class ClientHttp {
         });
     }
 
-    public void login(LoginModel model){
-        Log.d("LoginModel", new Gson().toJson(model));
+    public void login(DataModel model){
+        Log.d("LoginModel", gson.toJson(model));
         Call<BaseResponse> loginResponseCall = service.responseLogin(model);
         loginResponseCall.enqueue(new Callback<BaseResponse>() {
             @Override
@@ -87,7 +92,7 @@ public class ClientHttp {
                 try {
                     EventBusCart.getInstance().getEventBus().post(response.body());
                 }catch (NullPointerException e){
-                    setResponse("Result: null");
+                    ResponseError.setResponse("Result: null");
                     e.printStackTrace();
                 }
             }
@@ -95,13 +100,13 @@ public class ClientHttp {
             @Override
             public void onFailure(Call<BaseResponse> call, Throwable t) {
                 t.printStackTrace();
-                setResponse("Connect or Model Error");
+                ResponseError.setResponse("Connect or Model Error");
             }
         });
     }
 
-    public void validateOTP(OTPModel model){
-        Log.d("OTPModel", new Gson().toJson(model));
+    public void validateOTP(DataModel model){
+        Log.d("OTPModel", gson.toJson(model));
         Call<BaseResponse> callOTP = service.validateOTP(model);
         callOTP.enqueue(new Callback<BaseResponse>() {
             @Override
@@ -109,7 +114,7 @@ public class ClientHttp {
                 try{
                     EventBusCart.getInstance().getEventBus().post(response.body());
                 }catch (NullPointerException e){
-                    setResponse("Result: null");
+                    ResponseError.setResponse("Result: null");
                     e.printStackTrace();
                 }
             }
@@ -117,17 +122,17 @@ public class ClientHttp {
             @Override
             public void onFailure(Call<BaseResponse> call, Throwable t) {
                 t.printStackTrace();
-                setResponse("Connect Error");
+                ResponseError.setResponse("Connect Error");
             }
         });
     }
 
-    private void requestUserDetail(UserRequest userRequest){
-        Call<BaseResponse> callUserDetail = service.callUserDetail(userRequest);
-        callUserDetail.enqueue(new Callback<BaseResponse>() {
+    public void checkVersionApp(){
+        Call<BaseResponse> validateVersion = service.checkVersion();
+        validateVersion.enqueue(new Callback<BaseResponse>() {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-                try {
+                try{
                     EventBusCart.getInstance().getEventBus().post(response.body());
                 }catch (NullPointerException e){
                     e.printStackTrace();
@@ -136,18 +141,76 @@ public class ClientHttp {
 
             @Override
             public void onFailure(Call<BaseResponse> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void requestAuthToken(DataModel dataModel){
+        Log.d("DataModel", gson.toJson(dataModel));
+        Call<BaseResponse> authToken = service.requestAuthenToken(dataModel);
+        authToken.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                try{
+                    EventBusCart.getInstance().getEventBus().post(response.body());
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
                 t.printStackTrace();
             }
         });
     }
 
-    private void setResponse(String message){
-        BaseResponse baseResponse = new BaseResponse();
-        BaseResponse.Result result = baseResponse.new Result();
-        result.setSuccess("");
-        result.setError(message);
-        baseResponse.setResult(result);
+    public void requestUserInfo(String path){
+        Log.d("Path", path);
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("authToken", path);
+        Call<ResponseUserInfo> userInfo = service.requestUserInfo(map);
+        userInfo.enqueue(new Callback<ResponseUserInfo>() {
+            @Override
+            public void onResponse(Call<ResponseUserInfo> call, Response<ResponseUserInfo> response) {
+                Log.d("UserInfo", gson.toJson(response.body()));
+                try {
+                    EventBusCart.getInstance().getEventBus().post(response.body());
+                }catch (NullPointerException e){
+                    e.printStackTrace();
+                    ResponseError.setUserInfoResponseError("Response_data: null");
+                }
+            }
+            @Override
+            public void onFailure(Call<ResponseUserInfo> call, Throwable t) {
+                t.printStackTrace();
+                ResponseError.setUserInfoResponseError("Time out");
+            }
+        });
+    }
 
-        EventBusCart.getInstance().getEventBus().post(baseResponse);
+
+    public static class ResponseError {
+
+        public static void setUserInfoResponseError(String message){
+            ResponseUserInfo response = new ResponseUserInfo();
+            ResponseUserInfo.ResultUserInfo result = new ResponseUserInfo.ResultUserInfo();
+            result.setSuccess("");
+            result.setError(message);
+            response.setResult(result);
+
+            EventBusCart.getInstance().getEventBus().post(response);
+        }
+
+        public static void setResponse(String message){
+            BaseResponse baseResponse = new BaseResponse();
+            BaseResponse.Result result = new BaseResponse.Result();
+            result.setSuccess("");
+            result.setError(message);
+            baseResponse.setResult(result);
+
+            EventBusCart.getInstance().getEventBus().post(baseResponse);
+        }
     }
 }

@@ -22,7 +22,7 @@ import com.company.zicure.registerkey.dialog.DatePickerFragment;
 import com.company.zicure.registerkey.models.BaseResponse;
 import com.company.zicure.registerkey.models.DateModel;
 import com.company.zicure.registerkey.models.register.RegisterRequest;
-import com.company.zicure.registerkey.models.UserModel;
+import com.company.zicure.registerkey.models.DataModel;
 import com.company.zicure.registerkey.network.ClientHttp;
 import com.company.zicure.registerkey.security.EncryptionAES;
 import com.company.zicure.registerkey.utilize.EventBusCart;
@@ -30,7 +30,10 @@ import com.company.zicure.registerkey.utilize.KeyboardUtil;
 import com.company.zicure.registerkey.utilize.ModelCart;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.squareup.otto.Subscribe;
+
+import org.json.JSONObject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -80,21 +83,21 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
     }
 
     private void checkInput(){
-//        strIdCard = idCard.getText().toString().trim();
-//        strBirthDate = birthDate.getText().toString().trim();
-//        strPhone = phoneNumber.getText().toString().trim();
-
-        strIdCard = "1200001551123";
-        strBirthDate = "04-05-1993";
-        strPhone = "082-445-6225";
+        strIdCard = idCard.getText().toString().trim();
+        strBirthDate = birthDate.getText().toString().trim();
+        strPhone = phoneNumber.getText().toString().trim();
 
         if (strIdCard.length() == 13 && !strBirthDate.isEmpty() && strPhone.length() == 12){
+
+            String[] phone = strPhone.split("-");
+            String currentPhone = phone[0] + phone[1] + phone[2];
+
             RegisterRequest request = new RegisterRequest();
-            RegisterRequest.Result result = request.new Result();
-            result.setCitizenId(strIdCard);
-            result.setBirthDate(strBirthDate);
-            result.setPhone(strPhone);
-            request.setResult(result);
+            RegisterRequest.User user = new RegisterRequest.User();
+            user.setCitizenId(strIdCard);
+            user.setBirthDate(strBirthDate);
+            user.setPhone(currentPhone);
+            request.setUser(user);
 
             String str = new Gson().toJson(request);
             Log.d("RegisterRequest", str);
@@ -103,14 +106,14 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
             String resultEncrypt = EncryptionAES.newInstance(ModelCart.getInstance().getKeyModel().getKey()).encrypt(gson.toJson(request));
             Log.d("User", resultEncrypt);
 
-            UserModel userModel = new UserModel();
-            userModel.setUser(resultEncrypt);
+            DataModel dataModel = new DataModel();
+            dataModel.setData(resultEncrypt);
 
-            str = new Gson().toJson(userModel);
+            str = new Gson().toJson(dataModel);
             Log.d("RegisterRequest", str);
 
             showLoadingDialog();
-            ClientHttp.getInstance(context).register(userModel);
+            ClientHttp.getInstance(context).register(dataModel);
 
              Toast.makeText(this, "กรุณากรอกข้อมูลให้ครบถ้วน", Toast.LENGTH_LONG).show();
             if (strIdCard.length() < 13 ){
@@ -139,40 +142,71 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
 
         BaseResponse.Result result = registerResponse.getResult();
         if (!result.getSuccess().isEmpty()){
-            String[] arrStr = result.getSuccess().split(getString(R.string.key_iv));
+            String[] arrStr = result.geteResult().split(getString(R.string.key_iv));
             String decrypt = EncryptionAES.newInstance(ModelCart.getInstance().getKeyModel().getKey()).decrypt(arrStr[0], arrStr[1].getBytes());//(text, key
             Log.d("EncryptCart", "DecryptData: " + decrypt);
-            if (!decrypt.isEmpty()){
-                Toast.makeText(this, decrypt, Toast.LENGTH_SHORT).show();
 
-                store(strPhone);
-                openActivity(OTPActivity.class, true);
-                overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
+            if (decrypt != null){
+                decodeJson(decrypt);
             }
         }else{
-            Toast.makeText(getApplicationContext(), "" + registerResponse.getResult().getError(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "" + registerResponse.getResult().getError(), Toast.LENGTH_LONG).show();
         }
 
         dismissDialog();
     }
 
+    private void decodeJson(String decrypt){
+        try{
+            JSONObject jsonObject = new JSONObject(decrypt);
+            String success = jsonObject.getString("Success");
+            if (!success.isEmpty()){
+                Toast.makeText(this, success, Toast.LENGTH_SHORT).show();
+                store(strPhone);
+                Bundle bundle = new Bundle();
+                bundle.putString("username", strPhone);
+                openActivity(OTPActivity.class,bundle, true);
+                overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
+            }else{
+                String error = jsonObject.getString("Error");
+                Toast.makeText(getApplicationContext(), error, Toast.LENGTH_LONG).show();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
     @Subscribe
     public void onEvent(DateModel date){
         String strDay = "", strMonth = "";
-        if (date.getDay() < 10 || date.getMonth() < 10){
-            strDay = "0" + date.getDay();
+
+        if (date.getMonth() < 10){
             strMonth = "0" + date.getMonth();
-        }
-        else{
-            strDay = String.valueOf(date.getDay());
+            strDay = getCurrentDay(date);
+            birthDate.setText(date.getYear() +"-"+strMonth+"-"+strDay);
+            birthDate.setSelection(birthDate.getText().length());
+        }else{
             strMonth = String.valueOf(date.getMonth());
+            strDay = getCurrentDay(date);
+            birthDate.setText(date.getYear() +"-"+strMonth+"-"+strDay);
+            birthDate.setSelection(birthDate.getText().length());
         }
-        birthDate.setText(strDay +"-"+strMonth+"-"+date.getYear());
-        birthDate.setSelection(birthDate.getText().length());
 
         phoneNumber.requestFocus();
         KeyboardUtil.newInstance(this).getKeySoft().toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
         dismissDialog();
+    }
+
+    private String getCurrentDay(DateModel date){
+        String strDay = "";
+        if (date.getDay() < 10){
+            strDay = "0" + date.getDay();
+        }else{
+            strDay = String.valueOf(date.getDay());
+        }
+
+        return strDay;
     }
 
     @Override

@@ -7,18 +7,18 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class LoginRequest {
-    @SerializedName("Result")
-    private Result result;
+    @SerializedName("User")
+    private User user;
 
-    public Result getResult() {
-        return result;
+    public User getUser() {
+        return user;
     }
 
-    public void setResult(Result result) {
-        this.result = result;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public class Result {
+    public static class User {
         @SerializedName("username")
         private String username;
         @SerializedName("password")

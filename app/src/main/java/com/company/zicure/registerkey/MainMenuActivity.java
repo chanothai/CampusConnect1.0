@@ -13,10 +13,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.VelocityTrackerCompat;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
@@ -24,10 +24,12 @@ import android.view.VelocityTracker;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.company.zicure.registerkey.adapter.SlideMenuAdapter;
 import com.company.zicure.registerkey.common.BaseActivity;
 import com.company.zicure.registerkey.fragment.AppMenuFragment;
@@ -36,17 +38,34 @@ import com.company.zicure.registerkey.fragment.ScanQRFragment;
 import com.company.zicure.registerkey.fragment.StudentCardFragment;
 import com.company.zicure.registerkey.holder.SlideMenuHolder;
 import com.company.zicure.registerkey.interfaces.ItemClickListener;
+import com.company.zicure.registerkey.models.ApplicationRequest;
+import com.company.zicure.registerkey.models.BaseResponse;
+import com.company.zicure.registerkey.models.DataModel;
+import com.company.zicure.registerkey.models.ResponseUserInfo;
 import com.company.zicure.registerkey.models.drawer.SlideMenuDetail;
+import com.company.zicure.registerkey.models.AuthToken;
+import com.company.zicure.registerkey.network.ClientHttp;
+import com.company.zicure.registerkey.security.EncryptionAES;
 import com.company.zicure.registerkey.utilize.EventBusCart;
+import com.company.zicure.registerkey.utilize.ModelCart;
 import com.company.zicure.registerkey.utilize.ResizeScreen;
+import com.company.zicure.registerkey.utilize.RestoreLogin;
 import com.company.zicure.registerkey.view.viewgroup.FlyOutContainer;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.joooonho.SelectableRoundedImageView;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabReselectListener;
 import com.roughike.bottombar.OnTabSelectListener;
+import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
 
+import org.json.JSONObject;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -105,28 +124,170 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
     private static final int PORT = 5055;
     private static final String DEVICEID = "218989";
 
+    private String currentToken = null;
+    private String currentDynamicKey = null;
+    private String currentUsername = null;
+
     private int widthScreenMenu;
-    private int haftScreen;
+    private int haftScreen = 0;
     private VelocityTracker velocityTracker = null; // get speed for touch
 
+    private byte[] key = null;
+    private DataModel model = null;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         root = (FlyOutContainer) getLayoutInflater().inflate(R.layout.activity_main_menu, null);
         setContentView(root);
+
+        EventBusCart.getInstance().getEventBus().register(this);
         ButterKnife.bind(this);
+
         bottomBar.setOnTabSelectListener(this);
         bottomBar.setOnTabReselectListener(this);
-        EventBusCart.getInstance().getEventBus().register(this);
 
         if (savedInstanceState == null){
-            setToolbar();
-            //set slide menu
-            setSlideMenuAdapter();
+            checkLogin();
         }
-
         setOnTouchView();
+    }
 
+    private void checkLogin(){
+        currentToken = RestoreLogin.getInstance(this).getRestoreToken();
+        currentDynamicKey = RestoreLogin.getInstance(this).getRestoreKey();
+        currentUsername = RestoreLogin.getInstance(this).getRestoreUser();
+
+        String verifyPhone = RestoreLogin.getInstance(this).getRestorePhoneNumber();
+        if (verifyPhone != null){
+            if (currentDynamicKey != null && currentToken != null && currentUsername != null){
+                setToolbar();
+                setSlideMenuAdapter();
+                key = Base64.decode(currentDynamicKey.getBytes(), Base64.NO_WRAP);
+                setModelUser();
+            }else{
+                openActivity(LoginActivity.class, true);
+            }
+        }else{
+            openActivity(RegisterActivity.class, true);
+        }
+    }
+    private void setModelUser(){
+        try{
+            ApplicationRequest request = new ApplicationRequest();
+            ApplicationRequest.Application application = new ApplicationRequest.Application();
+            application.setClientID("abcdef");
+            application.setSecret("123456");
+
+            ApplicationRequest.User user = new ApplicationRequest.User();
+            user.setToken(currentToken);
+
+            request.setApplication(application);
+            request.setUser(user);
+
+            Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+            String encrypt = EncryptionAES.newInstance(key).encrypt(gson.toJson(request));
+
+            if (encrypt != null){
+                model = new DataModel();
+                model.setData(encrypt);
+
+                DataModel.User modelUser = new DataModel.User();
+                modelUser.setUsername(currentUsername);
+
+                model.setUser(modelUser);
+
+                getUserInfo();
+            }
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
+    }
+
+
+    public void getUserInfo(){
+        if (model != null){
+            showLoadingDialog();
+            ClientHttp.getInstance(this).requestAuthToken(model);
+        }
+    }
+
+
+    @Subscribe
+    public void onEventAuthToken(BaseResponse baseResponse){
+        if (baseResponse.getResult().getSuccess().equalsIgnoreCase("OK")){
+            String[] splitKey = baseResponse.getResult().geteResult().split(getString(R.string.key_iv));
+            String decrypt = EncryptionAES.newInstance(key).decrypt(splitKey[0], splitKey[1].getBytes());
+            decodeJson(decrypt);
+        }else{
+            Toast.makeText(this, baseResponse.getResult().getError(), Toast.LENGTH_SHORT).show();
+        }
+        dismissDialog();
+    }
+
+    private void decodeJson(String decrypt){
+        try{
+            JSONObject jsonObject = new JSONObject(decrypt);
+            String success = jsonObject.getString("Success");
+            if (success.equalsIgnoreCase("OK")){
+                jsonObject = jsonObject.getJSONObject("AuthToken");
+
+                ModelCart.getInstance().getAuthToken().setAuthToken(jsonObject.getString("auth_token"));
+                ModelCart.getInstance().getAuthToken().setExpiryDate(jsonObject.getString("auth_token_expiry_date"));
+
+                validateCurrentDate(ModelCart.getInstance().getAuthToken());
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private void validateCurrentDate(AuthToken authToken){
+        try{
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date date = new Date();
+
+            double expireDate = setSplitDate(authToken.getExpiryDate());
+            double currentDate = setSplitDate(dateFormat.format(date));
+
+            if (currentDate > expireDate){
+
+            }else{
+                String path = authToken.getAuthToken();
+                ClientHttp.getInstance(this).requestUserInfo(path);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private Double setSplitDate(String dateTime){
+        String[] splitDate = dateTime.split(" ");
+        String[] splitYear = splitDate[0].split("-");
+        String[] splitTime = splitDate[1].split(":");
+
+        String currentDate = splitYear[0] + splitYear[1] + splitYear[2] + splitTime[0]+ splitTime[1] + splitTime[2];
+        return Double.parseDouble(currentDate);
+    }
+
+    @Subscribe
+    public void onEventGetUserInfo(ResponseUserInfo response){
+        if (response.getResult().getSuccess().equalsIgnoreCase("OK")){
+            Log.d("UserInfo", new Gson().toJson(response.getResult()));
+            ModelCart.getInstance().getUserInfo().setResult(response.getResult());
+            Toast.makeText(this, response.getResult().getSuccess(), Toast.LENGTH_LONG).show();
+
+            String pathImg = ModelCart.getInstance().getUserInfo().getResult().getData().getUser().getImgPath();
+            if (pathImg != null){
+                Glide.with(this)
+                        .load(pathImg)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .centerCrop()
+                        .into(imgProfile);
+            }
+        }else{
+            Toast.makeText(this, response.getResult().getError(), Toast.LENGTH_LONG).show();
+        }
+        dismissDialog();
     }
 
     public void setLayoutHeadDrawer(){
@@ -250,7 +411,6 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
         layoutGhost.setVisibility(View.VISIBLE);
     }
 
-    @TargetApi(21)
     private void drag(final MotionEvent event, final View v){
         int index = event.getActionIndex();
         int action = event.getActionMasked();

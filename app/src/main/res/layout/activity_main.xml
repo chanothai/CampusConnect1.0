@@ -38,7 +38,7 @@
         android:textStyle="bold"
         android:textSize="@dimen/text_btn_header"
         android:textColor="@color/colorGrayCorner"
-        android:background="@drawable/selector_btn_register"
+        android:background="@drawable/selector_btn_edit_user"
         android:padding="@dimen/padding_sixteen" />
 
 </RelativeLayout>

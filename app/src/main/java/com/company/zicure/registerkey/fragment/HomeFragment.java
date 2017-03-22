@@ -34,6 +34,7 @@ import android.widget.Toast;
 import com.baoyz.widget.PullRefreshLayout;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.company.zicure.registerkey.MainMenuActivity;
 import com.company.zicure.registerkey.R;
 import com.company.zicure.registerkey.adapter.BannerViewPagerAdapter;
 import com.company.zicure.registerkey.adapter.MainMenuAdapter;
@@ -62,7 +63,7 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
 
     //parameter
     String[] strMenu;
-    int[] imgsMenu = {R.drawable.carlendar2, R.drawable.news, R.drawable.subject2, R.drawable.icon_header};
+    int[] imgsMenu = {R.drawable.carlendar2, R.drawable.news, R.drawable.subject2, R.drawable.icon_header, R.drawable.subject2};
 
     int[] imgBanner = {R.drawable.banner1, R.drawable.banner2, R.drawable.banner3};
 
@@ -143,7 +144,7 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        strMenu = new String[]{getString(R.string.menu_calendar), getString(R.string.menu_news), getString(R.string.menu_subject),getString(R.string.ePayment)};
+        strMenu = new String[]{getString(R.string.menu_calendar), getString(R.string.menu_news), getString(R.string.menu_subject),getString(R.string.ePayment), "Social"};
         recyclerViewMenu.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         if (savedInstanceState == null){
             //set layout app
@@ -190,10 +191,6 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
         addBottomDots(0);
     }
 
-    public void runScrollViewUp(){
-        scrollViewMenu.smoothScrollTo(0,0);
-    }
-
     // set view adapter of student's app ----------------------------------------------->
     public void setAdapterView(){
         //set adapter
@@ -208,6 +205,7 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
                         .fitCenter()
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(holder.imgBtnMenu);
+
 
                 holder.setItemOnClickListener(new ItemClickListener() {
                     @Override
@@ -240,6 +238,12 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
 //                            Intent intent = new Intent();
 //                            intent.setComponent(new ComponentName(packageName, fullClassName));
 //                            startActivity(intent);
+                        }
+                        else if (checkMenu.equalsIgnoreCase("Social")){
+                            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                            transaction.replace(R.id.container, AppMenuFragment.newInstance("http://psp.pakgon.com/Oauth/blogin?clientId=abcdef", ""));
+                            transaction.addToBackStack(null);
+                            transaction.commit();
                         }
                     }
 

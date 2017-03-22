@@ -25,7 +25,7 @@ import profilemof.zicure.company.com.profilemof.R;
  * Use the {@link AddCashFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AddCashFragment extends Fragment implements ViewTreeObserver.OnGlobalLayoutListener{
+public class AddCashFragment extends Fragment{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -80,7 +80,6 @@ public class AddCashFragment extends Fragment implements ViewTreeObserver.OnGlob
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_add_cash, container, false);
-        imgQrCode = (ImageView) root.findViewById(R.id.qrCode);
 
         return root;
     }
@@ -89,35 +88,7 @@ public class AddCashFragment extends Fragment implements ViewTreeObserver.OnGlob
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState == null){
-            calPayoutParams();
+
         }
-    }
-
-    private void calPayoutParams(){
-        viewTreeObserver = imgQrCode.getViewTreeObserver();
-        viewTreeObserver.addOnGlobalLayoutListener(this);
-    }
-
-    private void generateQRCode(int width, int height){
-        if (multiFormatWriter == null){
-            multiFormatWriter = new MultiFormatWriter();
-            try{
-                BitMatrix bitMatrix = multiFormatWriter.encode("1719900291478", BarcodeFormat.QR_CODE, width, height);
-                BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
-                Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
-                imgQrCode.setImageBitmap(bitmap);
-            }catch (WriterException e){
-                e.printStackTrace();
-            }
-        }
-    }
-
-    @Override
-    public void onGlobalLayout() {
-        width = imgQrCode.getMeasuredWidth();
-        height = imgQrCode.getMeasuredHeight();
-        generateQRCode(width, height);
-        Log.d("LayoutParam", String.valueOf(width+ " , "+ height));
-        imgQrCode.getViewTreeObserver().removeOnGlobalLayoutListener(this);
     }
 }

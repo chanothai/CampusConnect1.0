@@ -21,13 +21,12 @@ import android.widget.Toast;
 
 import com.company.zicure.registerkey.common.BaseActivity;
 import com.company.zicure.registerkey.models.BaseResponse;
-import com.company.zicure.registerkey.models.LoginModel;
+import com.company.zicure.registerkey.models.DataModel;
 import com.company.zicure.registerkey.models.login.LoginRequest;
 import com.company.zicure.registerkey.network.ClientHttp;
 import com.company.zicure.registerkey.security.EncryptionAES;
 import com.company.zicure.registerkey.utilize.EventBusCart;
 import com.company.zicure.registerkey.utilize.ModelCart;
-import com.company.zicure.registerkey.utilize.NextzyUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -51,6 +50,8 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener,Te
     TextView txtLink;
 
     private String strUser = "", strPass = "";
+    private String restoreUser = null, restorePass = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,14 +63,8 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener,Te
         setTextClick();
 
         if (savedInstanceState == null){
-            if (restore()){
-                openActivity(MainMenuActivity.class, true);
-            }else{
-                byte[] keyByte = Base64.decode(getString(R.string.staticKey).getBytes(), Base64.NO_WRAP);
-                ModelCart.getInstance().getKeyModel().setKey(keyByte);
-            }
-
-
+            byte[] keyByte = Base64.decode(getString(R.string.staticKey).getBytes(), Base64.NO_WRAP);
+            ModelCart.getInstance().getKeyModel().setKey(keyByte);
         }
     }
 
@@ -84,106 +79,106 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener,Te
     }
 
     private void checkInput(){
-//        strUser = editUser.getText().toString().trim();
-//        strPass = editPass.getText().toString().trim();
-        strUser = "082-445-6225";
-        strPass = "082-445-6225";
+        strUser = editUser.getText().toString().trim();
+        strPass = editPass.getText().toString().trim();
 
         if (strUser.length() == 12 && !strPass.isEmpty()){
-            LoginRequest loginRequest = new LoginRequest();
-            LoginRequest.Result result = loginRequest.new Result();
-            result.setUsername(strUser);
-            result.setPassword(strPass);
-
-            loginRequest.setResult(result);
-
-            String str = new Gson().toJson(loginRequest);
+            DataModel dataModel = setLoginModel(strUser, strPass, false);
+            String str = new Gson().toJson(dataModel);
             Log.d("LoginRequest",  str);
-
-            Gson gson = new GsonBuilder().disableHtmlEscaping().create();
-            String resultEncrypt = EncryptionAES.newInstance(ModelCart.getInstance().getKeyModel().getKey()).encrypt(gson.toJson(loginRequest));
-            Log.d("LoginModel", resultEncrypt);
-
-            final LoginModel loginModel = new LoginModel();
-            loginModel.setLogin(resultEncrypt);
-            str = new Gson().toJson(loginModel);
-            Log.d("LoginRequest",  str);
-
             showLoadingDialog();
-            ClientHttp.getInstance(getApplicationContext()).login(loginModel);
-        }else{
-            Toast.makeText(this, "กรุณากรอกข้อมูลให้ครบถ้วน", Toast.LENGTH_LONG).show();
-            if (editUser.getText().toString().trim().length() < 12){
-                editUser.requestFocus();
-            }
-            else if (editPass.getText().toString().trim().isEmpty()){
-                editPass.requestFocus();
-            }
+            ClientHttp.getInstance(getApplicationContext()).login(dataModel);
         }
     }
+
+    private DataModel setLoginModel(String strUser, String strPass, boolean restore){
+        LoginRequest loginRequest = new LoginRequest();
+        LoginRequest.User result = new LoginRequest.User();
+
+        if (!restore){
+            String[] user = strUser.split("-");
+            strUser = user[0]+ user[1] + user[2];
+        }
+
+        this.strUser = strUser;
+        result.setUsername(strUser);
+        result.setPassword(strPass);
+        loginRequest.setUser(result);
+
+        String str = new Gson().toJson(loginRequest);
+        Log.d("LoginRequest",  str);
+
+        Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+        String resultEncrypt = null;
+        resultEncrypt = EncryptionAES.newInstance(ModelCart.getInstance().getKeyModel().getKey()).encrypt(gson.toJson(loginRequest));
+        Log.d("LoginModel", resultEncrypt);
+
+        final DataModel dataModel = new DataModel();
+        dataModel.setData(resultEncrypt);
+
+        return dataModel;
+    }
+
+    @Subscribe
+    public void onEventLogin(BaseResponse baseResponse){
+        String str = new Gson().toJson(baseResponse);
+        Log.d("BaseResponse", str);
+        BaseResponse.Result result = baseResponse.getResult();
+        if (!result.getSuccess().isEmpty()){
+            String[] arrStr = result.geteResult().split(getString(R.string.key_iv));
+            String decryptStr = EncryptionAES.newInstance(ModelCart.getInstance().getKeyModel().getKey()).decrypt(arrStr[0], arrStr[1].getBytes());//(text, key
+            Log.d("Decrypt", "DecryptDynamicKey: " + decryptStr);
+
+            if (decryptStr != null){
+                decodeJson(decryptStr);
+            }
+        }else{
+            Toast.makeText(getApplicationContext(), result.getError(), Toast.LENGTH_LONG).show();
+            dismissDialog();
+        }
+    }
+
+    private Bundle setBundle(String[] strArr){
+        Bundle bundle = new Bundle();
+        bundle.putStringArray(getString(R.string.user_secret), strArr);
+        return bundle;
+    }
+
+    private void decodeJson(String decryptStr){
+        try{
+            JSONObject jsonObject = new JSONObject(decryptStr);
+            String success = jsonObject.getString("Success");
+            if (!success.isEmpty()){
+                jsonObject = jsonObject.getJSONObject("Data");
+                jsonObject = jsonObject.getJSONObject("User");
+
+                String token = jsonObject.getString("token");
+                String dynamicKey = jsonObject.getString("dynamic_key");
+
+                store(token, dynamicKey);
+                String[] strArr = {token, dynamicKey, strUser};
+                Bundle bundle = setBundle(strArr);
+
+                dismissDialog();
+                openActivity(MainMenuActivity.class,bundle ,true);
+                overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
+            }else{
+                String error = jsonObject.getString("Error");
+                Toast.makeText(getApplicationContext(), error, Toast.LENGTH_SHORT).show();
+            }
+        }catch(JSONException e){
+            e.printStackTrace();
+        }
+    }
+
 
     private void store(String token, String dynamicKey){
         SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(getString(R.string.token_login), token);
         editor.putString(getString(R.string.dynamic_key), dynamicKey);
+        editor.putString(getString(R.string.username), strUser);
         editor.commit();
-    }
-
-    private boolean restore(){
-        SharedPreferences pref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
-        String token = pref.getString(getString(R.string.token_login), null);
-        String phoneUser = pref.getString(getString(R.string.phone_key), null);
-
-        if (phoneUser == null){
-            openActivity(RegisterActivity.class, true);
-        }else{
-            if (token != null){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Subscribe
-    public void onEvent(BaseResponse baseResponse){
-        String str = new Gson().toJson(baseResponse);
-        Log.d("BaseResponse", str);
-        BaseResponse.Result result = baseResponse.getResult();
-        if (!result.getSuccess().isEmpty()){
-            String[] arrStr = result.getSuccess().split(getString(R.string.key_iv));
-            String decryptStr = EncryptionAES.newInstance(ModelCart.getInstance().getKeyModel().getKey()).decrypt(arrStr[0], arrStr[1].getBytes());//(text, key
-            Log.d("Decrypt", "DecryptDynamicKey: " + decryptStr);
-            try{
-                JSONObject jsonObject = new JSONObject(decryptStr);
-                String token = jsonObject.getString("token");
-                String dynamicKey = jsonObject.getString("dynamic_key");
-
-                String[] arrKey = dynamicKey.split(getString(R.string.key_iv));
-                String decryptKey = EncryptionAES.newInstance(ModelCart.getInstance().getKeyModel().getKey()).decrypt(arrKey[0], arrKey[1].getBytes());//(text, key
-
-
-                byte[] secretKey = Base64.decode(decryptKey.getBytes(), Base64.NO_WRAP);
-
-                if (decryptKey != null){
-                    //store data for first login
-                    store(token, new String(secretKey));
-                    openActivity(MainMenuActivity.class, true);
-                    overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
-                    Toast.makeText(getApplicationContext(), "Login: " + token, Toast.LENGTH_LONG).show();
-                    dismissDialog();
-
-                }else{
-                    Toast.makeText(getApplicationContext(), "Decrypt Error", Toast.LENGTH_LONG).show();
-                    dismissDialog();
-                }
-            }catch(JSONException e){
-                e.printStackTrace();
-            }
-        }else{
-            Toast.makeText(getApplicationContext(), result.getError(), Toast.LENGTH_LONG).show();
-            dismissDialog();
-        }
     }
 
     @Override

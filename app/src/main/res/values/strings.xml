@@ -36,6 +36,8 @@
     <string name="menu_news">News</string>
 
 
+    //Version android
+    <string name="version_android">0.0.1</string>
     //url login demo
     <string name="url_calendar">http://bloc.pakgon.com/Events/calendar</string>
     <string name="url_news">http://bloc.pakgon.com/news/feednews</string>
@@ -44,11 +46,11 @@
     //url for server
     <string name="url_server">http://api.psp.pakgon.com/</string>
     <string name="url_identity_server">http://api.psp.pakgon.com/</string>
-
+    <string name="path_user_info">getUserInfo.json?authToken=</string>
 
     //Form Register Thai
     <string name="identity_card_th">หมายเลขบัตรประชาชน</string>
-    <string name="birth_date_th">วัน-เดือน-ปีเกิด</string>
+    <string name="birth_date_th">ปี-เดือน-วัน</string>
     <string name="phone_number_th">หมายเลขโทรศัพท์</string>
 
     //Form Register English
@@ -80,4 +82,5 @@
     <string name="logout_menu_th">ออกจากระบบ</string>
     <string name="user_detail_th">ข้อมูลส่วนตัว</string>
     <string name="edit_user_th">แก้ไขข้อมูล</string>
+    <string name="user_secret">user_secret</string>
 </resources>

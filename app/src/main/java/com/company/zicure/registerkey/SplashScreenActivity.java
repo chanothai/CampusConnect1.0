@@ -8,6 +8,10 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.company.zicure.registerkey.common.BaseActivity;
+import com.company.zicure.registerkey.models.BaseResponse;
+import com.company.zicure.registerkey.network.ClientHttp;
+import com.company.zicure.registerkey.utilize.EventBusCart;
+import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -22,13 +26,27 @@ public class SplashScreenActivity extends BaseActivity implements Animator.Anima
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_slash_screen);
+        EventBusCart.getInstance().getEventBus().register(this);
         ButterKnife.bind(this);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        animationFadeOut();
+        ClientHttp.getInstance(this).checkVersionApp();
+    }
+
+    @Subscribe
+    public void onEventCheckVersion(BaseResponse response){
+        try{
+            if (response.getResult().getSuccess().equalsIgnoreCase("OK")){
+                if (response.getResult().getData().getVersion().equalsIgnoreCase(getString(R.string.version_android))){
+                    animationFadeOut();
+                }
+            }
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
     }
 
     public void animationFadeOut(){
@@ -64,5 +82,11 @@ public class SplashScreenActivity extends BaseActivity implements Animator.Anima
     @Override
     public void onAnimationRepeat(Animator animation) {
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBusCart.getInstance().getEventBus().unregister(this);
     }
 }

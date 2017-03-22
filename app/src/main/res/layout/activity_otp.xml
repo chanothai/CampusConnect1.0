@@ -31,6 +31,7 @@
                     android:inputType="number"
                     android:imeOptions="actionDone"
                     android:maxLines="1"
+                    android:maxLength="4"
                     android:padding="@dimen/padding_large"
                     android:background="@drawable/background_edit_login"
                     android:hint="OTP" />
@@ -47,7 +48,7 @@
                 android:layout_marginTop="@dimen/padding_large"
                 android:text="@string/confirm"
                 android:textColor="@android:color/white"
-                android:background="@drawable/selector_btn_register" />
+                android:background="@drawable/selector_btn_edit_user" />
         </LinearLayout>
     </LinearLayout>
 

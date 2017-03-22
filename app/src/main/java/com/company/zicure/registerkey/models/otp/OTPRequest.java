@@ -7,20 +7,29 @@ import com.google.gson.annotations.SerializedName;
  */
 
 public class OTPRequest {
-    @SerializedName("Result")
-    private Result result;
+    @SerializedName("User")
+    private User user;
 
-    public Result getResult() {
-        return result;
+    public User getUser() {
+        return user;
     }
 
-    public void setResult(Result result) {
-        this.result = result;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public class Result{
-        @SerializedName("otp")
+    public static class User{
+        private String username;
+        @SerializedName("OTP")
         private String otp;
+
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String username) {
+            this.username = username;
+        }
 
         public String getOtp() {
             return otp;
