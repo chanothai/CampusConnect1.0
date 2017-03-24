@@ -28,6 +28,7 @@ import com.company.zicure.registerkey.security.EncryptionAES;
 import com.company.zicure.registerkey.utilize.EventBusCart;
 import com.company.zicure.registerkey.utilize.KeyboardUtil;
 import com.company.zicure.registerkey.utilize.ModelCart;
+import com.company.zicure.registerkey.variables.VariableConnect;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -73,7 +74,7 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
     }
 
     private void setKey(){
-        byte[] keyByte = Base64.decode(getString(R.string.staticKey).getBytes(), Base64.NO_WRAP);
+        byte[] keyByte = Base64.decode(VariableConnect.staticKey.getBytes(), Base64.NO_WRAP);
         ModelCart.getInstance().getKeyModel().setKey(keyByte);
     }
 

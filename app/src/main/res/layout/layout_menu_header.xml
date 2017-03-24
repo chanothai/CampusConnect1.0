@@ -14,9 +14,9 @@
 
         <com.joooonho.SelectableRoundedImageView
             android:id="@+id/img_profile"
-            android:layout_width="@dimen/size_image_circle"
-            android:layout_height="@dimen/size_image_circle"
-            android:src="@drawable/yajai"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_launcher"
             android:scaleType="centerCrop"
             app:sriv_border_color="@android:color/white"
             app:sriv_border_width="1dp"

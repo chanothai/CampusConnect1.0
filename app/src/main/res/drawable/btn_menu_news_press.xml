@@ -3,9 +3,4 @@
     <solid
         android:color="@color/color_news_press"/>
 
-    <stroke
-        android:color="@color/colorGrayCorner"
-        android:width="@dimen/stroke_width_two"/>
-    <corners
-        android:radius="@dimen/corner_radius_fifteen"/>
 </shape>

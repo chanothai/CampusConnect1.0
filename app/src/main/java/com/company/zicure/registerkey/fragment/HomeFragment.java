@@ -36,12 +36,15 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.company.zicure.registerkey.MainMenuActivity;
 import com.company.zicure.registerkey.R;
+import com.company.zicure.registerkey.activity.GenUserCodeActivity;
 import com.company.zicure.registerkey.adapter.BannerViewPagerAdapter;
 import com.company.zicure.registerkey.adapter.MainMenuAdapter;
 import com.company.zicure.registerkey.holder.MainMenuHolder;
 import com.company.zicure.registerkey.interfaces.ItemClickListener;
+import com.company.zicure.registerkey.utilize.ModelCart;
 import com.company.zicure.registerkey.utilize.NextzyUtil;
 import com.company.zicure.registerkey.utilize.ResizeScreen;
+import com.company.zicure.registerkey.variables.VariableConnect;
 import com.company.zicure.registerkey.view.viewgroup.FlyOutContainer;
 
 import java.util.Timer;
@@ -59,7 +62,7 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
     private static final String ARG_PARAM1 = "checkScroll";
 
     // TODO: Rename and change types of parameters
-    private String checkScroll;
+    private String[] userSecret = null;
 
     //parameter
     String[] strMenu;
@@ -112,10 +115,9 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
      * @return A new instance of fragment HomeFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static HomeFragment newInstance(String checkScroll) {
+    public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, checkScroll);
         fragment.setArguments(args);
         return fragment;
     }
@@ -124,7 +126,7 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            checkScroll = getArguments().getString(ARG_PARAM1);
+
         }
     }
 
@@ -230,14 +232,16 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
                             transaction.commit();
                         }
                         else if (checkMenu.equalsIgnoreCase(getString(R.string.ePayment))){
+                            Bundle bundle = new Bundle();
+                            userSecret = new String[]{ModelCart.getInstance().getKeyModel().getToken(), ModelCart.getInstance().getKeyModel().getUsername()};
+                            bundle.putStringArray(VariableConnect.userSecret, userSecret);
+                            Intent intent = new Intent(getActivity(),GenUserCodeActivity.class);
+                            intent.putExtras(bundle);
+                            startActivity(intent);
+
 //                                 Intent intent = getContext().getPackageManager().getLaunchIntentForPackage("com.company.zicure.payment");
 //                                 intent.addCategory(Intent.CATEGORY_LAUNCHER);
 //                                 startActivity(intent);
-//                            String packageName = "com.company.zicure.payment";
-//                            String fullClassName = "com.company.zicure.payment.activity.AuthActivity";
-//                            Intent intent = new Intent();
-//                            intent.setComponent(new ComponentName(packageName, fullClassName));
-//                            startActivity(intent);
                         }
                         else if (checkMenu.equalsIgnoreCase("Social")){
                             FragmentTransaction transaction = getFragmentManager().beginTransaction();

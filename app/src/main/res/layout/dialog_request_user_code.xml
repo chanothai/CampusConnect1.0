@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:context="com.company.zicure.registerkey.activity.GenUserCodeActivity">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:paddingBottom="24dp"
+        android:paddingTop="24dp"
+        android:paddingStart="8dp"
+        android:background="@android:color/white"
+        android:paddingEnd="8dp">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/img_mof_pay"
+            android:src="@mipmap/ic_launcher"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/message_user_code"
+            android:textSize="@dimen/size_text_small"
+            android:layout_marginTop="24dp"
+            android:gravity="start|end"
+            android:text="@string/message_get_userinfo_th"
+            android:padding="@dimen/padding_small"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_cancel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/cancel_th"
+                android:layout_weight="1"
+                android:background="@drawable/select_btn_menu_news"
+                android:textSize="@dimen/size_text_medium"
+                android:padding="@dimen/padding_eight"
+                android:layout_marginEnd="@dimen/padding_small"/>
+
+            <Button
+                android:id="@+id/btn_confirm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/confirm_th"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/padding_small"
+                android:background="@drawable/select_btn_blue_strong"
+                android:textSize="@dimen/size_text_medium"
+                android:textColor="@android:color/white"
+                android:padding="@dimen/padding_eight"/>
+
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

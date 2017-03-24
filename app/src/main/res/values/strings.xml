@@ -4,7 +4,6 @@
     <string name="device_type">DEVICE TYPE</string>
     <string name="device_id">DEVICE ID</string>
     <string name="register">REGISTER</string>
-    <string name="url_generateKey">http://192.168.10.23:81/</string>
     <string name="store_login">com.zicure.login</string>
     <string name="priKey">private_key</string>
     <string name="pubKey">public_key</string>
@@ -12,8 +11,8 @@
     <string name="hint_username">USERNAME</string>
     <string name="hint_password">PASSWORD</string>
     <string name="pubServ_key">pubServ_key</string>
-    <string name="detail_link">SignUP/ForgotPassword?</string>
-    <string name="signup_link">SignUp</string>
+    <string name="detail_link">Register</string>
+    <string name="signup_link">Register</string>
     <string name="forgot_password_link">ForgotPassword?</string>
     <string name="news">News</string>
     <string name="map">Map</string>
@@ -23,7 +22,6 @@
     <string name="dialog_loading">Loading</string>
     <string name="url_map_service">hungary.ar-bro.net</string>
 
-    <string name="staticKey">APuT9Gt43aGNLUwn+ewtjzV+1cXjdLcSe/TYXf7n8Vs=</string>
     <!--APuT9Gt43aGNLUwn+ewtjzV+1cXjdLcSe/TYXf7n8Vs=-->
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -35,18 +33,10 @@
     <string name="menu_subject">E-learning</string>
     <string name="menu_news">News</string>
 
-
-    //Version android
-    <string name="version_android">0.0.1</string>
     //url login demo
     <string name="url_calendar">http://bloc.pakgon.com/Events/calendar</string>
     <string name="url_news">http://bloc.pakgon.com/news/feednews</string>
     <string name="url_subject">http://bloc.pakgon.com/News/subject</string>
-
-    //url for server
-    <string name="url_server">http://api.psp.pakgon.com/</string>
-    <string name="url_identity_server">http://api.psp.pakgon.com/</string>
-    <string name="path_user_info">getUserInfo.json?authToken=</string>
 
     //Form Register Thai
     <string name="identity_card_th">หมายเลขบัตรประชาชน</string>
@@ -59,7 +49,8 @@
     <string name="phone_number">Phone Number</string>
 
     //Validate
-    <string name="confirm">CONFIRM</string>
+    <string name="confirm_th">Confirm</string>
+    <string name="cancel_th">Cancel</string>
 
     //Form Header Account
     <string name="connect_account">Connect Account</string>
@@ -83,4 +74,5 @@
     <string name="user_detail_th">ข้อมูลส่วนตัว</string>
     <string name="edit_user_th">แก้ไขข้อมูล</string>
     <string name="user_secret">user_secret</string>
+    <string name="message_get_userinfo_th">MOF PAY APPLICATION : จะขอรับข้อมูลส่วนตัวจาก CONNECT APPLICATION.</string>
 </resources>

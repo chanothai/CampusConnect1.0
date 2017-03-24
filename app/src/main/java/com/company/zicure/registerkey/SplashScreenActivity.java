@@ -7,10 +7,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.company.zicure.registerkey.activity.CheckLoginActivity;
 import com.company.zicure.registerkey.common.BaseActivity;
 import com.company.zicure.registerkey.models.BaseResponse;
 import com.company.zicure.registerkey.network.ClientHttp;
 import com.company.zicure.registerkey.utilize.EventBusCart;
+import com.company.zicure.registerkey.variables.VariableConnect;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
@@ -40,7 +42,7 @@ public class SplashScreenActivity extends BaseActivity implements Animator.Anima
     public void onEventCheckVersion(BaseResponse response){
         try{
             if (response.getResult().getSuccess().equalsIgnoreCase("OK")){
-                if (response.getResult().getData().getVersion().equalsIgnoreCase(getString(R.string.version_android))){
+                if (response.getResult().getData().getVersion().equalsIgnoreCase(VariableConnect.versionAndroid)){
                     animationFadeOut();
                 }
             }
@@ -60,7 +62,7 @@ public class SplashScreenActivity extends BaseActivity implements Animator.Anima
     }
 
     public void intentActivity(){
-        openActivity(LoginActivity.class , true);
+        openActivity(CheckLoginActivity.class , true);
     }
 
 

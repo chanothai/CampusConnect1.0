@@ -27,6 +27,7 @@ import com.company.zicure.registerkey.network.ClientHttp;
 import com.company.zicure.registerkey.security.EncryptionAES;
 import com.company.zicure.registerkey.utilize.EventBusCart;
 import com.company.zicure.registerkey.utilize.ModelCart;
+import com.company.zicure.registerkey.variables.VariableConnect;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -63,7 +64,7 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener,Te
         setTextClick();
 
         if (savedInstanceState == null){
-            byte[] keyByte = Base64.decode(getString(R.string.staticKey).getBytes(), Base64.NO_WRAP);
+            byte[] keyByte = Base64.decode(VariableConnect.staticKey.getBytes(), Base64.NO_WRAP);
             ModelCart.getInstance().getKeyModel().setKey(keyByte);
         }
     }
@@ -156,10 +157,9 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener,Te
                 String dynamicKey = jsonObject.getString("dynamic_key");
 
                 store(token, dynamicKey);
-                String[] strArr = {token, dynamicKey, strUser};
+                String[] strArr = {token, strUser};
                 Bundle bundle = setBundle(strArr);
 
-                dismissDialog();
                 openActivity(MainMenuActivity.class,bundle ,true);
                 overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
             }else{
@@ -169,10 +169,15 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener,Te
         }catch(JSONException e){
             e.printStackTrace();
         }
+
+        dismissDialog();
     }
 
 
     private void store(String token, String dynamicKey){
+        byte[] key = Base64.decode(dynamicKey.getBytes(), Base64.NO_WRAP);
+        ModelCart.getInstance().getKeyModel().setKey(key);
+
         SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(getString(R.string.token_login), token);
@@ -181,26 +186,20 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener,Te
         editor.commit();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBusCart.getInstance().getEventBus().unregister(this);
-    }
-
 
     public void setTextClick(){
         String strAll= getString(R.string.detail_link);
         String strLinkSignUP = getString(R.string.signup_link);
-        int start = strAll.indexOf(strLinkSignUP) + 1;
+        int start = strAll.indexOf(strLinkSignUP);
         int end = start + strLinkSignUP.length();
 
-        String strLinkForgotPass = getString(R.string.forgot_password_link);
-        int start2 = strAll.indexOf(strLinkForgotPass);
-        int end2 = start2 + strLinkForgotPass.length();
+//        String strLinkForgotPass = getString(R.string.forgot_password_link);
+//        int start2 = strAll.indexOf(strLinkForgotPass);
+//        int end2 = start2 + strLinkForgotPass.length();
 
         SpannableString spannableString = new SpannableString(strAll);
         spannableString.setSpan(new CallLink(), start, end,0);
-        spannableString.setSpan(new CallLink(), start2, end2, 0);
+//        spannableString.setSpan(new CallLink(), start2, end2, 0);
 
         txtLink.setText(spannableString);
         txtLink.setMovementMethod(new LinkMovementMethod());
@@ -253,6 +252,12 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener,Te
         return false;
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBusCart.getInstance().getEventBus().unregister(this);
+    }
+
     private class CallLink extends ClickableSpan{
         @Override
         public void onClick(View widget) {
@@ -264,9 +269,7 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener,Te
             String checkLink = spanned.subSequence(start,end).toString();
 
             if (checkLink.equalsIgnoreCase(getString(R.string.signup_link))){
-                Toast.makeText(LoginActivity.this, "Yeah!1", Toast.LENGTH_SHORT).show();
-            }else if (checkLink.equalsIgnoreCase(getString(R.string.forgot_password_link))){
-                Toast.makeText(LoginActivity.this, "Yeah!2", Toast.LENGTH_SHORT).show();
+                openActivity(RegisterActivity.class, true);
             }
         }
     }

@@ -79,8 +79,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
+                    android:textSize="@dimen/size_text_small"
+                    android:padding="@dimen/padding_small"
                     android:textColor="@android:color/black"
-                    android:textColorLink="@color/text_link"
+                    android:textColorLink="@color/colorAccent"
                     android:text="@string/detail_link" />
             </LinearLayout>
 

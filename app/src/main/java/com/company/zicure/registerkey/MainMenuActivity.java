@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.os.Build;
+import android.os.Parcelable;
 import android.os.PersistableBundle;
 import android.support.annotation.IdRes;
 import android.support.design.widget.AppBarLayout;
@@ -50,6 +51,7 @@ import com.company.zicure.registerkey.utilize.EventBusCart;
 import com.company.zicure.registerkey.utilize.ModelCart;
 import com.company.zicure.registerkey.utilize.ResizeScreen;
 import com.company.zicure.registerkey.utilize.RestoreLogin;
+import com.company.zicure.registerkey.variables.VariableConnect;
 import com.company.zicure.registerkey.view.viewgroup.FlyOutContainer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -70,6 +72,7 @@ import java.util.Date;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import profilemof.zicure.company.com.profilemof.activity.ProfileActivity;
+import profilemof.zicure.company.com.profilemof.utilize.ModelCartProfile;
 
 public class MainMenuActivity extends BaseActivity implements OnTabSelectListener,OnTabReselectListener, View.OnClickListener {
 
@@ -105,6 +108,8 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
     FrameLayout controlSlide;
     @Bind(R.id.img_profile)
     SelectableRoundedImageView imgProfile;
+    @Bind(R.id.profile_name)
+    TextView profileName;
 
     //list slide menu
     private ArrayList<SlideMenuDetail> arrMenu = null;
@@ -124,16 +129,16 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
     private static final int PORT = 5055;
     private static final String DEVICEID = "218989";
 
-    private String currentToken = null;
-    private String currentDynamicKey = null;
-    private String currentUsername = null;
-
     private int widthScreenMenu;
     private int haftScreen = 0;
     private VelocityTracker velocityTracker = null; // get speed for touch
 
-    private byte[] key = null;
     private DataModel model = null;
+    private byte[] key = null;
+    private String currentToken = null;
+    private String currentUsername = null;
+    private String[] strArr = null;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -145,37 +150,26 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
 
         bottomBar.setOnTabSelectListener(this);
         bottomBar.setOnTabReselectListener(this);
+        setOnTouchView();
 
         if (savedInstanceState == null){
-            checkLogin();
-        }
-        setOnTouchView();
-    }
+            key = ModelCart.getInstance().getKeyModel().getKey();
+            Bundle bundle = getIntent().getExtras();
+            strArr = bundle.getStringArray(getString(R.string.user_secret));
+            currentToken = strArr[0];
+            currentUsername = strArr[1];
 
-    private void checkLogin(){
-        currentToken = RestoreLogin.getInstance(this).getRestoreToken();
-        currentDynamicKey = RestoreLogin.getInstance(this).getRestoreKey();
-        currentUsername = RestoreLogin.getInstance(this).getRestoreUser();
-
-        String verifyPhone = RestoreLogin.getInstance(this).getRestorePhoneNumber();
-        if (verifyPhone != null){
-            if (currentDynamicKey != null && currentToken != null && currentUsername != null){
-                setToolbar();
-                setSlideMenuAdapter();
-                key = Base64.decode(currentDynamicKey.getBytes(), Base64.NO_WRAP);
+            if (currentUsername != null && currentToken != null){
                 setModelUser();
-            }else{
-                openActivity(LoginActivity.class, true);
             }
-        }else{
-            openActivity(RegisterActivity.class, true);
         }
     }
+
     private void setModelUser(){
         try{
             ApplicationRequest request = new ApplicationRequest();
             ApplicationRequest.Application application = new ApplicationRequest.Application();
-            application.setClientID("abcdef");
+            application.setClientID(VariableConnect.clientID);
             application.setSecret("123456");
 
             ApplicationRequest.User user = new ApplicationRequest.User();
@@ -196,21 +190,13 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
 
                 model.setUser(modelUser);
 
-                getUserInfo();
+                showLoadingDialog();
+                ClientHttp.getInstance(this).requestAuthToken(model);
             }
         }catch (NullPointerException e){
             e.printStackTrace();
         }
     }
-
-
-    public void getUserInfo(){
-        if (model != null){
-            showLoadingDialog();
-            ClientHttp.getInstance(this).requestAuthToken(model);
-        }
-    }
-
 
     @Subscribe
     public void onEventAuthToken(BaseResponse baseResponse){
@@ -220,6 +206,7 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
             decodeJson(decrypt);
         }else{
             Toast.makeText(this, baseResponse.getResult().getError(), Toast.LENGTH_SHORT).show();
+            openActivity(LoginActivity.class, true);
         }
         dismissDialog();
     }
@@ -245,28 +232,18 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
         try{
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date date = new Date();
+            Date strDate = dateFormat.parse(authToken.getExpiryDate());
 
-            double expireDate = setSplitDate(authToken.getExpiryDate());
-            double currentDate = setSplitDate(dateFormat.format(date));
+            if (date.after(strDate)){
 
-            if (currentDate > expireDate){
-
-            }else{
+            }else {
                 String path = authToken.getAuthToken();
                 ClientHttp.getInstance(this).requestUserInfo(path);
             }
+
         }catch (Exception e){
             e.printStackTrace();
         }
-    }
-
-    private Double setSplitDate(String dateTime){
-        String[] splitDate = dateTime.split(" ");
-        String[] splitYear = splitDate[0].split("-");
-        String[] splitTime = splitDate[1].split(":");
-
-        String currentDate = splitYear[0] + splitYear[1] + splitYear[2] + splitTime[0]+ splitTime[1] + splitTime[2];
-        return Double.parseDouble(currentDate);
     }
 
     @Subscribe
@@ -276,14 +253,9 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
             ModelCart.getInstance().getUserInfo().setResult(response.getResult());
             Toast.makeText(this, response.getResult().getSuccess(), Toast.LENGTH_LONG).show();
 
-            String pathImg = ModelCart.getInstance().getUserInfo().getResult().getData().getUser().getImgPath();
-            if (pathImg != null){
-                Glide.with(this)
-                        .load(pathImg)
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .centerCrop()
-                        .into(imgProfile);
-            }
+            setToolbar();
+            setSlideMenuAdapter();
+
         }else{
             Toast.makeText(this, response.getResult().getError(), Toast.LENGTH_LONG).show();
         }
@@ -411,6 +383,13 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
         layoutGhost.setVisibility(View.VISIBLE);
     }
 
+    private void setMarginLayout(int left){
+        //hide shadow
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) coordinatorLayout.getLayoutParams();
+        params.leftMargin = left;
+        coordinatorLayout.setLayoutParams(params);
+    }
+
     private void drag(final MotionEvent event, final View v){
         int index = event.getActionIndex();
         int action = event.getActionMasked();
@@ -457,24 +436,80 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
         root.toggleMenu(widthScreen, speedTouch);
     }
 
-    private void setMarginLayout(int left){
-        //hide shadow
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) coordinatorLayout.getLayoutParams();
-        params.leftMargin = left;
-        coordinatorLayout.setLayoutParams(params);
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        EventBusCart.getInstance().getEventBus().unregister(this);
+    // set view adapter of slide menu0--------------------------------------->
+    public void setSlideMenuAdapter(){
+        String pathImg = ModelCart.getInstance().getUserInfo().getResult().getData().getUser().getImgPath();
+        Glide.with(this)
+                .load(pathImg)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .centerCrop()
+                .into(imgProfile);
+
+        profileName.setText(ModelCart.getInstance().getUserInfo().getResult().getData().getUser().getScreenName());
+
+
+        arrMenu = new ArrayList<SlideMenuDetail>();
+        Log.d("SlideMenu",new Gson().toJson(arrMenu));
+        String[] arrTitle = {getString(R.string.menu_feed_th),getString(R.string.user_detail_th),getString(R.string.edit_user_th),getString(R.string.setting_menu_th), getString(R.string.logout_menu_th)};
+        int[] arrImg = {R.drawable.ic_news_feed,R.drawable.ic_user_profile,  R.drawable.ic_edit_user, R.drawable.ic_setting,R.drawable.ic_log_out};
+        for (int i = 0; i < arrTitle.length; i++){
+            SlideMenuDetail menu = new SlideMenuDetail();
+            menu.setTitle(arrTitle[i]);
+            menu.setImage(arrImg[i]);
+            arrMenu.add(menu);
+        }
+
+        SlideMenuAdapter slideMenuAdapter = new SlideMenuAdapter(this, arrMenu) {
+            @Override
+            public void onBindViewHolder(SlideMenuHolder holder, int position) {
+                holder.subTitle.setText(getTitle(position));
+                holder.imgIcon.setImageResource(getImage(position));
+                holder.setItemOnClickListener(new ItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        if (getTitle(position).equalsIgnoreCase(getString(R.string.user_detail_th))){
+                            Bundle bundle = setBundle();
+                            openActivity(ProfileActivity.class, bundle);
+                            overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_scale_out);
+                        }
+                        else if (getTitle(position).equalsIgnoreCase(getString(R.string.menu_feed_th))){
+                            callHomeFragment();
+                            setToggle(0,0);
+                        }
+                    }
+                });
+            }
+        };
+        listSlideMenu.setLayoutManager(new LinearLayoutManager(this));
+        listSlideMenu.setAdapter(slideMenuAdapter);
+        listSlideMenu.setItemAnimator(new DefaultItemAnimator());
+//        listSlideMenu.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
     }
 
-    @Override
-    public void onBackPressed() {
-        int count = getFragmentManager().getBackStackEntryCount();
-        if (count > 0){
-        }
-        super.onBackPressed();
+    private Bundle setBundle(){Bundle bundle = new Bundle();
+        bundle.putString("username", ModelCart.getInstance().getUserInfo().getResult().getData().getUser().getUsername());
+        bundle.putString("first_name", ModelCart.getInstance().getUserInfo().getResult().getData().getUser().getFirstName());
+        bundle.putString("last_name", ModelCart.getInstance().getUserInfo().getResult().getData().getUser().getLastName());
+        bundle.putString("screen_name", ModelCart.getInstance().getUserInfo().getResult().getData().getUser().getScreenName());
+        bundle.putString("birth_date", ModelCart.getInstance().getUserInfo().getResult().getData().getUser().getBirthday());
+        bundle.putString("citizen_id", ModelCart.getInstance().getUserInfo().getResult().getData().getUser().getCitizenID());
+        bundle.putString("phone", ModelCart.getInstance().getUserInfo().getResult().getData().getUser().getPhone());
+        bundle.putString("profile_image_path", ModelCart.getInstance().getUserInfo().getResult().getData().getUser().getImgPath());
+
+        return bundle;
+    }
+    //<=======================================================================
+
+    private void callHomeFragment(){
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, new HomeFragment());
+        transaction.commit();
+    }
+    public void getAppCalendar(){
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, AppMenuFragment.newInstance(getString(R.string.url_calendar), ""));
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     @Override
@@ -497,10 +532,7 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
         }
         try{
             if (tabId == R.id.tab_home) {
-                homeFragment = new HomeFragment();
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.container, homeFragment, getString(R.string.tag_home_fragment));
-                transaction.commit();
+                callHomeFragment();
             }
         }catch (NullPointerException e){
             e.printStackTrace();
@@ -512,60 +544,18 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
 
     }
 
-    // set view adapter of slide menu0--------------------------------------->
-    public void setSlideMenuAdapter(){
-        arrMenu = new ArrayList<SlideMenuDetail>();
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBusCart.getInstance().getEventBus().unregister(this);
+    }
 
-        Gson gson = new Gson();
-        String strJson = gson.toJson(arrMenu);
-        Log.d("SlideMenu", strJson);
-
-        String[] arrTitle = {getString(R.string.menu_feed_th),getString(R.string.user_detail_th),getString(R.string.edit_user_th),getString(R.string.setting_menu_th), getString(R.string.logout_menu_th)};
-        int[] arrImg = {R.drawable.ic_news_feed,R.drawable.ic_user_profile,  R.drawable.ic_edit_user, R.drawable.ic_setting,R.drawable.ic_log_out};
-        for (int i = 0; i < arrTitle.length; i++){
-            SlideMenuDetail menu = new SlideMenuDetail();
-            menu.setTitle(arrTitle[i]);
-            menu.setImage(arrImg[i]);
-            arrMenu.add(menu);
+    @Override
+    public void onBackPressed() {
+        int count = getFragmentManager().getBackStackEntryCount();
+        if (count > 0){
         }
-
-        SlideMenuAdapter slideMenuAdapter = new SlideMenuAdapter(this, arrMenu) {
-            @Override
-            public void onBindViewHolder(SlideMenuHolder holder, int position) {
-                holder.subTitle.setText(getTitle(position));
-                holder.imgIcon.setImageResource(getImage(position));
-                holder.setItemOnClickListener(new ItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        if (getTitle(position).equalsIgnoreCase(getString(R.string.user_detail_th))){
-                            openActivity(ProfileActivity.class);
-                            overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_scale_out);
-                        }
-                        else if (getTitle(position).equalsIgnoreCase(getString(R.string.menu_feed_th))){
-                            callHomeFragment();
-                            setToggle(0,0);
-                        }
-                    }
-                });
-            }
-        };
-        listSlideMenu.setLayoutManager(new LinearLayoutManager(this));
-        listSlideMenu.setAdapter(slideMenuAdapter);
-        listSlideMenu.setItemAnimator(new DefaultItemAnimator());
-//        listSlideMenu.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-    }
-    //<=======================================================================
-
-    private void callHomeFragment(){
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, new HomeFragment());
-        transaction.commit();
-    }
-    public void getAppCalendar(){
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, AppMenuFragment.newInstance(getString(R.string.url_calendar), ""));
-        transaction.addToBackStack(null);
-        transaction.commit();
+        super.onBackPressed();
     }
 
     @Override

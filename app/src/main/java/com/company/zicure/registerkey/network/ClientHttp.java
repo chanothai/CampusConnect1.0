@@ -6,10 +6,12 @@ import android.util.Log;
 import com.company.zicure.registerkey.R;
 import com.company.zicure.registerkey.interfaces.LogApi;
 import com.company.zicure.registerkey.models.BaseResponse;
+import com.company.zicure.registerkey.models.ResponseUserCode;
 import com.company.zicure.registerkey.models.ResponseUserInfo;
 import com.company.zicure.registerkey.models.UserRequest;
 import com.company.zicure.registerkey.models.DataModel;
 import com.company.zicure.registerkey.utilize.EventBusCart;
+import com.company.zicure.registerkey.variables.VariableConnect;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -37,7 +39,7 @@ public class ClientHttp {
 
     public ClientHttp(Context context){
         this.context = context;
-        retrofit = RetrofitAPI.newInstance(context.getString(R.string.url_identity_server)).getRetrofit();
+        retrofit = RetrofitAPI.newInstance(VariableConnect.urlIdentityServer).getRetrofit();
         service = retrofit.create(LogApi.class);
         gson = new GsonBuilder().disableHtmlEscaping().create();
     }
@@ -186,6 +188,47 @@ public class ClientHttp {
             public void onFailure(Call<ResponseUserInfo> call, Throwable t) {
                 t.printStackTrace();
                 ResponseError.setUserInfoResponseError("Time out");
+            }
+        });
+    }
+
+    public void requestUserCode(String clientId){
+        HashMap<String, String> map = new HashMap<String, String>();
+        map.put("clientId", clientId);
+        Call<ResponseUserCode> userCode = service.genUserCode(map);
+        userCode.enqueue(new Callback<ResponseUserCode>() {
+            @Override
+            public void onResponse(Call<ResponseUserCode> call, Response<ResponseUserCode> response) {
+                try{
+                    Log.d("UserCode", new Gson().toJson(response.body()));
+                    EventBusCart.getInstance().getEventBus().post(response.body());
+                }catch (NullPointerException e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseUserCode> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    public void approveDevice(DataModel dataModel){
+        Call<BaseResponse> approve = service.approveDevice(dataModel);
+        approve.enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                try{
+                    EventBusCart.getInstance().getEventBus().post(response.body());
+                }catch (NullPointerException e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                t.printStackTrace();
             }
         });
     }

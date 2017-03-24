@@ -2,6 +2,7 @@ package com.company.zicure.registerkey.interfaces;
 
 import com.company.zicure.registerkey.models.ApplicationRequest;
 import com.company.zicure.registerkey.models.BaseResponse;
+import com.company.zicure.registerkey.models.ResponseUserCode;
 import com.company.zicure.registerkey.models.ResponseUserInfo;
 import com.company.zicure.registerkey.models.UserRequest;
 import com.company.zicure.registerkey.models.DataModel;
@@ -36,4 +37,10 @@ public interface LogApi {
 
     @GET("Api/getUserInfo.json")
     Call<ResponseUserInfo> requestUserInfo(@QueryMap Map<String, String> authToken);
+
+    @GET("Api/getDeviceToken.json")
+    Call<ResponseUserCode> genUserCode(@QueryMap Map<String, String> ClientID);
+
+    @POST("Api/secure/approveDevice.json")
+    Call<BaseResponse> approveDevice(@Body DataModel dataModel);
 }

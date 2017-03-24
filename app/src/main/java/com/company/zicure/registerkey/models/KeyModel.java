@@ -5,6 +5,8 @@ package com.company.zicure.registerkey.models;
  */
 
 public class KeyModel {
+    private String token;
+    private String username;
     private byte[] key;
 
     public byte[] getKey() {
@@ -13,5 +15,21 @@ public class KeyModel {
 
     public void setKey(byte[] key) {
         this.key = key;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

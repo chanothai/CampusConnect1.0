@@ -3,6 +3,8 @@ package com.company.zicure.registerkey.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
 /**
  * Created by 4GRYZ52 on 3/22/2017.
  */

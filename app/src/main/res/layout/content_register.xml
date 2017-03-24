@@ -70,7 +70,7 @@
         android:textStyle="bold"
         android:padding="@dimen/padding_large"
         android:layout_marginTop="@dimen/padding_large"
-        android:text="@string/confirm"
+        android:text="@string/confirm_th"
         android:textColor="@android:color/white"
         android:background="@drawable/selector_btn_edit_user" />
 
