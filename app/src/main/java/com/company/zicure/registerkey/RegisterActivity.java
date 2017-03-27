@@ -19,19 +19,11 @@ import android.widget.Toast;
 
 import com.company.zicure.registerkey.common.BaseActivity;
 import com.company.zicure.registerkey.dialog.DatePickerFragment;
-import com.company.zicure.registerkey.models.BaseResponse;
-import com.company.zicure.registerkey.models.DateModel;
-import com.company.zicure.registerkey.models.register.RegisterRequest;
-import com.company.zicure.registerkey.models.DataModel;
 import com.company.zicure.registerkey.network.ClientHttp;
 import com.company.zicure.registerkey.security.EncryptionAES;
-import com.company.zicure.registerkey.utilize.EventBusCart;
-import com.company.zicure.registerkey.utilize.KeyboardUtil;
-import com.company.zicure.registerkey.utilize.ModelCart;
-import com.company.zicure.registerkey.variables.VariableConnect;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import com.squareup.otto.Subscribe;
 
 import org.json.JSONObject;
@@ -39,6 +31,14 @@ import org.json.JSONObject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import gallery.zicure.company.com.modellibrary.models.BaseResponse;
+import gallery.zicure.company.com.modellibrary.models.DataModel;
+import gallery.zicure.company.com.modellibrary.models.DateModel;
+import gallery.zicure.company.com.modellibrary.models.register.RegisterRequest;
+import gallery.zicure.company.com.modellibrary.utilize.EventBusCart;
+import gallery.zicure.company.com.modellibrary.utilize.KeyboardUtil;
+import gallery.zicure.company.com.modellibrary.utilize.ModelCart;
+import gallery.zicure.company.com.modellibrary.utilize.VariableConnect;
 
 public class RegisterActivity extends BaseActivity implements View.OnFocusChangeListener, TextWatcher, EditText.OnEditorActionListener{
 
@@ -116,7 +116,6 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
             showLoadingDialog();
             ClientHttp.getInstance(context).register(dataModel);
 
-             Toast.makeText(this, "กรุณากรอกข้อมูลให้ครบถ้วน", Toast.LENGTH_LONG).show();
             if (strIdCard.length() < 13 ){
                 idCard.requestFocus();
             }

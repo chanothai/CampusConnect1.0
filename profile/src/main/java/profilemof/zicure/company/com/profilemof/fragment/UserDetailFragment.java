@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
+import gallery.zicure.company.com.modellibrary.utilize.ModelCart;
 import profilemof.zicure.company.com.profilemof.R;
 import profilemof.zicure.company.com.profilemof.adapter.UserDetailAdapter;
 
@@ -88,32 +89,35 @@ public class UserDetailFragment extends Fragment {
 
     private void initialUserDetail(){
         listTopic = new ArrayList<>();
-        listContent = new ArrayList<>();
 
         listTopic.add(0, getString(R.string.id_card_th));
         listTopic.add(1, getString(R.string.firstname_th));
         listTopic.add(2, getString(R.string.lastname_th));
         listTopic.add(3, getString(R.string.birthday_th));
-        listTopic.add(4, "ศาสนา");
-        listTopic.add(5, getString(R.string.address_th));
-        listTopic.add(6, getString(R.string.number_phone_th));
-
-        listContent.add(0, "1992333000144");
-        listContent.add(1, "บุญรอด");
-        listContent.add(2, "งามเลิศ");
-        listContent.add(3, "22-11-1980");
-        listContent.add(4, "พุทธ");
-        listContent.add(5, "303/5 ม.5 กรุงเทพ 11120");
-        listContent.add(6, "089-235-4221");
+        listTopic.add(4, getString(R.string.number_phone_th));
     }
 
     private void setUserDetailView(){
         initialUserDetail();
-        adapter = new UserDetailAdapter(listTopic, listContent) {
+        adapter = new UserDetailAdapter(listTopic, ModelCart.getInstance().getUserInfo()) {
             @Override
             public void onBindViewHolder(UserDetailHolder holder, int position) {
                 holder.topic.setText(getTopic(position));
-                holder.content.setText(getContent(position));
+                if (getTopic(position).equalsIgnoreCase(getString(R.string.id_card_th))){
+                    holder.content.setText(getUserInfo().getCitizenID());
+                }
+                else if (getTopic(position).equalsIgnoreCase(getString(R.string.firstname_th))){
+                    holder.content.setText(getUserInfo().getFirstName());
+                }
+                else if (getTopic(position).equalsIgnoreCase(getString(R.string.lastname_th))){
+                    holder.content.setText(getUserInfo().getLastName());
+                }
+                else if (getTopic(position).equalsIgnoreCase(getString(R.string.birthday_th))){
+                    holder.content.setText(getUserInfo().getBirthday());
+                }
+                else if (getTopic(position).equalsIgnoreCase(getString(R.string.number_phone_th))){
+                    holder.content.setText(getUserInfo().getPhone());
+                }
             }
         };
 

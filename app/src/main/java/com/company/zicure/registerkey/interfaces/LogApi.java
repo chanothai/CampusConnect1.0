@@ -1,19 +1,14 @@
 package com.company.zicure.registerkey.interfaces;
 
-import com.company.zicure.registerkey.models.ApplicationRequest;
-import com.company.zicure.registerkey.models.BaseResponse;
-import com.company.zicure.registerkey.models.ResponseUserCode;
-import com.company.zicure.registerkey.models.ResponseUserInfo;
-import com.company.zicure.registerkey.models.UserRequest;
-import com.company.zicure.registerkey.models.DataModel;
-
 import java.util.Map;
 
+import gallery.zicure.company.com.modellibrary.models.BaseResponse;
+import gallery.zicure.company.com.modellibrary.models.DataModel;
+import gallery.zicure.company.com.modellibrary.models.ResponseUserInfo;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
-import retrofit2.http.Path;
 import retrofit2.http.QueryMap;
 
 /**
@@ -37,9 +32,6 @@ public interface LogApi {
 
     @GET("Api/getUserInfo.json")
     Call<ResponseUserInfo> requestUserInfo(@QueryMap Map<String, String> authToken);
-
-    @GET("Api/getDeviceToken.json")
-    Call<ResponseUserCode> genUserCode(@QueryMap Map<String, String> ClientID);
 
     @POST("Api/secure/approveDevice.json")
     Call<BaseResponse> approveDevice(@Body DataModel dataModel);

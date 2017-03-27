@@ -3,21 +3,17 @@ package com.company.zicure.registerkey.network;
 import android.content.Context;
 import android.util.Log;
 
-import com.company.zicure.registerkey.R;
 import com.company.zicure.registerkey.interfaces.LogApi;
-import com.company.zicure.registerkey.models.BaseResponse;
-import com.company.zicure.registerkey.models.ResponseUserCode;
-import com.company.zicure.registerkey.models.ResponseUserInfo;
-import com.company.zicure.registerkey.models.UserRequest;
-import com.company.zicure.registerkey.models.DataModel;
-import com.company.zicure.registerkey.utilize.EventBusCart;
-import com.company.zicure.registerkey.variables.VariableConnect;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.HashMap;
-import java.util.Map;
 
+import gallery.zicure.company.com.modellibrary.models.BaseResponse;
+import gallery.zicure.company.com.modellibrary.models.DataModel;
+import gallery.zicure.company.com.modellibrary.models.ResponseUserInfo;
+import gallery.zicure.company.com.modellibrary.utilize.EventBusCart;
+import gallery.zicure.company.com.modellibrary.utilize.VariableConnect;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -135,7 +131,9 @@ public class ClientHttp {
             @Override
             public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                 try{
-                    EventBusCart.getInstance().getEventBus().post(response.body());
+                    if (response.body() != null){
+                        EventBusCart.getInstance().getEventBus().post(response.body());
+                    }
                 }catch (NullPointerException e){
                     e.printStackTrace();
                 }
@@ -188,28 +186,6 @@ public class ClientHttp {
             public void onFailure(Call<ResponseUserInfo> call, Throwable t) {
                 t.printStackTrace();
                 ResponseError.setUserInfoResponseError("Time out");
-            }
-        });
-    }
-
-    public void requestUserCode(String clientId){
-        HashMap<String, String> map = new HashMap<String, String>();
-        map.put("clientId", clientId);
-        Call<ResponseUserCode> userCode = service.genUserCode(map);
-        userCode.enqueue(new Callback<ResponseUserCode>() {
-            @Override
-            public void onResponse(Call<ResponseUserCode> call, Response<ResponseUserCode> response) {
-                try{
-                    Log.d("UserCode", new Gson().toJson(response.body()));
-                    EventBusCart.getInstance().getEventBus().post(response.body());
-                }catch (NullPointerException e){
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseUserCode> call, Throwable t) {
-                t.printStackTrace();
             }
         });
     }

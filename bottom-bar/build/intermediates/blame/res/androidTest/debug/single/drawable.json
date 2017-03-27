@@ -1,19 +1,19 @@
 [
     {
-        "merged": "C:\\AndroidProject\\RegisterApp\\Official\\RegisterKey\\bottom-bar\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\abc_ic_voice_search_api_material.xml",
-        "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\c5d723ea740d0dcf750fb381bd43953b4867a2df\\output\\res\\drawable\\abc_ic_voice_search_api_material.xml"
-    },
-    {
-        "merged": "C:\\AndroidProject\\RegisterApp\\Official\\RegisterKey\\bottom-bar\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\notification_bg.xml",
-        "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\c5d723ea740d0dcf750fb381bd43953b4867a2df\\output\\res\\drawable\\notification_bg.xml"
+        "merged": "C:\\AndroidProject\\RegisterApp\\Official\\RegisterKey\\bottom-bar\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\abc_cab_background_top_material.xml",
+        "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\c5d723ea740d0dcf750fb381bd43953b4867a2df\\output\\res\\drawable\\abc_cab_background_top_material.xml"
     },
     {
         "merged": "C:\\AndroidProject\\RegisterApp\\Official\\RegisterKey\\bottom-bar\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\abc_text_cursor_material.xml",
         "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\c5d723ea740d0dcf750fb381bd43953b4867a2df\\output\\res\\drawable\\abc_text_cursor_material.xml"
     },
     {
-        "merged": "C:\\AndroidProject\\RegisterApp\\Official\\RegisterKey\\bottom-bar\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\abc_cab_background_top_material.xml",
-        "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\c5d723ea740d0dcf750fb381bd43953b4867a2df\\output\\res\\drawable\\abc_cab_background_top_material.xml"
+        "merged": "C:\\AndroidProject\\RegisterApp\\Official\\RegisterKey\\bottom-bar\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\notification_bg.xml",
+        "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\c5d723ea740d0dcf750fb381bd43953b4867a2df\\output\\res\\drawable\\notification_bg.xml"
+    },
+    {
+        "merged": "C:\\AndroidProject\\RegisterApp\\Official\\RegisterKey\\bottom-bar\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\abc_ic_voice_search_api_material.xml",
+        "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\c5d723ea740d0dcf750fb381bd43953b4867a2df\\output\\res\\drawable\\abc_ic_voice_search_api_material.xml"
     },
     {
         "merged": "C:\\AndroidProject\\RegisterApp\\Official\\RegisterKey\\bottom-bar\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\abc_switch_thumb_material.xml",

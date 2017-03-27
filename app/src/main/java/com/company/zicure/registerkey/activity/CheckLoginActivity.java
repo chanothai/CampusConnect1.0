@@ -7,9 +7,10 @@ import com.company.zicure.registerkey.LoginActivity;
 import com.company.zicure.registerkey.MainMenuActivity;
 import com.company.zicure.registerkey.R;
 import com.company.zicure.registerkey.RegisterActivity;
+import com.company.zicure.registerkey.RestoreLogin;
 import com.company.zicure.registerkey.common.BaseActivity;
-import com.company.zicure.registerkey.utilize.ModelCart;
-import com.company.zicure.registerkey.utilize.RestoreLogin;
+
+import gallery.zicure.company.com.modellibrary.utilize.ModelCart;
 
 public class CheckLoginActivity extends BaseActivity {
     private String currentToken = null;

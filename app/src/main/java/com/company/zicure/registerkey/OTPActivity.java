@@ -10,13 +10,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.company.zicure.registerkey.common.BaseActivity;
-import com.company.zicure.registerkey.models.BaseResponse;
-import com.company.zicure.registerkey.models.DataModel;
-import com.company.zicure.registerkey.models.otp.OTPRequest;
 import com.company.zicure.registerkey.network.ClientHttp;
 import com.company.zicure.registerkey.security.EncryptionAES;
-import com.company.zicure.registerkey.utilize.EventBusCart;
-import com.company.zicure.registerkey.utilize.ModelCart;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.squareup.otto.Subscribe;
@@ -26,6 +21,11 @@ import org.json.JSONObject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import gallery.zicure.company.com.modellibrary.models.BaseResponse;
+import gallery.zicure.company.com.modellibrary.models.DataModel;
+import gallery.zicure.company.com.modellibrary.models.otp.OTPRequest;
+import gallery.zicure.company.com.modellibrary.utilize.EventBusCart;
+import gallery.zicure.company.com.modellibrary.utilize.ModelCart;
 
 public class OTPActivity extends BaseActivity implements EditText.OnEditorActionListener{
 

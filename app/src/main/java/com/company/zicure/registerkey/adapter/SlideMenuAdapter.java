@@ -10,9 +10,10 @@ import android.view.ViewGroup;
 import com.company.zicure.registerkey.R;
 import com.company.zicure.registerkey.fragment.AppMenuFragment;
 import com.company.zicure.registerkey.holder.SlideMenuHolder;
-import com.company.zicure.registerkey.models.drawer.SlideMenuDetail;
 
 import java.util.ArrayList;
+
+import gallery.zicure.company.com.modellibrary.models.drawer.SlideMenuDetail;
 
 /**
  * Created by 4GRYZ52 on 12/4/2016.

@@ -2,9 +2,7 @@ package com.company.zicure.registerkey.fragment;
 
 
 import android.app.Dialog;
-import android.content.ComponentName;
 import android.content.Intent;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -13,42 +11,32 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.text.Html;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.baoyz.widget.PullRefreshLayout;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.company.zicure.registerkey.MainMenuActivity;
 import com.company.zicure.registerkey.R;
-import com.company.zicure.registerkey.activity.GenUserCodeActivity;
 import com.company.zicure.registerkey.adapter.BannerViewPagerAdapter;
 import com.company.zicure.registerkey.adapter.MainMenuAdapter;
 import com.company.zicure.registerkey.holder.MainMenuHolder;
 import com.company.zicure.registerkey.interfaces.ItemClickListener;
-import com.company.zicure.registerkey.utilize.ModelCart;
-import com.company.zicure.registerkey.utilize.NextzyUtil;
-import com.company.zicure.registerkey.utilize.ResizeScreen;
-import com.company.zicure.registerkey.variables.VariableConnect;
-import com.company.zicure.registerkey.view.viewgroup.FlyOutContainer;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
+import gallery.zicure.company.com.modellibrary.utilize.ModelCart;
+import gallery.zicure.company.com.modellibrary.utilize.ResizeScreen;
 
 
 /**
@@ -232,20 +220,24 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
                             transaction.commit();
                         }
                         else if (checkMenu.equalsIgnoreCase(getString(R.string.ePayment))){
-                            Bundle bundle = new Bundle();
-                            userSecret = new String[]{ModelCart.getInstance().getKeyModel().getToken(), ModelCart.getInstance().getKeyModel().getUsername()};
-                            bundle.putStringArray(VariableConnect.userSecret, userSecret);
-                            Intent intent = new Intent(getActivity(),GenUserCodeActivity.class);
-                            intent.putExtras(bundle);
-                            startActivity(intent);
+                            String authToken = null;
+                            try{
+                                authToken = ModelCart.getInstance().getKeyModel().getAuthToken();
+                            }catch (NullPointerException e){
+                                e.printStackTrace();
+                            }
 
-//                                 Intent intent = getContext().getPackageManager().getLaunchIntentForPackage("com.company.zicure.payment");
-//                                 intent.addCategory(Intent.CATEGORY_LAUNCHER);
-//                                 startActivity(intent);
+                            Intent intent = getContext().getPackageManager().getLaunchIntentForPackage("com.company.zicure.payment");
+                            if (authToken != null){
+                                intent.addCategory(Intent.CATEGORY_LAUNCHER);
+                                intent.setType("text/plain");
+                                intent.putExtra(Intent.EXTRA_TEXT, authToken);
+                            }
+                            startActivity(intent);
                         }
                         else if (checkMenu.equalsIgnoreCase("Social")){
                             FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                            transaction.replace(R.id.container, AppMenuFragment.newInstance("http://psp.pakgon.com/Oauth/blogin?clientId=abcdef", ""));
+                            transaction.replace(R.id.container, AppMenuFragment.newInstance("http://psp.pakgon.com/ConnectApp", ""));
                             transaction.addToBackStack(null);
                             transaction.commit();
                         }
@@ -338,7 +330,9 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
     }
 
     public void stopViewPager(){
-        time.cancel();
+        if (time != null){
+            time.cancel();
+        }
     }
     //<----------------------------------------------------------------
 

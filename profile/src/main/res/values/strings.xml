@@ -4,7 +4,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="data_title">ข้อมูล</string>
-    <string name="add_cash_title">เติมเงิน</string>
+    <string name="add_cash_title">เข้าใช้งาน</string>
 
     <string name="account1">000000000000000001</string>
     <string name="account2">000000000000000002</string>
@@ -16,4 +16,5 @@
     <string name="birthday_th">วันเกิด</string>
     <string name="address_th">ที่อยู่</string>
     <string name="number_phone_th">เบอร์โทรศัพท์</string>
+    <string name="password_code_th">รหัส</string>
 </resources>

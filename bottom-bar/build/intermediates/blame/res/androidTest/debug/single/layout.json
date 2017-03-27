@@ -40,12 +40,12 @@
         "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\c5d723ea740d0dcf750fb381bd43953b4867a2df\\output\\res\\layout\\notification_template_media.xml"
     },
     {
-        "merged": "C:\\AndroidProject\\RegisterApp\\Official\\RegisterKey\\bottom-bar\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\notification_template_lines_media.xml",
-        "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\c5d723ea740d0dcf750fb381bd43953b4867a2df\\output\\res\\layout\\notification_template_lines_media.xml"
-    },
-    {
         "merged": "C:\\AndroidProject\\RegisterApp\\Official\\RegisterKey\\bottom-bar\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\design_layout_tab_icon.xml",
         "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\9d70b209564a775a848bf4989292476ed4371666\\output\\res\\layout\\design_layout_tab_icon.xml"
+    },
+    {
+        "merged": "C:\\AndroidProject\\RegisterApp\\Official\\RegisterKey\\bottom-bar\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\notification_template_lines_media.xml",
+        "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\c5d723ea740d0dcf750fb381bd43953b4867a2df\\output\\res\\layout\\notification_template_lines_media.xml"
     },
     {
         "merged": "C:\\AndroidProject\\RegisterApp\\Official\\RegisterKey\\bottom-bar\\build\\intermediates\\res\\merged\\androidTest\\debug\\layout\\notification_action.xml",

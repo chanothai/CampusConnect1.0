@@ -6,14 +6,12 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.widget.DatePicker;
-import android.widget.Toast;
-
-import com.company.zicure.registerkey.models.DateModel;
-import com.company.zicure.registerkey.utilize.EventBusCart;
-import com.company.zicure.registerkey.utilize.ModelCart;
-import com.company.zicure.registerkey.utilize.NextzyUtil;
 
 import java.util.Calendar;
+
+import gallery.zicure.company.com.modellibrary.models.DateModel;
+import gallery.zicure.company.com.modellibrary.utilize.EventBusCart;
+import gallery.zicure.company.com.modellibrary.utilize.ModelCart;
 
 /**
  * Created by 4GRYZ52 on 1/30/2017.

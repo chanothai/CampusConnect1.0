@@ -18,7 +18,8 @@ import android.widget.Toast;
 
 import com.company.zicure.registerkey.MainMenuActivity;
 import com.company.zicure.registerkey.R;
-import com.company.zicure.registerkey.utilize.JavaScriptInterface;
+
+import gallery.zicure.company.com.modellibrary.utilize.JavaScriptInterface;
 
 /**
  * A simple {@link Fragment} subclass.

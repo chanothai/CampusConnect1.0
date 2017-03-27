@@ -1,0 +1,43 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context="profilemof.zicure.company.com.profilemof.fragment.ActivateFragment">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/padding_large">
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/edit_code"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:inputType="text"
+                android:padding="@dimen/padding_small"
+                android:textSize="@dimen/size_text_medium"
+                android:gravity="center"
+                android:hint="@string/password_code_th"/>
+        </android.support.design.widget.TextInputLayout>
+
+
+        <Button
+            android:id="@+id/btn_activate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="@dimen/size_text_medium"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="24dp"
+            android:text="เปิดใช้งาน"
+            android:background="@drawable/select_btn_blue_strong"
+            android:padding="@dimen/padding_medium" />
+    </LinearLayout>
+</RelativeLayout>

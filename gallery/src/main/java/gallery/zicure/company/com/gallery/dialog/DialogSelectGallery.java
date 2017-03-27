@@ -17,6 +17,7 @@ import gallery.zicure.company.com.gallery.util.PermissionKeyNumber;
 import gallery.zicure.company.com.gallery.R;
 import gallery.zicure.company.com.gallery.adapter.RecyclerViewAdapter;
 import gallery.zicure.company.com.gallery.interfaces.ItemClickListener;
+import gallery.zicure.company.com.gallery.util.PermissionManager;
 import gallery.zicure.company.com.gallery.util.PermissionRequest;
 
 /**
@@ -58,7 +59,9 @@ public class DialogSelectGallery {
                     @Override
                     public void onItemClick(View view, int position) {
                         if (getTitle(position).equalsIgnoreCase(activity.getString(R.string.take_photo_th))){
-                            if (!PermissionRequest.newInstance(activity).requestCamera()){
+                            PermissionRequest manager = new PermissionRequest(activity);
+
+                            if (!manager.requestCamera()){
                                 intentCamera();
                             }
                         }

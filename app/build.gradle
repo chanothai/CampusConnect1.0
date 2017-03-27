@@ -34,13 +34,8 @@ dependencies {
 
     compile 'com.google.android.gms:play-services-maps:' + rootProject.ext.versionGooglePlayService
 
-
-
-
-
-
-
     compile project(path: ':profile')
+    compile project(path: ':modellibrary')
 
     compile 'com.roughike:bottom-bar:2.0.2'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'

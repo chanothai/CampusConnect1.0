@@ -7,13 +7,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-
-import com.company.zicure.registerkey.models.BaseResponse;
-import com.company.zicure.registerkey.utilize.EventBusCart;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import gallery.zicure.company.com.modellibrary.models.BaseResponse;
+import gallery.zicure.company.com.modellibrary.utilize.EventBusCart;
 
 public class  MainActivity extends AppCompatActivity implements View.OnClickListener {
 

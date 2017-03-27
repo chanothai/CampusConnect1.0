@@ -6,20 +6,23 @@ import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.company.zicure.registerkey.activity.CheckLoginActivity;
 import com.company.zicure.registerkey.common.BaseActivity;
-import com.company.zicure.registerkey.models.BaseResponse;
 import com.company.zicure.registerkey.network.ClientHttp;
-import com.company.zicure.registerkey.utilize.EventBusCart;
-import com.company.zicure.registerkey.variables.VariableConnect;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import gallery.zicure.company.com.modellibrary.models.BaseResponse;
+import gallery.zicure.company.com.modellibrary.utilize.EventBusCart;
+import gallery.zicure.company.com.modellibrary.utilize.ModelCart;
+import gallery.zicure.company.com.modellibrary.utilize.VariableConnect;
 
 public class SplashScreenActivity extends BaseActivity implements Animator.AnimatorListener{
 
+    private String authCode = null;
 
     @Bind(R.id.img_logo)
     ImageView imgLogo;
@@ -33,8 +36,19 @@ public class SplashScreenActivity extends BaseActivity implements Animator.Anima
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onResume() {
+        super.onResume();
+        Bundle bundle = getIntent().getExtras();
+        try{
+            authCode = bundle.getString(VariableConnect.authCode);
+            if (authCode != null){
+                ModelCart.getInstance().getKeyModel().setAuthCode(authCode);
+                Toast.makeText(this, authCode, Toast.LENGTH_SHORT).show();
+            }
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
+
         ClientHttp.getInstance(this).checkVersionApp();
     }
 

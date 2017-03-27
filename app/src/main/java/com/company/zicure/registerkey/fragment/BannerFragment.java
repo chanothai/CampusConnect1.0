@@ -13,7 +13,8 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.company.zicure.registerkey.R;
-import com.company.zicure.registerkey.utilize.ResizeScreen;
+
+import gallery.zicure.company.com.modellibrary.utilize.ResizeScreen;
 
 /**
  * A simple {@link Fragment} subclass.

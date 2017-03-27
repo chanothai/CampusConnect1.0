@@ -1,10 +1,8 @@
 package com.company.zicure.registerkey;
 
-import android.annotation.TargetApi;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.os.Build;
-import android.os.Parcelable;
 import android.os.PersistableBundle;
 import android.support.annotation.IdRes;
 import android.support.design.widget.AppBarLayout;
@@ -17,7 +15,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
@@ -39,19 +36,8 @@ import com.company.zicure.registerkey.fragment.ScanQRFragment;
 import com.company.zicure.registerkey.fragment.StudentCardFragment;
 import com.company.zicure.registerkey.holder.SlideMenuHolder;
 import com.company.zicure.registerkey.interfaces.ItemClickListener;
-import com.company.zicure.registerkey.models.ApplicationRequest;
-import com.company.zicure.registerkey.models.BaseResponse;
-import com.company.zicure.registerkey.models.DataModel;
-import com.company.zicure.registerkey.models.ResponseUserInfo;
-import com.company.zicure.registerkey.models.drawer.SlideMenuDetail;
-import com.company.zicure.registerkey.models.AuthToken;
 import com.company.zicure.registerkey.network.ClientHttp;
 import com.company.zicure.registerkey.security.EncryptionAES;
-import com.company.zicure.registerkey.utilize.EventBusCart;
-import com.company.zicure.registerkey.utilize.ModelCart;
-import com.company.zicure.registerkey.utilize.ResizeScreen;
-import com.company.zicure.registerkey.utilize.RestoreLogin;
-import com.company.zicure.registerkey.variables.VariableConnect;
 import com.company.zicure.registerkey.view.viewgroup.FlyOutContainer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -59,20 +45,27 @@ import com.joooonho.SelectableRoundedImageView;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabReselectListener;
 import com.roughike.bottombar.OnTabSelectListener;
-import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
 import org.json.JSONObject;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import gallery.zicure.company.com.modellibrary.models.ApplicationRequest;
+import gallery.zicure.company.com.modellibrary.models.AuthToken;
+import gallery.zicure.company.com.modellibrary.models.BaseResponse;
+import gallery.zicure.company.com.modellibrary.models.DataModel;
+import gallery.zicure.company.com.modellibrary.models.ResponseUserInfo;
+import gallery.zicure.company.com.modellibrary.models.drawer.SlideMenuDetail;
+import gallery.zicure.company.com.modellibrary.utilize.EventBusCart;
+import gallery.zicure.company.com.modellibrary.utilize.ModelCart;
+import gallery.zicure.company.com.modellibrary.utilize.ResizeScreen;
+import gallery.zicure.company.com.modellibrary.utilize.VariableConnect;
 import profilemof.zicure.company.com.profilemof.activity.ProfileActivity;
-import profilemof.zicure.company.com.profilemof.utilize.ModelCartProfile;
 
 public class MainMenuActivity extends BaseActivity implements OnTabSelectListener,OnTabReselectListener, View.OnClickListener {
 
@@ -144,10 +137,8 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
         super.onCreate(savedInstanceState);
         root = (FlyOutContainer) getLayoutInflater().inflate(R.layout.activity_main_menu, null);
         setContentView(root);
-
-        EventBusCart.getInstance().getEventBus().register(this);
         ButterKnife.bind(this);
-
+        setToolbar();
         bottomBar.setOnTabSelectListener(this);
         bottomBar.setOnTabReselectListener(this);
         setOnTouchView();
@@ -163,6 +154,18 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
                 setModelUser();
             }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        EventBusCart.getInstance().getEventBus().register(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        EventBusCart.getInstance().getEventBus().unregister(this);
     }
 
     private void setModelUser(){
@@ -200,13 +203,17 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
 
     @Subscribe
     public void onEventAuthToken(BaseResponse baseResponse){
-        if (baseResponse.getResult().getSuccess().equalsIgnoreCase("OK")){
-            String[] splitKey = baseResponse.getResult().geteResult().split(getString(R.string.key_iv));
-            String decrypt = EncryptionAES.newInstance(key).decrypt(splitKey[0], splitKey[1].getBytes());
-            decodeJson(decrypt);
-        }else{
-            Toast.makeText(this, baseResponse.getResult().getError(), Toast.LENGTH_SHORT).show();
-            openActivity(LoginActivity.class, true);
+        try {
+            if (baseResponse.getResult().getSuccess().equalsIgnoreCase("OK")){
+                String[] splitKey = baseResponse.getResult().geteResult().split(getString(R.string.key_iv));
+                String decrypt = EncryptionAES.newInstance(key).decrypt(splitKey[0], splitKey[1].getBytes());
+                decodeJson(decrypt);
+            }else{
+                Toast.makeText(this, baseResponse.getResult().getError(), Toast.LENGTH_SHORT).show();
+                openActivity(LoginActivity.class, true);
+            }
+        }catch (NullPointerException e){
+            e.printStackTrace();
         }
         dismissDialog();
     }
@@ -253,9 +260,7 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
             ModelCart.getInstance().getUserInfo().setResult(response.getResult());
             Toast.makeText(this, response.getResult().getSuccess(), Toast.LENGTH_LONG).show();
 
-            setToolbar();
             setSlideMenuAdapter();
-
         }else{
             Toast.makeText(this, response.getResult().getError(), Toast.LENGTH_LONG).show();
         }
@@ -468,8 +473,7 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
                     @Override
                     public void onItemClick(View view, int position) {
                         if (getTitle(position).equalsIgnoreCase(getString(R.string.user_detail_th))){
-                            Bundle bundle = setBundle();
-                            openActivity(ProfileActivity.class, bundle);
+                            openActivity(ProfileActivity.class);
                             overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_scale_out);
                         }
                         else if (getTitle(position).equalsIgnoreCase(getString(R.string.menu_feed_th))){
@@ -486,18 +490,6 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
 //        listSlideMenu.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
     }
 
-    private Bundle setBundle(){Bundle bundle = new Bundle();
-        bundle.putString("username", ModelCart.getInstance().getUserInfo().getResult().getData().getUser().getUsername());
-        bundle.putString("first_name", ModelCart.getInstance().getUserInfo().getResult().getData().getUser().getFirstName());
-        bundle.putString("last_name", ModelCart.getInstance().getUserInfo().getResult().getData().getUser().getLastName());
-        bundle.putString("screen_name", ModelCart.getInstance().getUserInfo().getResult().getData().getUser().getScreenName());
-        bundle.putString("birth_date", ModelCart.getInstance().getUserInfo().getResult().getData().getUser().getBirthday());
-        bundle.putString("citizen_id", ModelCart.getInstance().getUserInfo().getResult().getData().getUser().getCitizenID());
-        bundle.putString("phone", ModelCart.getInstance().getUserInfo().getResult().getData().getUser().getPhone());
-        bundle.putString("profile_image_path", ModelCart.getInstance().getUserInfo().getResult().getData().getUser().getImgPath());
-
-        return bundle;
-    }
     //<=======================================================================
 
     private void callHomeFragment(){

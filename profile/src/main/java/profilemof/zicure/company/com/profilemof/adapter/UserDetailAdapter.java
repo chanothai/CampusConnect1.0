@@ -9,6 +9,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import gallery.zicure.company.com.modellibrary.models.ResponseUserInfo;
 import profilemof.zicure.company.com.profilemof.R;
 
 /**
@@ -17,11 +18,11 @@ import profilemof.zicure.company.com.profilemof.R;
 
 public abstract class UserDetailAdapter extends RecyclerView.Adapter<UserDetailAdapter.UserDetailHolder> {
     private List<String> listTopic = null;
-    private List<String> listContent = null;
+    private ResponseUserInfo userInfo = null;
 
-    public UserDetailAdapter(ArrayList<String> listTopic, ArrayList<String> listContent){
+    public UserDetailAdapter(ArrayList<String> listTopic, ResponseUserInfo userInfo){
         this.listTopic = listTopic;
-        this.listContent = listContent;
+        this.userInfo = userInfo;
     }
 
     @Override
@@ -36,8 +37,8 @@ public abstract class UserDetailAdapter extends RecyclerView.Adapter<UserDetailA
         return listTopic.get(position);
     }
 
-    public String getContent(int position){
-        return listContent.get(position);
+    public ResponseUserInfo.ResultUserInfo.DataUserInfo.User getUserInfo(){
+        return userInfo.getResult().getData().getUser();
     }
 
     @Override

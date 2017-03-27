@@ -18,19 +18,31 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.joooonho.SelectableRoundedImageView;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
+import com.squareup.otto.Subscribe;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import gallery.zicure.company.com.gallery.util.PermissionKeyNumber;
 import gallery.zicure.company.com.gallery.dialog.DialogSelectGallery;
+import gallery.zicure.company.com.gallery.util.PermissionKeyNumber;
+import gallery.zicure.company.com.modellibrary.models.BaseResponse;
+import gallery.zicure.company.com.modellibrary.utilize.EventBusCart;
+import gallery.zicure.company.com.modellibrary.utilize.ModelCart;
+import gallery.zicure.company.com.modellibrary.utilize.ResizeScreen;
+import gallery.zicure.company.com.modellibrary.utilize.ToolbarManager;
+import gallery.zicure.company.com.modellibrary.utilize.VariableConnect;
 import profilemof.zicure.company.com.profilemof.R;
 import profilemof.zicure.company.com.profilemof.adapter.ViewPagerAdapter;
-import profilemof.zicure.company.com.profilemof.fragment.AddCashFragment;
+import profilemof.zicure.company.com.profilemof.fragment.ActivateFragment;
 import profilemof.zicure.company.com.profilemof.fragment.UserDetailFragment;
-import profilemof.zicure.company.com.profilemof.utilize.ModelCartProfile;
-import profilemof.zicure.company.com.profilemof.utilize.ResizeScreen;
+import profilemof.zicure.company.com.profilemof.security.EncryptionAES;
 
 public class ProfileActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener, View.OnClickListener{
     private Toolbar toolbar = null;
@@ -45,16 +57,21 @@ public class ProfileActivity extends AppCompatActivity implements TabLayout.OnTa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        EventBusCart.getInstance().getEventBus().register(this);
         bindView();
         setToolbar();
         setStatusBarTint();
-        setupViewPager(viewPager);
-        initialTab();
-        setImgProfile();
 
         if (savedInstanceState == null){
+            getUserInfo();
+            setImgProfile();
 
+            setupViewPager(viewPager);
         }
+    }
+
+    private void getUserInfo(){
+
     }
 
     private void bindView(){
@@ -68,7 +85,6 @@ public class ProfileActivity extends AppCompatActivity implements TabLayout.OnTa
 
         resizeImage();
     }
-
 
     private void resizeImage(){
         ResizeScreen resizeScreen = new ResizeScreen(this);
@@ -96,6 +112,21 @@ public class ProfileActivity extends AppCompatActivity implements TabLayout.OnTa
         }
     }
 
+    private void setToolbar(){
+        ToolbarManager toolbarManager = new ToolbarManager(this);
+        toolbarManager.setToolbar(toolbar, null, getString(R.string.app_name));
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
+    private void setupViewPager(ViewPager viewPager){
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new UserDetailFragment(), getString(R.string.data_title));
+        adapter.addFragment(new ActivateFragment(), getString(R.string.add_cash_title));
+        viewPager.setAdapter(adapter);
+
+        initialTab();
+    }
+
     private void initialTab(){
         tabLayout.setupWithViewPager(viewPager);
         TabLayout.Tab tab = tabLayout.getTabAt(0);
@@ -106,43 +137,59 @@ public class ProfileActivity extends AppCompatActivity implements TabLayout.OnTa
     private void setImgProfile(){
         try{
             imgEditProfile.setImageResource(R.drawable.ic_google_images);
-            if (ModelCartProfile.getInstance().getAccount().equals(getString(R.string.account1))){
-                imgProfile.setImageResource(R.drawable.base);
-                accountProfile.setText(getString(R.string.account1));
-            }
-            else if (ModelCartProfile.getInstance().getAccount().equals(getString(R.string.account2))){
-                imgProfile.setImageResource(R.drawable.yajai);
-                accountProfile.setText(getString(R.string.account2));
-            }
+            Glide.with(this)
+                    .load(ModelCart.getInstance().getUserInfo().getResult().getData().getUser().getImgPath())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .centerCrop()
+                    .into(imgProfile);
+
+            String screenName = ModelCart.getInstance().getUserInfo().getResult().getData().getUser().getFirstName() +" "+ ModelCart.getInstance().getUserInfo().getResult().getData().getUser().getLastName();
+            accountProfile.setText(screenName);
+
         }catch (NullPointerException e){
             imgProfile.setImageResource(R.mipmap.ic_launcher);
             accountProfile.setText("");
         }
     }
 
-    private void setToolbar(){
-        toolbar.setTitle("");
-        //Set the padding to math the status bar height
-        toolbar.setPadding(0, getStatusBarHeight() - 8, 0,0);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-    }
+    @Subscribe
+    public void onEventAutoToken(BaseResponse response){
+        if (response.getResult().getSuccess().equalsIgnoreCase("OK")){
+            String eResult = response.getResult().geteResult();
+            String[] spile = eResult.split(VariableConnect.keyIV);
+            String decrypt = EncryptionAES.newInstance(ModelCart.getInstance().getKeyModel().getKey()).decrypt(spile[0], spile[1].getBytes());
 
-    private int getStatusBarHeight(){
-        int result = 0;
-        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0){
-            result = getResources().getDimensionPixelSize(resourceId);
+            if (!decrypt.isEmpty()){
+                decodeJson(decrypt);
+            }
+        }else{
+            Toast.makeText(this, "Null", Toast.LENGTH_SHORT).show();
         }
-        return result;
     }
 
-    private void setupViewPager(ViewPager viewPager){
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new UserDetailFragment(), getString(R.string.data_title));
-        adapter.addFragment(new AddCashFragment(), getString(R.string.add_cash_title));
-        viewPager.setAdapter(adapter);
+    private void decodeJson(String decrypt){
+        JSONObject jsonObject = null;
+        try{
+            jsonObject = new JSONObject(decrypt);
+            String success = jsonObject.getString("Success");
+            if (success.equalsIgnoreCase("OK")){
+                jsonObject = jsonObject.getJSONObject("AuthToken");
+                String authCode = jsonObject.getString("auth_code");
+                ModelCart.getInstance().getKeyModel().setAuthToken(authCode); //save auth token
+
+                Toast.makeText(this, authCode, Toast.LENGTH_SHORT).show();
+            }
+        }catch (Exception e){
+            try {
+                String error = jsonObject.getString("Error");
+                Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }catch (Exception ex){
+                ex.printStackTrace();
+            }
+        }
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -197,6 +244,12 @@ public class ProfileActivity extends AppCompatActivity implements TabLayout.OnTa
     public void onBackPressed() {
         super.onBackPressed();
         finishActivity();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBusCart.getInstance().getEventBus().unregister(this);
     }
 
     @Override
