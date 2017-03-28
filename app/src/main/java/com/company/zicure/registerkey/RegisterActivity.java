@@ -50,8 +50,12 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
     Button btnRegister;
     @Bind(R.id.phone_number)
     EditText phoneNumber;
+    @Bind(R.id.edit_first_name)
+    EditText editFirstName;
+    @Bind(R.id.edit_last_name)
+    EditText editLastName;
 
-    private String strIdCard, strBirthDate, strPhone;
+    private String strIdCard, strBirthDate, strPhone, firstName, lastName, screenName;
     //Context
     private Context context = this;
     @Override
@@ -87,17 +91,23 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
         strIdCard = idCard.getText().toString().trim();
         strBirthDate = birthDate.getText().toString().trim();
         strPhone = phoneNumber.getText().toString().trim();
+        firstName = editFirstName.getText().toString().trim();
+        lastName = editLastName.getText().toString().trim();
 
-        if (strIdCard.length() == 13 && !strBirthDate.isEmpty() && strPhone.length() == 12){
-
+        if (strIdCard.length() == 13 && !strBirthDate.isEmpty() && strPhone.length() == 12 && !lastName.isEmpty() && !firstName.isEmpty()){
             String[] phone = strPhone.split("-");
             String currentPhone = phone[0] + phone[1] + phone[2];
+            screenName = firstName + " " + lastName;
 
             RegisterRequest request = new RegisterRequest();
             RegisterRequest.User user = new RegisterRequest.User();
             user.setCitizenId(strIdCard);
             user.setBirthDate(strBirthDate);
             user.setPhone(currentPhone);
+            user.setFirstName(firstName);
+            user.setLastName(lastName);
+            user.setScreenName(screenName);
+
             request.setUser(user);
 
             String str = new Gson().toJson(request);
@@ -115,21 +125,11 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
 
             showLoadingDialog();
             ClientHttp.getInstance(context).register(dataModel);
-
-            if (strIdCard.length() < 13 ){
-                idCard.requestFocus();
-            }
-            else if (phoneNumber.getText().toString().trim().length() < 12){
-                phoneNumber.requestFocus();
-            }
-            else if (strBirthDate.isEmpty()){
-                showDialog();
-            }
         }
     }
 
     private void store(String strPhone){
-        SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getSharedPreferences(VariableConnect.keyFile, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(getString(R.string.phone_key), strPhone);
         editor.commit();
@@ -272,13 +272,6 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
         if (actionId == EditorInfo.IME_ACTION_DONE){
             checkInput();
         }
-        else if (actionId == EditorInfo.IME_ACTION_NEXT){
-            if (idCard.getText().toString().trim().length() < 13){
-                Toast.makeText(this, R.string.content_alert_idcard, Toast.LENGTH_LONG).show();
-                idCard.requestFocus();
-            }
-        }
-
         return false;
     }
 }

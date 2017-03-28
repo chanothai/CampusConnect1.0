@@ -38,16 +38,6 @@ public class SplashScreenActivity extends BaseActivity implements Animator.Anima
     @Override
     protected void onResume() {
         super.onResume();
-        Bundle bundle = getIntent().getExtras();
-        try{
-            authCode = bundle.getString(VariableConnect.authCode);
-            if (authCode != null){
-                ModelCart.getInstance().getKeyModel().setAuthCode(authCode);
-                Toast.makeText(this, authCode, Toast.LENGTH_SHORT).show();
-            }
-        }catch (NullPointerException e){
-            e.printStackTrace();
-        }
 
         ClientHttp.getInstance(this).checkVersionApp();
     }

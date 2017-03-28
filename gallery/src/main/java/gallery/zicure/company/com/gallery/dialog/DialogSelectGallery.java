@@ -59,9 +59,7 @@ public class DialogSelectGallery {
                     @Override
                     public void onItemClick(View view, int position) {
                         if (getTitle(position).equalsIgnoreCase(activity.getString(R.string.take_photo_th))){
-                            PermissionRequest manager = new PermissionRequest(activity);
-
-                            if (!manager.requestCamera()){
+                            if (!PermissionRequest.newInstance(activity).requestCamera()){
                                 intentCamera();
                             }
                         }

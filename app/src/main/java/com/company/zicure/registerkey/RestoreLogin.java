@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import gallery.zicure.company.com.modellibrary.utilize.VariableConnect;
+
 /**
  * Created by 4GRYZ52 on 3/22/2017.
  */
@@ -15,7 +17,7 @@ public class RestoreLogin {
 
     public RestoreLogin(Activity activity){
         this.activity = activity;
-        pref = activity.getSharedPreferences(activity.getString(R.string.preference_file_key), Context.MODE_PRIVATE);
+        pref = activity.getSharedPreferences(VariableConnect.keyFile, Context.MODE_PRIVATE);
     }
 
     public static RestoreLogin getInstance(Activity activity){

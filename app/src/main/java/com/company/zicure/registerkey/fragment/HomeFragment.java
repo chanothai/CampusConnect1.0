@@ -37,6 +37,7 @@ import java.util.TimerTask;
 
 import gallery.zicure.company.com.modellibrary.utilize.ModelCart;
 import gallery.zicure.company.com.modellibrary.utilize.ResizeScreen;
+import gallery.zicure.company.com.modellibrary.utilize.VariableConnect;
 
 
 /**
@@ -54,7 +55,7 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
 
     //parameter
     String[] strMenu;
-    int[] imgsMenu = {R.drawable.carlendar2, R.drawable.news, R.drawable.subject2, R.drawable.icon_header, R.drawable.subject2};
+    int[] imgsMenu = null;
 
     int[] imgBanner = {R.drawable.banner1, R.drawable.banner2, R.drawable.banner3};
 
@@ -134,7 +135,8 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        strMenu = new String[]{getString(R.string.menu_calendar), getString(R.string.menu_news), getString(R.string.menu_subject),getString(R.string.ePayment), "Social"};
+        strMenu = new String[]{getString(R.string.ePayment), getString(R.string.blog_social_th)};
+        imgsMenu = new int[]{R.drawable.icon_header,R.drawable.subject2};
         recyclerViewMenu.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         if (savedInstanceState == null){
             //set layout app
@@ -201,25 +203,7 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
                     @Override
                     public void onItemClick(View view, int position) {
                         String checkMenu = getItemName(position);
-                        if (checkMenu.equalsIgnoreCase(getString(R.string.menu_calendar))){
-                            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                            transaction.replace(R.id.container, AppMenuFragment.newInstance(getString(R.string.url_calendar), ""));
-                            transaction.addToBackStack(null);
-                            transaction.commit();
-                        }
-                        else if (checkMenu.equalsIgnoreCase(getString(R.string.menu_news))){
-                            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                            transaction.replace(R.id.container, AppMenuFragment.newInstance(getString(R.string.url_news), ""));
-                            transaction.addToBackStack(null);
-                            transaction.commit();
-                        }
-                        else if (checkMenu.equalsIgnoreCase(getString(R.string.menu_subject))){
-                            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                            transaction.replace(R.id.container, AppMenuFragment.newInstance(getString(R.string.url_subject), ""));
-                            transaction.addToBackStack(null);
-                            transaction.commit();
-                        }
-                        else if (checkMenu.equalsIgnoreCase(getString(R.string.ePayment))){
+                        if (checkMenu.equalsIgnoreCase(getString(R.string.ePayment))){
                             String authToken = null;
                             try{
                                 authToken = ModelCart.getInstance().getKeyModel().getAuthToken();
@@ -234,15 +218,15 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
                                 intent.putExtra(Intent.EXTRA_TEXT, authToken);
                             }
                             startActivity(intent);
+                            ModelCart.getInstance().getKeyModel().setAuthToken("");
                         }
                         else if (checkMenu.equalsIgnoreCase("Social")){
                             FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                            transaction.replace(R.id.container, AppMenuFragment.newInstance("http://psp.pakgon.com/ConnectApp", ""));
+                            transaction.replace(R.id.container, AppMenuFragment.newInstance("http://psp.pakgon.com/ConnectApp", ""), VariableConnect.appMenuFragmentKey);
                             transaction.addToBackStack(null);
                             transaction.commit();
                         }
                     }
-
                 });
             }
 

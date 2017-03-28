@@ -53,6 +53,8 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener,Te
     private String strUser = "", strPass = "";
     private String restoreUser = null, restorePass = null;
 
+    private SharedPreferences sharedPref = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +66,7 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener,Te
         setTextClick();
 
         if (savedInstanceState == null){
+            sharedPref = getSharedPreferences(VariableConnect.keyFile, Context.MODE_PRIVATE);
             byte[] keyByte = Base64.decode(VariableConnect.staticKey.getBytes(), Base64.NO_WRAP);
             ModelCart.getInstance().getKeyModel().setKey(keyByte);
         }
@@ -178,7 +181,6 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener,Te
         byte[] key = Base64.decode(dynamicKey.getBytes(), Base64.NO_WRAP);
         ModelCart.getInstance().getKeyModel().setKey(key);
 
-        SharedPreferences sharedPref = getSharedPreferences(getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(getString(R.string.token_login), token);
         editor.putString(getString(R.string.dynamic_key), dynamicKey);

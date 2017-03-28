@@ -1,7 +1,5 @@
 package profilemof.zicure.company.com.profilemof.activity;
 
-import android.Manifest;
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -128,8 +126,10 @@ public class ProfileActivity extends AppCompatActivity implements TabLayout.OnTa
     }
 
     private void initialTab(){
+        Bundle bundle = getIntent().getExtras();
+        int page = bundle.getInt(VariableConnect.pageKey);
         tabLayout.setupWithViewPager(viewPager);
-        TabLayout.Tab tab = tabLayout.getTabAt(0);
+        TabLayout.Tab tab = tabLayout.getTabAt(page);
         tab.select();
         tabLayout.setOnTabSelectedListener(this);
     }
@@ -143,7 +143,7 @@ public class ProfileActivity extends AppCompatActivity implements TabLayout.OnTa
                     .centerCrop()
                     .into(imgProfile);
 
-            String screenName = ModelCart.getInstance().getUserInfo().getResult().getData().getUser().getFirstName() +" "+ ModelCart.getInstance().getUserInfo().getResult().getData().getUser().getLastName();
+            String screenName = ModelCart.getInstance().getUserInfo().getResult().getData().getUser().getScreenName();
             accountProfile.setText(screenName);
 
         }catch (NullPointerException e){
@@ -156,8 +156,8 @@ public class ProfileActivity extends AppCompatActivity implements TabLayout.OnTa
     public void onEventAutoToken(BaseResponse response){
         if (response.getResult().getSuccess().equalsIgnoreCase("OK")){
             String eResult = response.getResult().geteResult();
-            String[] spile = eResult.split(VariableConnect.keyIV);
-            String decrypt = EncryptionAES.newInstance(ModelCart.getInstance().getKeyModel().getKey()).decrypt(spile[0], spile[1].getBytes());
+            String[] spilt = eResult.split(VariableConnect.keyIV);
+            String decrypt = EncryptionAES.newInstance(ModelCart.getInstance().getKeyModel().getKey()).decrypt(spilt[0], spilt[1].getBytes());
 
             if (!decrypt.isEmpty()){
                 decodeJson(decrypt);
@@ -255,8 +255,8 @@ public class ProfileActivity extends AppCompatActivity implements TabLayout.OnTa
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.img_edit_profile){
-            DialogSelectGallery dialog = new DialogSelectGallery(this);
-            dialog.showDialog();
+//            DialogSelectGallery dialog = new DialogSelectGallery(this);
+//            dialog.showDialog();
         }
     }
 }

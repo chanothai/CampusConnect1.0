@@ -113,7 +113,8 @@ public class UserDetailFragment extends Fragment {
                     holder.content.setText(getUserInfo().getLastName());
                 }
                 else if (getTopic(position).equalsIgnoreCase(getString(R.string.birthday_th))){
-                    holder.content.setText(getUserInfo().getBirthday());
+                    String[] splite = getUserInfo().getBirthday().split(" ");
+                    holder.content.setText(splite[0]);
                 }
                 else if (getTopic(position).equalsIgnoreCase(getString(R.string.number_phone_th))){
                     holder.content.setText(getUserInfo().getPhone());

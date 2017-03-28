@@ -182,6 +182,7 @@ public class ClientHttp {
                     ResponseError.setUserInfoResponseError("Response_data: null");
                 }
             }
+
             @Override
             public void onFailure(Call<ResponseUserInfo> call, Throwable t) {
                 t.printStackTrace();

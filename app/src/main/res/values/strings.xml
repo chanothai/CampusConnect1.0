@@ -64,7 +64,6 @@
     <string name="content_alert_phone">กรุณากรอกเบอร์โทรศัพท์ให้ครบ 10 หลัก</string>
     <string name="tag_home_fragment">tagHomeFragment</string>
     <string name="content_alert_OTP">กรุณากรอก OTP ให้ครบ 4 หลัก</string>
-    <string name="preference_file_key">file_key</string>
     <string name="token_login">token</string>
     <string name="dynamic_key">dynamic_key</string>
     <string name="phone_key">phone_key</string>
@@ -72,7 +71,8 @@
     <string name="setting_menu_th">การตั้งค่า</string>
     <string name="logout_menu_th">ออกจากระบบ</string>
     <string name="user_detail_th">ข้อมูลส่วนตัว</string>
-    <string name="edit_user_th">แก้ไขข้อมูล</string>
+    <string name="activate_user_th">เปิดใช้งานแอพพลิเคชั่น</string>
     <string name="user_secret">user_secret</string>
     <string name="message_get_userinfo_th">MOF PAY APPLICATION : จะขอรับข้อมูลส่วนตัวจาก CONNECT APPLICATION.</string>
+    <string name="blog_social_th">Social</string>
 </resources>

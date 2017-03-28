@@ -1,13 +1,17 @@
 package com.company.zicure.registerkey;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.os.PersistableBundle;
 import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.VelocityTrackerCompat;
@@ -55,6 +59,7 @@ import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import gallery.zicure.company.com.gallery.util.PermissionKeyNumber;
 import gallery.zicure.company.com.modellibrary.models.ApplicationRequest;
 import gallery.zicure.company.com.modellibrary.models.AuthToken;
 import gallery.zicure.company.com.modellibrary.models.BaseResponse;
@@ -63,7 +68,9 @@ import gallery.zicure.company.com.modellibrary.models.ResponseUserInfo;
 import gallery.zicure.company.com.modellibrary.models.drawer.SlideMenuDetail;
 import gallery.zicure.company.com.modellibrary.utilize.EventBusCart;
 import gallery.zicure.company.com.modellibrary.utilize.ModelCart;
+import gallery.zicure.company.com.modellibrary.utilize.NextzyUtil;
 import gallery.zicure.company.com.modellibrary.utilize.ResizeScreen;
+import gallery.zicure.company.com.modellibrary.utilize.ToolbarManager;
 import gallery.zicure.company.com.modellibrary.utilize.VariableConnect;
 import profilemof.zicure.company.com.profilemof.activity.ProfileActivity;
 
@@ -90,7 +97,6 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
     //bottom navigation
     @Bind(R.id.bottomBar)
     BottomBar bottomBar;
-
 
     //list view slide menu
     @Bind(R.id.list_slide_menu)
@@ -139,6 +145,8 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
         setContentView(root);
         ButterKnife.bind(this);
         setToolbar();
+
+        bottomBar.setVisibility(View.GONE);
         bottomBar.setOnTabSelectListener(this);
         bottomBar.setOnTabReselectListener(this);
         setOnTouchView();
@@ -267,6 +275,23 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
         dismissDialog();
     }
 
+    public void setToolbar(){
+        if (Build.VERSION.SDK_INT >= 21){
+            ToolbarManager manager = new ToolbarManager(this);
+            manager.setToolbar(toolbarMenu, titleToolbar, getString(R.string.app_name));
+            manager.setAppbarLayout(appBarLayout);
+
+            imgToggle.setImageResource(R.drawable.ic_action_toc);
+            imgToggle.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent));
+            imgToggle.setOnClickListener(this);
+            setSupportActionBar(toolbarMenu);
+
+            setLayoutHeadDrawer();
+        }else{
+            appBarLayout.setVisibility(View.GONE);
+        }
+    }
+
     public void setLayoutHeadDrawer(){
         ResizeScreen resizeScreen = new ResizeScreen(this);
 
@@ -297,26 +322,6 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
         Resources resources = getResources();
         float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value,resources.getDisplayMetrics());
         return (int)px;
-    }
-
-    public void setToolbar(){
-        if (Build.VERSION.SDK_INT >= 21){
-            CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
-            params.height = getActionBarHeight() + getStatusBarHeight() + 10;
-            appBarLayout.setLayoutParams(params);
-            toolbarMenu.setPadding(0, getStatusBarHeight() + 10 , 0,0);
-
-            toolbarMenu.setTitle("");
-            titleToolbar.setText(getString(R.string.campus_logo));
-            imgToggle.setImageResource(R.drawable.ic_action_toc);
-            imgToggle.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent));
-            imgToggle.setOnClickListener(this);
-            setSupportActionBar(toolbarMenu);
-
-            setLayoutHeadDrawer();
-        }else{
-            appBarLayout.setVisibility(View.GONE);
-        }
     }
 
     private int getActionBarHeight(){
@@ -441,6 +446,7 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
         root.toggleMenu(widthScreen, speedTouch);
     }
 
+    //Layout menu drawer
     // set view adapter of slide menu0--------------------------------------->
     public void setSlideMenuAdapter(){
         String pathImg = ModelCart.getInstance().getUserInfo().getResult().getData().getUser().getImgPath();
@@ -455,8 +461,8 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
 
         arrMenu = new ArrayList<SlideMenuDetail>();
         Log.d("SlideMenu",new Gson().toJson(arrMenu));
-        String[] arrTitle = {getString(R.string.menu_feed_th),getString(R.string.user_detail_th),getString(R.string.edit_user_th),getString(R.string.setting_menu_th), getString(R.string.logout_menu_th)};
-        int[] arrImg = {R.drawable.ic_news_feed,R.drawable.ic_user_profile,  R.drawable.ic_edit_user, R.drawable.ic_setting,R.drawable.ic_log_out};
+        String[] arrTitle = {getString(R.string.menu_feed_th),getString(R.string.user_detail_th),getString(R.string.activate_user_th), getString(R.string.logout_menu_th)};
+        int[] arrImg = {R.drawable.ic_news_feed,R.drawable.ic_user_profile,  R.drawable.ic_edit_user,R.drawable.ic_log_out};
         for (int i = 0; i < arrTitle.length; i++){
             SlideMenuDetail menu = new SlideMenuDetail();
             menu.setTitle(arrTitle[i]);
@@ -473,12 +479,28 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
                     @Override
                     public void onItemClick(View view, int position) {
                         if (getTitle(position).equalsIgnoreCase(getString(R.string.user_detail_th))){
-                            openActivity(ProfileActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putInt(VariableConnect.pageKey, 0);
+                            openActivity(ProfileActivity.class, bundle);
                             overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_scale_out);
                         }
                         else if (getTitle(position).equalsIgnoreCase(getString(R.string.menu_feed_th))){
                             callHomeFragment();
                             setToggle(0,0);
+                        }
+                        else if (getTitle(position).equalsIgnoreCase(getString(R.string.logout_menu_th))){
+                            SharedPreferences pref = getSharedPreferences(VariableConnect.keyFile, Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = pref.edit();
+                            editor.clear();
+                            editor.commit();
+
+                            openActivity(LoginActivity.class, true);
+                        }
+                        else if (getTitle(position).equalsIgnoreCase(getString(R.string.activate_user_th))){
+                            Bundle bundle = new Bundle();
+                            bundle.putInt(VariableConnect.pageKey, 1);
+                            openActivity(ProfileActivity.class, bundle);
+                            overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_scale_out);
                         }
                     }
                 });
@@ -495,12 +517,6 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
     private void callHomeFragment(){
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, new HomeFragment());
-        transaction.commit();
-    }
-    public void getAppCalendar(){
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, AppMenuFragment.newInstance(getString(R.string.url_calendar), ""));
-        transaction.addToBackStack(null);
         transaction.commit();
     }
 
@@ -539,7 +555,6 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventBusCart.getInstance().getEventBus().unregister(this);
     }
 
     @Override
@@ -559,6 +574,18 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
     public void onClick(View view) {
         if (view.getId() == R.id.img_toggle){
             setToggle(0,0);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (PermissionKeyNumber.getInstance().getPermissionCameraKey() == requestCode){
+            if (grantResults[0] != -1){
+                FragmentManager fm = getSupportFragmentManager();
+                AppMenuFragment fragment = (AppMenuFragment) fm.findFragmentByTag(VariableConnect.appMenuFragmentKey);
+                fragment.setWebView();
+            }
         }
     }
 }

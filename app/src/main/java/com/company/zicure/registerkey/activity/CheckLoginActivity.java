@@ -31,23 +31,18 @@ public class CheckLoginActivity extends BaseActivity {
         currentDynamicKey = RestoreLogin.getInstance(this).getRestoreKey();
         currentUsername = RestoreLogin.getInstance(this).getRestoreUser();
 
-        String verifyPhone = RestoreLogin.getInstance(this).getRestorePhoneNumber();
-        if (verifyPhone != null){
-            if (currentDynamicKey != null && currentToken != null && currentUsername != null){
-                key = Base64.decode(currentDynamicKey.getBytes(), Base64.NO_WRAP);
-                ModelCart.getInstance().getKeyModel().setKey(key);
-                ModelCart.getInstance().getKeyModel().setUsername(currentUsername);
-                ModelCart.getInstance().getKeyModel().setToken(currentToken);
+        if (currentDynamicKey != null && currentToken != null && currentUsername != null){
+            key = Base64.decode(currentDynamicKey.getBytes(), Base64.NO_WRAP);
+            ModelCart.getInstance().getKeyModel().setKey(key);
+            ModelCart.getInstance().getKeyModel().setUsername(currentUsername);
+            ModelCart.getInstance().getKeyModel().setToken(currentToken);
 
-                Bundle bundle = new Bundle();
-                String[] strArr = {currentToken, currentUsername};
-                bundle.putStringArray(getString(R.string.user_secret), strArr);
-                openActivity(MainMenuActivity.class, bundle, true);
-            }else{
-                openActivity(LoginActivity.class, true);
-            }
+            Bundle bundle = new Bundle();
+            String[] strArr = {currentToken, currentUsername};
+            bundle.putStringArray(getString(R.string.user_secret), strArr);
+            openActivity(MainMenuActivity.class, bundle, true);
         }else{
-            openActivity(RegisterActivity.class, true);
+            openActivity(LoginActivity.class, true);
         }
     }
 }

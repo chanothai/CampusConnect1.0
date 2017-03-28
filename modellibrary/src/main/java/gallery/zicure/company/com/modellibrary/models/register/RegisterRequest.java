@@ -25,6 +25,12 @@ public class RegisterRequest {
         private String birthDate;
         @SerializedName("phone")
         private String phone;
+        @SerializedName("first_name")
+        private String firstName;
+        @SerializedName("last_name")
+        private String lastName;
+        @SerializedName("screen_name")
+        private String screenName;
 
         public String getCitizenId() {
             return citizenId;
@@ -48,6 +54,30 @@ public class RegisterRequest {
 
         public void setPhone(String phone) {
             this.phone = phone;
+        }
+
+        public String getFirstName() {
+            return firstName;
+        }
+
+        public void setFirstName(String firstName) {
+            this.firstName = firstName;
+        }
+
+        public String getLastName() {
+            return lastName;
+        }
+
+        public void setLastName(String lastName) {
+            this.lastName = lastName;
+        }
+
+        public String getScreenName() {
+            return screenName;
+        }
+
+        public void setScreenName(String screenName) {
+            this.screenName = screenName;
         }
     }
 }
