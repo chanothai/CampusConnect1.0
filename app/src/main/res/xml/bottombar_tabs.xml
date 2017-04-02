@@ -13,7 +13,7 @@
 
     <tab
         id="@+id/tab_card"
-        icon="@drawable/ic_image_timer_auto"
+        icon="@drawable/ic_person"
         title="ID CARD"/>
 
 </tabs>

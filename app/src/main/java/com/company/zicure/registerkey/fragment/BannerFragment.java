@@ -27,7 +27,7 @@ public class BannerFragment extends Fragment {
     private static final String ARG_PARAM1 = "pager";
 
     // TODO: Rename and change types of parameters
-    private int pager;
+    private String pager;
 
     private ImageView imgBanner;
 
@@ -42,10 +42,10 @@ public class BannerFragment extends Fragment {
      * @return A new instance of fragment BannerFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static BannerFragment newInstance(int pager) {
+    public static BannerFragment newInstance(String pager) {
         BannerFragment fragment = new BannerFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_PARAM1, pager);
+        args.putString(ARG_PARAM1, pager);
         fragment.setArguments(args);
         return fragment;
     }
@@ -54,7 +54,7 @@ public class BannerFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            pager = getArguments().getInt(ARG_PARAM1);
+            pager = getArguments().getString(ARG_PARAM1);
         }
     }
 

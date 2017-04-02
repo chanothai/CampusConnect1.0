@@ -1,8 +1,12 @@
 package com.company.zicure.registerkey.fragment;
 
 
+import android.app.ActivityManager;
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -26,12 +30,14 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.company.zicure.registerkey.MainMenuActivity;
 import com.company.zicure.registerkey.R;
 import com.company.zicure.registerkey.adapter.BannerViewPagerAdapter;
 import com.company.zicure.registerkey.adapter.MainMenuAdapter;
 import com.company.zicure.registerkey.holder.MainMenuHolder;
 import com.company.zicure.registerkey.interfaces.ItemClickListener;
 
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -57,9 +63,9 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
     String[] strMenu;
     int[] imgsMenu = null;
 
-    int[] imgBanner = {R.drawable.banner1, R.drawable.banner2, R.drawable.banner3};
+    String[] imgBanner = null;
 
-    private int currentPager;
+    private int currentPager = 0;
 
     //create time for run view pager
     Timer time = null;
@@ -82,13 +88,6 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
 
     //Swipe for pull to refresh
     SwipeRefreshLayout swipeRefreshLayout;
-
-    //dialog setting
-    private Dialog dialog = null;
-
-    //view switch
-    private SwitchCompat swBluetooth = null;
-    private ImageView imgClose = null;
 
     private Handler handler = null;
     private Runnable updateView = null;
@@ -114,9 +113,6 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-
-        }
     }
 
     @Override
@@ -136,13 +132,12 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         strMenu = new String[]{getString(R.string.ePayment), getString(R.string.blog_social_th)};
-        imgsMenu = new int[]{R.drawable.icon_header,R.drawable.subject2};
+        imgsMenu = new int[]{R.drawable.logo_mof,R.drawable.icon_header};
         recyclerViewMenu.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         if (savedInstanceState == null){
             //set layout app
             setAdapterView();
             setBannerPager();
-            createDialog();
             resizeViewPager();
         }
 
@@ -163,18 +158,13 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
         viewPagerBanner.setLayoutParams(params);
     }
 
-    private void createDialog(){
-        dialog = new Dialog(getActivity());
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.setContentView(R.layout.dialog_setting_iconnect);
-
-        swBluetooth = (SwitchCompat) dialog.findViewById(R.id.switch_bluetooth);
-        imgClose = (ImageView) dialog.findViewById(R.id.img_close);
-        imgClose.setOnClickListener(this);
-    }
-
 
     public void setBannerPager(){
+        imgBanner = new String[]{"http://gconnect-th.com/cms/webroot/img/app_bannner/1.png"
+        , "http://gconnect-th.com/cms/webroot/img/app_bannner/2.png"
+        , "http://gconnect-th.com/cms/webroot/img/app_bannner/3.png"
+        , "http://gconnect-th.com/cms/webroot/img/app_bannner/4.png"};
+
         bannerViewPagerAdapter = new BannerViewPagerAdapter(getChildFragmentManager(), imgBanner);
         viewPagerBanner.setAdapter(bannerViewPagerAdapter);
         viewPagerBanner.addOnPageChangeListener(this);
@@ -198,29 +188,34 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(holder.imgBtnMenu);
 
-
                 holder.setItemOnClickListener(new ItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
                         String checkMenu = getItemName(position);
                         if (checkMenu.equalsIgnoreCase(getString(R.string.ePayment))){
                             String authToken = null;
+                            String strPackage = "com.company.zicure.payment";
                             try{
                                 authToken = ModelCart.getInstance().getKeyModel().getAuthToken();
+                                Intent intent = getContext().getPackageManager().getLaunchIntentForPackage(strPackage);
+                                if (authToken != null){
+                                    intent.addCategory(Intent.CATEGORY_LAUNCHER);
+                                    intent.setType("text/plain");
+                                    intent.putExtra(Intent.EXTRA_TEXT, authToken);
+                                }
+                                startActivity(intent);
+                                ModelCart.getInstance().getKeyModel().setAuthToken("");
+
                             }catch (NullPointerException e){
                                 e.printStackTrace();
+                                try{
+                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + strPackage)));
+                                }catch (ActivityNotFoundException ef){
+                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + strPackage)));
+                                }
                             }
-
-                            Intent intent = getContext().getPackageManager().getLaunchIntentForPackage("com.company.zicure.payment");
-                            if (authToken != null){
-                                intent.addCategory(Intent.CATEGORY_LAUNCHER);
-                                intent.setType("text/plain");
-                                intent.putExtra(Intent.EXTRA_TEXT, authToken);
-                            }
-                            startActivity(intent);
-                            ModelCart.getInstance().getKeyModel().setAuthToken("");
                         }
-                        else if (checkMenu.equalsIgnoreCase("Social")){
+                        else if (checkMenu.equalsIgnoreCase(getString(R.string.blog_social_th))){
                             FragmentTransaction transaction = getFragmentManager().beginTransaction();
                             transaction.replace(R.id.container, AppMenuFragment.newInstance("http://psp.pakgon.com/ConnectApp", ""), VariableConnect.appMenuFragmentKey);
                             transaction.addToBackStack(null);
@@ -229,7 +224,6 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
                     }
                 });
             }
-
             private void setLayoutParams(MainMenuHolder holder){
                 ResizeScreen resizeScreen = new ResizeScreen(getActivity());
                 RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) holder.imgBtnMenu.getLayoutParams();
@@ -293,14 +287,13 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
         updateView = new Runnable() {
             @Override
             public void run() {
-                if (currentPager <= 0){
-                    currentPager = 0;
+                try {
+                    if (currentPager >= imgBanner.length){
+                        currentPager = 0;
+                    }
                     viewPagerBanner.setCurrentItem(currentPager++);
-                }else if (currentPager == 1){
-                    viewPagerBanner.setCurrentItem(currentPager++);
-                }else if (currentPager == 2){
-                    viewPagerBanner.setCurrentItem(currentPager);
-                    currentPager = 0;
+                }catch (NullPointerException e){
+                    e.printStackTrace();
                 }
             }
         };
@@ -312,6 +305,7 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
             }
         },300,5000);
     }
+
 
     public void stopViewPager(){
         if (time != null){
@@ -353,6 +347,7 @@ public class HomeFragment extends Fragment implements ViewPager.OnPageChangeList
 
     @Override
     public void onRefresh() {
+        ((MainMenuActivity) getActivity()).setModelUser();
         swipeRefreshLayout.setRefreshing(false);
     }
 }

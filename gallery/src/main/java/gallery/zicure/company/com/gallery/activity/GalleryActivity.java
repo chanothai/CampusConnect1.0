@@ -67,7 +67,8 @@ public class GalleryActivity extends AppCompatActivity {
         bindView();
         setToolbar();
 
-        if (!PermissionRequest.newInstance(this).requestReadStorage()){
+        PermissionRequest permissionRequest = new PermissionRequest(this);
+        if (!permissionRequest.requestReadStorage()){
             addFolder();
         }
     }

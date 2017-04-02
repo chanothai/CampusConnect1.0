@@ -24,6 +24,7 @@
                 android:padding="@dimen/padding_small"
                 android:textSize="@dimen/size_text_medium"
                 android:gravity="center"
+                android:background="?android:attr/selectableItemBackground"
                 android:hint="@string/password_code_th"/>
         </android.support.design.widget.TextInputLayout>
 
@@ -37,7 +38,7 @@
             android:textColor="@android:color/white"
             android:layout_marginTop="24dp"
             android:text="เปิดใช้งาน"
-            android:background="@drawable/select_btn_blue_strong"
+            android:background="@drawable/select_btn_circle_blue_strong"
             android:padding="@dimen/padding_medium" />
     </LinearLayout>
 </RelativeLayout>

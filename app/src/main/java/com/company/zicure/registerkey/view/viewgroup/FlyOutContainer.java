@@ -43,7 +43,7 @@ public class FlyOutContainer extends LinearLayout {
 
 	// Position information attributes
 	protected int currentContentOffset = 0;
-	public static MenuState menuCurrentState = MenuState.CLOSED;
+	public static MenuState menuCurrentState = null;
 
 	private int animationDuration = 300;
 
@@ -64,7 +64,7 @@ public class FlyOutContainer extends LinearLayout {
 	@Override
 	protected void onAttachedToWindow() {
 		super.onAttachedToWindow();
-
+		menuCurrentState = MenuState.CLOSED;
 		this.menu = this.getChildAt(0);
 		this.content = this.getChildAt(1);
 
@@ -91,7 +91,7 @@ public class FlyOutContainer extends LinearLayout {
 	}
 
 	private void openning(){
-		setMarginLayout(20);
+//		setMarginLayout(20);
 		menuCurrentState = MenuState.OPEN; //Content is opening
 		layoutGhost.setVisibility(View.VISIBLE);
 	}
@@ -102,10 +102,18 @@ public class FlyOutContainer extends LinearLayout {
 	}
 
 	public void setAlphaMenu(int value){
+		if (menuCurrentState == MenuState.OPEN){
+
+		}
+
 		int newValue = getMenuWidth() - value;
 		double d = (double) newValue;
 		double result = d / 1000;
+		if (result <= 0.1){
+			result = 0.1;
+		}
 		layoutShadowMenu.setAlpha((float) result);
+		layoutShadowMenu.setClickable(true);
 	}
 
 	public void setAnimation(int target){
@@ -123,7 +131,8 @@ public class FlyOutContainer extends LinearLayout {
 				animSlideMenu = ObjectAnimator.ofFloat(content, View.TRANSLATION_X, currentWidth, target);
 			}
 
-			animAlpha = ObjectAnimator.ofFloat(layoutShadowMenu, View.ALPHA, 0f);
+			animAlpha = ObjectAnimator.ofFloat(layoutShadowMenu, View.ALPHA, 0.1f);
+			layoutShadowMenu.setClickable(false);
 		}
 		else if (menuCurrentState == MenuState.CLOSED){
 			if (target <= (getMenuWidth() / 2) && target > 0){
@@ -137,6 +146,7 @@ public class FlyOutContainer extends LinearLayout {
 			}
 			setMarginLayout(0);
 			animAlpha = ObjectAnimator.ofFloat(layoutShadowMenu, View.ALPHA, 1f);
+			layoutShadowMenu.setClickable(true);
 		}
 
 		animTogether.playTogether(animSlideMenu, animAlpha);

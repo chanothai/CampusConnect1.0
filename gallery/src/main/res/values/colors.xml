@@ -8,5 +8,5 @@
     <color name="colorBlueStrongPress">#1565C0</color>
     <color name="colorBlueStrongGradient">#64B5F6</color>
 
-    <color name="colorBgDialog">#616161</color>
+    <color name="colorBgDialog">#EEEEEE</color>
 </resources>

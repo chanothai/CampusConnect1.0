@@ -15,6 +15,7 @@ import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -31,6 +32,7 @@ import gallery.zicure.company.com.modellibrary.models.DataModel;
 import gallery.zicure.company.com.modellibrary.models.RequestUserCode;
 import gallery.zicure.company.com.modellibrary.models.UserRequest;
 import gallery.zicure.company.com.modellibrary.utilize.ModelCart;
+import gallery.zicure.company.com.modellibrary.utilize.ResizeScreen;
 import gallery.zicure.company.com.modellibrary.utilize.VariableConnect;
 import profilemof.zicure.company.com.profilemof.R;
 import profilemof.zicure.company.com.profilemof.activity.ProfileActivity;
@@ -108,6 +110,7 @@ public class ActivateFragment extends Fragment implements View.OnClickListener{
             authCode = ModelCart.getInstance().getKeyModel().getAuthCode();
             key = ModelCart.getInstance().getKeyModel().getKey();
 
+            setParamBtn();
         }
     }
 
@@ -118,6 +121,14 @@ public class ActivateFragment extends Fragment implements View.OnClickListener{
             authCode = editCode.getText().toString().trim();
             createModel();
         }
+    }
+
+    private void setParamBtn(){
+        ResizeScreen screen = new ResizeScreen(getActivity());
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)btnActivate.getLayoutParams();
+        params.width = screen.widthScreen(3);
+        params.height = screen.widthScreen(3);
+        btnActivate.setLayoutParams(params);
     }
 
     private void createModel(){
@@ -143,6 +154,7 @@ public class ActivateFragment extends Fragment implements View.OnClickListener{
             dataUser.setUsername(username);
             dataModel.setUser(dataUser);
 
+            ((ProfileActivity) getActivity()).showLoadingDialog();
             ClientHttp.getInstance(getActivity()).approveDevice(dataModel);
         }
     }

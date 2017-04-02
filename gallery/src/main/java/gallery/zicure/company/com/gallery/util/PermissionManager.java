@@ -14,18 +14,10 @@ import android.support.v4.content.ContextCompat;
  */
 public class PermissionManager {
     private Activity context = null;
-    private static PermissionManager me;
 
     public PermissionManager(Activity context){
         this.context = context;
 
-    }
-
-    public static PermissionManager getInstance(Activity context){
-        if (me == null){
-            me = new PermissionManager(context);
-        }
-        return me;
     }
 
     public boolean checkPermission(String permission, int myPermission){

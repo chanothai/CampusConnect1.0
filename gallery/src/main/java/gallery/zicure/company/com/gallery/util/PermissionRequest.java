@@ -9,33 +9,27 @@ import android.content.Context;
  */
 
 public class PermissionRequest {
-    private static PermissionRequest me = null;
     private Activity context = null;
+    private PermissionManager manager = null;
 
 
     public PermissionRequest(Activity context){
         this.context = context;
-    }
-
-    public static PermissionRequest newInstance(Activity context){
-        if (me == null){
-            me = new PermissionRequest(context);
-        }
-        return me;
+        manager = new PermissionManager(context);
     }
 
     public boolean requestCamera(){
-        if (!PermissionManager.getInstance(context).checkPermission(Manifest.permission.CAMERA, PermissionKeyNumber.getInstance().getPermissionCameraKey())){
+        if (!manager.checkPermission(Manifest.permission.CAMERA, PermissionKeyNumber.getInstance().getPermissionCameraKey())){
             return false;
         }
         return true;
     }
 
     public boolean requestReadStorage(){
-        if (!PermissionManager.getInstance(context).checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE,PermissionKeyNumber.getInstance().getPermissionReadStorageKey())){
+        if (!manager.checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE,PermissionKeyNumber.getInstance().getPermissionReadStorageKey())){
             return false;
         }
-
         return true;
     }
+
 }

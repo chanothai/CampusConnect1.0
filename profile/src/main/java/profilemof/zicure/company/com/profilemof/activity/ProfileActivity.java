@@ -30,6 +30,7 @@ import org.json.JSONObject;
 import de.hdodenhof.circleimageview.CircleImageView;
 import gallery.zicure.company.com.gallery.dialog.DialogSelectGallery;
 import gallery.zicure.company.com.gallery.util.PermissionKeyNumber;
+import gallery.zicure.company.com.modellibrary.common.BaseActivity;
 import gallery.zicure.company.com.modellibrary.models.BaseResponse;
 import gallery.zicure.company.com.modellibrary.utilize.EventBusCart;
 import gallery.zicure.company.com.modellibrary.utilize.ModelCart;
@@ -42,7 +43,7 @@ import profilemof.zicure.company.com.profilemof.fragment.ActivateFragment;
 import profilemof.zicure.company.com.profilemof.fragment.UserDetailFragment;
 import profilemof.zicure.company.com.profilemof.security.EncryptionAES;
 
-public class ProfileActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener, View.OnClickListener{
+public class ProfileActivity extends BaseActivity implements TabLayout.OnTabSelectedListener, View.OnClickListener{
     private Toolbar toolbar = null;
     private TabLayout tabLayout = null;
     private ViewPager viewPager = null;
@@ -61,15 +62,10 @@ public class ProfileActivity extends AppCompatActivity implements TabLayout.OnTa
         setStatusBarTint();
 
         if (savedInstanceState == null){
-            getUserInfo();
             setImgProfile();
 
             setupViewPager(viewPager);
         }
-    }
-
-    private void getUserInfo(){
-
     }
 
     private void bindView(){
@@ -147,7 +143,7 @@ public class ProfileActivity extends AppCompatActivity implements TabLayout.OnTa
             accountProfile.setText(screenName);
 
         }catch (NullPointerException e){
-            imgProfile.setImageResource(R.mipmap.ic_launcher);
+            imgProfile.setImageResource(R.drawable.ic_account_circle_black_24dp);
             accountProfile.setText("");
         }
     }
@@ -165,6 +161,8 @@ public class ProfileActivity extends AppCompatActivity implements TabLayout.OnTa
         }else{
             Toast.makeText(this, "Null", Toast.LENGTH_SHORT).show();
         }
+
+        dismissDialog();
     }
 
     private void decodeJson(String decrypt){
@@ -177,7 +175,19 @@ public class ProfileActivity extends AppCompatActivity implements TabLayout.OnTa
                 String authCode = jsonObject.getString("auth_code");
                 ModelCart.getInstance().getKeyModel().setAuthToken(authCode); //save auth token
 
-                Toast.makeText(this, authCode, Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.auth_token_complete_th, Toast.LENGTH_SHORT).show();
+
+                String authToken = null;
+                String strPackage = "com.company.zicure.payment";
+                authToken = ModelCart.getInstance().getKeyModel().getAuthToken();
+                Intent intent = getPackageManager().getLaunchIntentForPackage(strPackage);
+                if (authToken != null){
+                    intent.addCategory(Intent.CATEGORY_LAUNCHER);
+                    intent.setType("text/plain");
+                    intent.putExtra(Intent.EXTRA_TEXT, authToken);
+                }
+                startActivity(intent);
+                ModelCart.getInstance().getKeyModel().setAuthToken("");
             }
         }catch (Exception e){
             try {

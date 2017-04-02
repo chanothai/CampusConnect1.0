@@ -17,4 +17,5 @@
     <string name="address_th">ที่อยู่</string>
     <string name="number_phone_th">เบอร์โทรศัพท์</string>
     <string name="password_code_th">รหัส</string>
+    <string name="auth_token_complete_th">เปิดสิทธ์การใช้งาน MOF PAY Application เรียบร้อย</string>
 </resources>

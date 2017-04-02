@@ -17,7 +17,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.company.zicure.registerkey.common.BaseActivity;
 import com.company.zicure.registerkey.dialog.DatePickerFragment;
 import com.company.zicure.registerkey.network.ClientHttp;
 import com.company.zicure.registerkey.security.EncryptionAES;
@@ -31,6 +30,7 @@ import org.json.JSONObject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import gallery.zicure.company.com.modellibrary.common.BaseActivity;
 import gallery.zicure.company.com.modellibrary.models.BaseResponse;
 import gallery.zicure.company.com.modellibrary.models.DataModel;
 import gallery.zicure.company.com.modellibrary.models.DateModel;
@@ -54,8 +54,12 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
     EditText editFirstName;
     @Bind(R.id.edit_last_name)
     EditText editLastName;
+    @Bind(R.id.edit_password)
+    EditText editPass;
+    @Bind(R.id.edit_confirm_password)
+    EditText editConfirmPass;
 
-    private String strIdCard, strBirthDate, strPhone, firstName, lastName, screenName;
+    private String strIdCard, strBirthDate, strPhone, firstName, lastName, screenName, pass, confirmPass;
     //Context
     private Context context = this;
     @Override
@@ -74,6 +78,8 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
 
         if (savedInstanceState == null){
             setKey();
+            editConfirmPass.setVisibility(View.GONE);
+            editPass.setVisibility(View.GONE);
         }
     }
 
@@ -93,39 +99,52 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
         strPhone = phoneNumber.getText().toString().trim();
         firstName = editFirstName.getText().toString().trim();
         lastName = editLastName.getText().toString().trim();
+        pass = editPass.getText().toString().trim();
+        confirmPass = editConfirmPass.getText().toString().trim();
 
-        if (strIdCard.length() == 13 && !strBirthDate.isEmpty() && strPhone.length() == 12 && !lastName.isEmpty() && !firstName.isEmpty()){
-            String[] phone = strPhone.split("-");
-            String currentPhone = phone[0] + phone[1] + phone[2];
-            screenName = firstName + " " + lastName;
+        if (confirmPass.equalsIgnoreCase(pass)){
+            if (strIdCard.length() == 13 && !strBirthDate.isEmpty() && strPhone.length() == 12 && !lastName.isEmpty() && !firstName.isEmpty()){
+                String[] phone = strPhone.split("-");
+                String currentPhone = phone[0] + phone[1] + phone[2];
+                screenName = firstName + " " + lastName;
 
-            RegisterRequest request = new RegisterRequest();
-            RegisterRequest.User user = new RegisterRequest.User();
-            user.setCitizenId(strIdCard);
-            user.setBirthDate(strBirthDate);
-            user.setPhone(currentPhone);
-            user.setFirstName(firstName);
-            user.setLastName(lastName);
-            user.setScreenName(screenName);
+                DataModel dataModel = createModel(currentPhone);
 
-            request.setUser(user);
-
-            String str = new Gson().toJson(request);
-            Log.d("RegisterRequest", str);
-
-            Gson gson = new GsonBuilder().disableHtmlEscaping().create();
-            String resultEncrypt = EncryptionAES.newInstance(ModelCart.getInstance().getKeyModel().getKey()).encrypt(gson.toJson(request));
-            Log.d("User", resultEncrypt);
-
-            DataModel dataModel = new DataModel();
-            dataModel.setData(resultEncrypt);
-
-            str = new Gson().toJson(dataModel);
-            Log.d("RegisterRequest", str);
-
-            showLoadingDialog();
-            ClientHttp.getInstance(context).register(dataModel);
+                showLoadingDialog();
+                ClientHttp.getInstance(context).register(dataModel);
+            }
+        }else{
+            editConfirmPass.requestFocus();
+            Toast.makeText(getApplicationContext(), R.string.message_check_password_th, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private DataModel createModel(String currentPhone){
+        RegisterRequest request = new RegisterRequest();
+        RegisterRequest.User user = new RegisterRequest.User();
+        user.setCitizenId(strIdCard);
+        user.setBirthDate(strBirthDate);
+        user.setPhone(currentPhone);
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setScreenName(screenName);
+
+        request.setUser(user);
+
+        String str = new Gson().toJson(request);
+        Log.d("RegisterRequest", str);
+
+        Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+        String resultEncrypt = EncryptionAES.newInstance(ModelCart.getInstance().getKeyModel().getKey()).encrypt(gson.toJson(request));
+        Log.d("User", resultEncrypt);
+
+        DataModel dataModel = new DataModel();
+        dataModel.setData(resultEncrypt);
+
+        str = new Gson().toJson(dataModel);
+        Log.d("RegisterRequest", str);
+
+        return dataModel;
     }
 
     private void store(String strPhone){
@@ -165,8 +184,7 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
                 store(strPhone);
                 Bundle bundle = new Bundle();
                 bundle.putString("username", strPhone);
-                openActivity(OTPActivity.class,bundle, true);
-                overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
+                openActivity(LoginActivity.class,bundle, true);
             }else{
                 String error = jsonObject.getString("Error");
                 Toast.makeText(getApplicationContext(), error, Toast.LENGTH_LONG).show();
@@ -255,6 +273,13 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
                 txtResult = phoneNumber.getText().toString().trim() + "-";
                 phoneNumber.setText(txtResult);
                 phoneNumber.setSelection(8);
+            }
+            else if (position == 7){
+                if (!txtResult.equalsIgnoreCase("-")){
+                    txtResult = "-" + txtResult;
+                    phoneNumber.setText(txtResult);
+                    phoneNumber.setSelection(9);
+                }
             }
         }catch (Exception e){
             phoneNumber.setText("");

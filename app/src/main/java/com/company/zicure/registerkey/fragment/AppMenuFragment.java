@@ -52,7 +52,7 @@ public class AppMenuFragment extends Fragment {
     private String token;
 
     //VIew
-    private WebView webView = null;
+    public static WebView webView = null;
     private NestedScrollView scrollView = null;
 
     public ValueCallback<Uri[]> mUploadMesssage = null;
@@ -102,10 +102,12 @@ public class AppMenuFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        scrollView.setNestedScrollingEnabled(true);
-
-        if (!PermissionRequest.newInstance(getActivity()).requestCamera()){
-            setWebView();
+        if (savedInstanceState == null){
+            scrollView.setNestedScrollingEnabled(true);
+            PermissionRequest permissionRequest = new PermissionRequest(getActivity());
+            if (!permissionRequest.requestCamera()){
+                setWebView();
+            }
         }
     }
 

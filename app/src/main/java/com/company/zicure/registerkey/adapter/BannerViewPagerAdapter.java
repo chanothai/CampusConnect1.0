@@ -12,8 +12,8 @@ import com.company.zicure.registerkey.fragment.BannerFragment;
 
 public class BannerViewPagerAdapter extends FragmentPagerAdapter {
 
-    private int[] imgBanner = null;
-    public BannerViewPagerAdapter(FragmentManager fm, int[] imgBanner) {
+    private String[] imgBanner = null;
+    public BannerViewPagerAdapter(FragmentManager fm, String[] imgBanner) {
         super(fm);
         this.imgBanner = imgBanner;
     }

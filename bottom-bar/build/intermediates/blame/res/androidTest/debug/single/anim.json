@@ -1,66 +1,66 @@
 [
     {
         "merged": "C:\\AndroidProject\\RegisterApp\\Official\\RegisterKey\\bottom-bar\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\abc_slide_in_bottom.xml",
-        "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\c5d723ea740d0dcf750fb381bd43953b4867a2df\\output\\res\\anim\\abc_slide_in_bottom.xml"
+        "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\797c19bf06ec6516a41636af032bce5444de6bbb\\output\\res\\anim\\abc_slide_in_bottom.xml"
     },
     {
         "merged": "C:\\AndroidProject\\RegisterApp\\Official\\RegisterKey\\bottom-bar\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\abc_popup_exit.xml",
-        "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\c5d723ea740d0dcf750fb381bd43953b4867a2df\\output\\res\\anim\\abc_popup_exit.xml"
+        "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\797c19bf06ec6516a41636af032bce5444de6bbb\\output\\res\\anim\\abc_popup_exit.xml"
     },
     {
         "merged": "C:\\AndroidProject\\RegisterApp\\Official\\RegisterKey\\bottom-bar\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\abc_fade_out.xml",
-        "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\c5d723ea740d0dcf750fb381bd43953b4867a2df\\output\\res\\anim\\abc_fade_out.xml"
+        "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\797c19bf06ec6516a41636af032bce5444de6bbb\\output\\res\\anim\\abc_fade_out.xml"
     },
     {
         "merged": "C:\\AndroidProject\\RegisterApp\\Official\\RegisterKey\\bottom-bar\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\abc_slide_out_bottom.xml",
-        "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\c5d723ea740d0dcf750fb381bd43953b4867a2df\\output\\res\\anim\\abc_slide_out_bottom.xml"
+        "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\797c19bf06ec6516a41636af032bce5444de6bbb\\output\\res\\anim\\abc_slide_out_bottom.xml"
     },
     {
         "merged": "C:\\AndroidProject\\RegisterApp\\Official\\RegisterKey\\bottom-bar\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\design_fab_out.xml",
-        "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\9d70b209564a775a848bf4989292476ed4371666\\output\\res\\anim\\design_fab_out.xml"
+        "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\27558604505ad685a5ec042327136d96df2a30f8\\output\\res\\anim\\design_fab_out.xml"
     },
     {
         "merged": "C:\\AndroidProject\\RegisterApp\\Official\\RegisterKey\\bottom-bar\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\design_bottom_sheet_slide_out.xml",
-        "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\9d70b209564a775a848bf4989292476ed4371666\\output\\res\\anim\\design_bottom_sheet_slide_out.xml"
+        "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\27558604505ad685a5ec042327136d96df2a30f8\\output\\res\\anim\\design_bottom_sheet_slide_out.xml"
     },
     {
         "merged": "C:\\AndroidProject\\RegisterApp\\Official\\RegisterKey\\bottom-bar\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\design_fab_in.xml",
-        "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\9d70b209564a775a848bf4989292476ed4371666\\output\\res\\anim\\design_fab_in.xml"
+        "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\27558604505ad685a5ec042327136d96df2a30f8\\output\\res\\anim\\design_fab_in.xml"
     },
     {
         "merged": "C:\\AndroidProject\\RegisterApp\\Official\\RegisterKey\\bottom-bar\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\design_snackbar_in.xml",
-        "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\9d70b209564a775a848bf4989292476ed4371666\\output\\res\\anim\\design_snackbar_in.xml"
+        "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\27558604505ad685a5ec042327136d96df2a30f8\\output\\res\\anim\\design_snackbar_in.xml"
     },
     {
         "merged": "C:\\AndroidProject\\RegisterApp\\Official\\RegisterKey\\bottom-bar\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\design_bottom_sheet_slide_in.xml",
-        "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\9d70b209564a775a848bf4989292476ed4371666\\output\\res\\anim\\design_bottom_sheet_slide_in.xml"
+        "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\27558604505ad685a5ec042327136d96df2a30f8\\output\\res\\anim\\design_bottom_sheet_slide_in.xml"
     },
     {
         "merged": "C:\\AndroidProject\\RegisterApp\\Official\\RegisterKey\\bottom-bar\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\abc_fade_in.xml",
-        "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\c5d723ea740d0dcf750fb381bd43953b4867a2df\\output\\res\\anim\\abc_fade_in.xml"
+        "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\797c19bf06ec6516a41636af032bce5444de6bbb\\output\\res\\anim\\abc_fade_in.xml"
     },
     {
         "merged": "C:\\AndroidProject\\RegisterApp\\Official\\RegisterKey\\bottom-bar\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\abc_slide_out_top.xml",
-        "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\c5d723ea740d0dcf750fb381bd43953b4867a2df\\output\\res\\anim\\abc_slide_out_top.xml"
+        "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\797c19bf06ec6516a41636af032bce5444de6bbb\\output\\res\\anim\\abc_slide_out_top.xml"
     },
     {
         "merged": "C:\\AndroidProject\\RegisterApp\\Official\\RegisterKey\\bottom-bar\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\design_snackbar_out.xml",
-        "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\9d70b209564a775a848bf4989292476ed4371666\\output\\res\\anim\\design_snackbar_out.xml"
+        "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\27558604505ad685a5ec042327136d96df2a30f8\\output\\res\\anim\\design_snackbar_out.xml"
     },
     {
         "merged": "C:\\AndroidProject\\RegisterApp\\Official\\RegisterKey\\bottom-bar\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\abc_shrink_fade_out_from_bottom.xml",
-        "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\c5d723ea740d0dcf750fb381bd43953b4867a2df\\output\\res\\anim\\abc_shrink_fade_out_from_bottom.xml"
+        "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\797c19bf06ec6516a41636af032bce5444de6bbb\\output\\res\\anim\\abc_shrink_fade_out_from_bottom.xml"
     },
     {
         "merged": "C:\\AndroidProject\\RegisterApp\\Official\\RegisterKey\\bottom-bar\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\abc_grow_fade_in_from_bottom.xml",
-        "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\c5d723ea740d0dcf750fb381bd43953b4867a2df\\output\\res\\anim\\abc_grow_fade_in_from_bottom.xml"
+        "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\797c19bf06ec6516a41636af032bce5444de6bbb\\output\\res\\anim\\abc_grow_fade_in_from_bottom.xml"
     },
     {
         "merged": "C:\\AndroidProject\\RegisterApp\\Official\\RegisterKey\\bottom-bar\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\abc_popup_enter.xml",
-        "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\c5d723ea740d0dcf750fb381bd43953b4867a2df\\output\\res\\anim\\abc_popup_enter.xml"
+        "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\797c19bf06ec6516a41636af032bce5444de6bbb\\output\\res\\anim\\abc_popup_enter.xml"
     },
     {
         "merged": "C:\\AndroidProject\\RegisterApp\\Official\\RegisterKey\\bottom-bar\\build\\intermediates\\res\\merged\\androidTest\\debug\\anim\\abc_slide_in_top.xml",
-        "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\c5d723ea740d0dcf750fb381bd43953b4867a2df\\output\\res\\anim\\abc_slide_in_top.xml"
+        "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\797c19bf06ec6516a41636af032bce5444de6bbb\\output\\res\\anim\\abc_slide_in_top.xml"
     }
 ]

@@ -182,7 +182,7 @@
         android:padding="16dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="100dp"
-        android:src="@drawable/ic_image_timer_auto" />
+        android:src="@drawable/ic_person" />
 
     <ImageView
         android:id="@+id/img_qr_code"

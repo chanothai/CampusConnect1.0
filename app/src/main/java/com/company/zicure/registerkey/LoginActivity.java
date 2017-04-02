@@ -20,7 +20,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.company.zicure.registerkey.activity.CheckLoginActivity;
-import com.company.zicure.registerkey.common.BaseActivity;
 import com.company.zicure.registerkey.network.ClientHttp;
 import com.company.zicure.registerkey.security.EncryptionAES;
 import com.google.gson.Gson;
@@ -33,6 +32,7 @@ import org.json.JSONObject;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import gallery.zicure.company.com.modellibrary.common.BaseActivity;
 import gallery.zicure.company.com.modellibrary.models.BaseResponse;
 import gallery.zicure.company.com.modellibrary.models.DataModel;
 import gallery.zicure.company.com.modellibrary.models.login.LoginRequest;
@@ -91,7 +91,7 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener,Te
             String str = new Gson().toJson(dataModel);
             Log.d("LoginRequest",  str);
             showLoadingDialog();
-            ClientHttp.getInstance(getApplicationContext()).login(dataModel);
+            ClientHttp.getInstance(this).login(dataModel);
         }
     }
 
@@ -234,6 +234,13 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener,Te
                 txtResult = editUser.getText().toString().trim() + "-";
                 editUser.setText(txtResult);
                 editUser.setSelection(8);
+            }
+            else if (position == 7){
+                if (!txtResult.equalsIgnoreCase("-")){
+                    txtResult = "-" + txtResult;
+                    editUser.setText(txtResult);
+                    editUser.setSelection(9);
+                }
             }
         }catch (Exception e){
             editUser.setText("");

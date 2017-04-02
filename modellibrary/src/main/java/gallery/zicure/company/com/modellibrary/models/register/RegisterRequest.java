@@ -31,6 +31,7 @@ public class RegisterRequest {
         private String lastName;
         @SerializedName("screen_name")
         private String screenName;
+        private String password;
 
         public String getCitizenId() {
             return citizenId;
@@ -78,6 +79,14 @@ public class RegisterRequest {
 
         public void setScreenName(String screenName) {
             this.screenName = screenName;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
         }
     }
 }

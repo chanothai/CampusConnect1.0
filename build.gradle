@@ -32,9 +32,12 @@ ext {
     minSdkVersion = 19
     targetSdkVersion = 25
 
-    supportLibraryVersion = "25.3.0"
+    supportLibraryVersion = "25.3.1"
 
     junitVersion = "4.12"
 
     versionGooglePlayService = "9.4.0"
+
+    versionName = "1.0.1"
+    versionCode = 2
 }

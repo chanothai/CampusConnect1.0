@@ -21,6 +21,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
@@ -33,7 +34,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.company.zicure.registerkey.adapter.SlideMenuAdapter;
-import com.company.zicure.registerkey.common.BaseActivity;
+import com.company.zicure.registerkey.contents.ContentAdapterCart;
 import com.company.zicure.registerkey.fragment.AppMenuFragment;
 import com.company.zicure.registerkey.fragment.HomeFragment;
 import com.company.zicure.registerkey.fragment.ScanQRFragment;
@@ -60,6 +61,7 @@ import java.util.Date;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import gallery.zicure.company.com.gallery.util.PermissionKeyNumber;
+import gallery.zicure.company.com.modellibrary.common.BaseActivity;
 import gallery.zicure.company.com.modellibrary.models.ApplicationRequest;
 import gallery.zicure.company.com.modellibrary.models.AuthToken;
 import gallery.zicure.company.com.modellibrary.models.BaseResponse;
@@ -176,7 +178,7 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
         EventBusCart.getInstance().getEventBus().unregister(this);
     }
 
-    private void setModelUser(){
+    public void setModelUser(){
         try{
             ApplicationRequest request = new ApplicationRequest();
             ApplicationRequest.Application application = new ApplicationRequest.Application();
@@ -223,6 +225,7 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
         }catch (NullPointerException e){
             e.printStackTrace();
         }
+
         dismissDialog();
     }
 
@@ -266,9 +269,9 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
         if (response.getResult().getSuccess().equalsIgnoreCase("OK")){
             Log.d("UserInfo", new Gson().toJson(response.getResult()));
             ModelCart.getInstance().getUserInfo().setResult(response.getResult());
-            Toast.makeText(this, response.getResult().getSuccess(), Toast.LENGTH_LONG).show();
 
             setSlideMenuAdapter();
+            callHomeFragment();
         }else{
             Toast.makeText(this, response.getResult().getError(), Toast.LENGTH_LONG).show();
         }
@@ -322,15 +325,6 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
         Resources resources = getResources();
         float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value,resources.getDisplayMetrics());
         return (int)px;
-    }
-
-    private int getActionBarHeight(){
-        int actionBarHeight = 0;
-        final TypedArray styleAttributes = getTheme().obtainStyledAttributes(new int[]{android.R.attr.actionBarSize});
-        actionBarHeight = (int) styleAttributes.getDimension(0,0);
-        styleAttributes.recycle();
-
-        return actionBarHeight;
     }
 
     private int getStatusBarHeight(){
@@ -388,16 +382,8 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
             }
         }
 
-        setMarginLayout(20);
         root.setAlphaMenu(margin);
         layoutGhost.setVisibility(View.VISIBLE);
-    }
-
-    private void setMarginLayout(int left){
-        //hide shadow
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) coordinatorLayout.getLayoutParams();
-        params.leftMargin = left;
-        coordinatorLayout.setLayoutParams(params);
     }
 
     private void drag(final MotionEvent event, final View v){
@@ -446,8 +432,6 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
         root.toggleMenu(widthScreen, speedTouch);
     }
 
-    //Layout menu drawer
-    // set view adapter of slide menu0--------------------------------------->
     public void setSlideMenuAdapter(){
         String pathImg = ModelCart.getInstance().getUserInfo().getResult().getData().getUser().getImgPath();
         Glide.with(this)
@@ -458,11 +442,10 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
 
         profileName.setText(ModelCart.getInstance().getUserInfo().getResult().getData().getUser().getScreenName());
 
-
         arrMenu = new ArrayList<SlideMenuDetail>();
         Log.d("SlideMenu",new Gson().toJson(arrMenu));
         String[] arrTitle = {getString(R.string.menu_feed_th),getString(R.string.user_detail_th),getString(R.string.activate_user_th), getString(R.string.logout_menu_th)};
-        int[] arrImg = {R.drawable.ic_news_feed,R.drawable.ic_user_profile,  R.drawable.ic_edit_user,R.drawable.ic_log_out};
+        int[] arrImg = {R.drawable.ic_news_feed,R.drawable.ic_person,  R.drawable.ic_edit_user,R.drawable.ic_log_out};
         for (int i = 0; i < arrTitle.length; i++){
             SlideMenuDetail menu = new SlideMenuDetail();
             menu.setTitle(arrTitle[i]);
@@ -470,51 +453,15 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
             arrMenu.add(menu);
         }
 
-        SlideMenuAdapter slideMenuAdapter = new SlideMenuAdapter(this, arrMenu) {
-            @Override
-            public void onBindViewHolder(SlideMenuHolder holder, int position) {
-                holder.subTitle.setText(getTitle(position));
-                holder.imgIcon.setImageResource(getImage(position));
-                holder.setItemOnClickListener(new ItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        if (getTitle(position).equalsIgnoreCase(getString(R.string.user_detail_th))){
-                            Bundle bundle = new Bundle();
-                            bundle.putInt(VariableConnect.pageKey, 0);
-                            openActivity(ProfileActivity.class, bundle);
-                            overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_scale_out);
-                        }
-                        else if (getTitle(position).equalsIgnoreCase(getString(R.string.menu_feed_th))){
-                            callHomeFragment();
-                            setToggle(0,0);
-                        }
-                        else if (getTitle(position).equalsIgnoreCase(getString(R.string.logout_menu_th))){
-                            SharedPreferences pref = getSharedPreferences(VariableConnect.keyFile, Context.MODE_PRIVATE);
-                            SharedPreferences.Editor editor = pref.edit();
-                            editor.clear();
-                            editor.commit();
-
-                            openActivity(LoginActivity.class, true);
-                        }
-                        else if (getTitle(position).equalsIgnoreCase(getString(R.string.activate_user_th))){
-                            Bundle bundle = new Bundle();
-                            bundle.putInt(VariableConnect.pageKey, 1);
-                            openActivity(ProfileActivity.class, bundle);
-                            overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_scale_out);
-                        }
-                    }
-                });
-            }
-        };
+        ContentAdapterCart adapterCart = new ContentAdapterCart(this);
+        SlideMenuAdapter slideMenuAdapter = adapterCart.setSlideMenuAdapter(arrMenu);
         listSlideMenu.setLayoutManager(new LinearLayoutManager(this));
         listSlideMenu.setAdapter(slideMenuAdapter);
         listSlideMenu.setItemAnimator(new DefaultItemAnimator());
-//        listSlideMenu.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+//        listSlideMenu.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
     }
 
-    //<=======================================================================
-
-    private void callHomeFragment(){
+    public void callHomeFragment(){
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, new HomeFragment());
         transaction.commit();
@@ -540,7 +487,7 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
         }
         try{
             if (tabId == R.id.tab_home) {
-                callHomeFragment();
+
             }
         }catch (NullPointerException e){
             e.printStackTrace();
@@ -559,10 +506,17 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
 
     @Override
     public void onBackPressed() {
-        int count = getFragmentManager().getBackStackEntryCount();
-        if (count > 0){
+        if (FlyOutContainer.menuCurrentState == FlyOutContainer.MenuState.OPEN){
+            setToggle(0,0);
+        }else{
+//            if (AppMenuFragment.webView != null){
+//                if (AppMenuFragment.webView.canGoBack()){
+//                    AppMenuFragment.webView.goBack();
+//                    return;
+//                }
+//            }
+//            super.onBackPressed();
         }
-        super.onBackPressed();
     }
 
     @Override

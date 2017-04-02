@@ -8,8 +8,8 @@ import com.company.zicure.registerkey.MainMenuActivity;
 import com.company.zicure.registerkey.R;
 import com.company.zicure.registerkey.RegisterActivity;
 import com.company.zicure.registerkey.RestoreLogin;
-import com.company.zicure.registerkey.common.BaseActivity;
 
+import gallery.zicure.company.com.modellibrary.common.BaseActivity;
 import gallery.zicure.company.com.modellibrary.utilize.ModelCart;
 
 public class CheckLoginActivity extends BaseActivity {
@@ -31,7 +31,7 @@ public class CheckLoginActivity extends BaseActivity {
         currentDynamicKey = RestoreLogin.getInstance(this).getRestoreKey();
         currentUsername = RestoreLogin.getInstance(this).getRestoreUser();
 
-        if (currentDynamicKey != null && currentToken != null && currentUsername != null){
+        if (currentDynamicKey != null && currentToken != null && currentUsername != null && !currentUsername.isEmpty()){
             key = Base64.decode(currentDynamicKey.getBytes(), Base64.NO_WRAP);
             ModelCart.getInstance().getKeyModel().setKey(key);
             ModelCart.getInstance().getKeyModel().setUsername(currentUsername);

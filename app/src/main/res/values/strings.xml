@@ -8,8 +8,7 @@
     <string name="priKey">private_key</string>
     <string name="pubKey">public_key</string>
     <string name="btn_login">Log In</string>
-    <string name="hint_username">USERNAME</string>
-    <string name="hint_password">PASSWORD</string>
+    <string name="hint_password_th">รหัสผ่าน</string>
     <string name="pubServ_key">pubServ_key</string>
     <string name="detail_link">Register</string>
     <string name="signup_link">Register</string>
@@ -19,7 +18,6 @@
     <string name="emergency">Emergency</string>
     <string name="tracking">Tracking</string>
     <string name="action_setings">Setting</string>
-    <string name="dialog_loading">Loading</string>
     <string name="url_map_service">hungary.ar-bro.net</string>
 
     <!--APuT9Gt43aGNLUwn+ewtjzV+1cXjdLcSe/TYXf7n8Vs=-->
@@ -74,5 +72,7 @@
     <string name="activate_user_th">เปิดใช้งานแอพพลิเคชั่น</string>
     <string name="user_secret">user_secret</string>
     <string name="message_get_userinfo_th">MOF PAY APPLICATION : จะขอรับข้อมูลส่วนตัวจาก CONNECT APPLICATION.</string>
-    <string name="blog_social_th">Social</string>
+    <string name="blog_social_th">Pakgon Social</string>
+    <string name="confirm_password">ยืนยันรหัสผ่าน</string>
+    <string name="message_check_password_th">รหัสผ่านไม่ถูกต้อง</string>
 </resources>
