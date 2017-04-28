@@ -50,7 +50,6 @@
                             android:id="@+id/img_profile"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/yajai"
                             android:scaleType="centerCrop"
                             android:layout_centerHorizontal="true"
                             app:sriv_border_color="@android:color/white"

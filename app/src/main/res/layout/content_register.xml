@@ -103,7 +103,7 @@
                     android:inputType="number"
                     android:maxLines="1"
                     android:padding="@dimen/padding_large"
-                    android:imeOptions="actionDone"
+                    android:imeOptions="actionNext"
                     android:maxLength="12"
                     android:hint="@string/phone_number_th" />
 
@@ -121,7 +121,7 @@
                     android:inputType="text"
                     android:maxLines="1"
                     android:padding="@dimen/padding_large"
-                    android:imeOptions="actionDone"
+                    android:imeOptions="actionNext"
                     android:hint="@string/hint_password_th" />
 
             </android.support.design.widget.TextInputLayout>

@@ -37,7 +37,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:id="@+id/username"
-                        android:inputType="text"
+                        android:inputType="number"
                         android:maxLines="1"
                         android:padding="@dimen/padding_large"
                         android:hint="@string/phone_number_th"

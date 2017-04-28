@@ -16,15 +16,14 @@
 
     <application
         android:allowBackup="false"
-        android:icon="@drawable/icon_header"
+        android:icon="@drawable/logo_connect_official"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
         <activity
             android:name=".LoginActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateVisible">
+            android:screenOrientation="portrait">
 
         </activity>
         <activity

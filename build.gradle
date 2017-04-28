@@ -5,7 +5,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.0'
+        classpath 'com.android.tools.build:gradle:2.3.1'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.6'
 
         classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.4.0'
@@ -29,7 +29,7 @@ task clean(type: Delete) {
 ext {
     compileSdkVersion = 25
     buildToolsVersion = "25.0.1"
-    minSdkVersion = 19
+    minSdkVersion = 21
     targetSdkVersion = 25
 
     supportLibraryVersion = "25.3.1"
@@ -39,5 +39,5 @@ ext {
     versionGooglePlayService = "9.4.0"
 
     versionName = "1.0.1"
-    versionCode = 2
+    versionCode = 3
 }

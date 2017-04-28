@@ -78,8 +78,6 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
 
         if (savedInstanceState == null){
             setKey();
-            editConfirmPass.setVisibility(View.GONE);
-            editPass.setVisibility(View.GONE);
         }
     }
 
@@ -102,7 +100,7 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
         pass = editPass.getText().toString().trim();
         confirmPass = editConfirmPass.getText().toString().trim();
 
-        if (confirmPass.equalsIgnoreCase(pass)){
+        if (confirmPass.equalsIgnoreCase(pass) && !confirmPass.isEmpty() && !pass.isEmpty()){
             if (strIdCard.length() == 13 && !strBirthDate.isEmpty() && strPhone.length() == 12 && !lastName.isEmpty() && !firstName.isEmpty()){
                 String[] phone = strPhone.split("-");
                 String currentPhone = phone[0] + phone[1] + phone[2];
@@ -128,6 +126,8 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setScreenName(screenName);
+        user.setPassword(pass);
+        user.setRePassword(confirmPass);
 
         request.setUser(user);
 
@@ -156,20 +156,24 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
 
     @Subscribe
     public void onEvent(BaseResponse registerResponse){
-        String str = new Gson().toJson(registerResponse);
-        Log.d("registerResponse", str);
+        try{
+            String str = new Gson().toJson(registerResponse);
+            Log.d("registerResponse", str);
 
-        BaseResponse.Result result = registerResponse.getResult();
-        if (!result.getSuccess().isEmpty()){
-            String[] arrStr = result.geteResult().split(getString(R.string.key_iv));
-            String decrypt = EncryptionAES.newInstance(ModelCart.getInstance().getKeyModel().getKey()).decrypt(arrStr[0], arrStr[1].getBytes());//(text, key
-            Log.d("EncryptCart", "DecryptData: " + decrypt);
+            BaseResponse.Result result = registerResponse.getResult();
+            if (!result.getSuccess().isEmpty()){
+                String[] arrStr = result.geteResult().split(getString(R.string.key_iv));
+                String decrypt = EncryptionAES.newInstance(ModelCart.getInstance().getKeyModel().getKey()).decrypt(arrStr[0], arrStr[1].getBytes());//(text, key
+                Log.d("EncryptCart", "DecryptData: " + decrypt);
 
-            if (decrypt != null){
-                decodeJson(decrypt);
+                if (decrypt != null){
+                    decodeJson(decrypt);
+                }
+            }else{
+                Toast.makeText(getApplicationContext(), "" + registerResponse.getResult().getError(), Toast.LENGTH_LONG).show();
             }
-        }else{
-            Toast.makeText(getApplicationContext(), "" + registerResponse.getResult().getError(), Toast.LENGTH_LONG).show();
+        }catch (Exception e){
+            e.printStackTrace();
         }
 
         dismissDialog();
