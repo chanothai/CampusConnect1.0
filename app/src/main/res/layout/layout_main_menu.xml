@@ -5,7 +5,7 @@
     android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:background="@color/colorBackgroundGray">
 
     <include layout="@layout/layout_appbar"/>
 
@@ -26,17 +26,5 @@
         android:layout_height="match_parent"
         android:clickable="true"
         android:background="@android:color/transparent"/>
-
-    <com.roughike.bottombar.BottomBar
-        android:id="@+id/bottomBar"
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:layout_gravity="bottom"
-        android:background="@android:color/white"
-        app:bb_tabXmlResource="@xml/bottombar_tabs"
-        app:bb_behavior="underNavbar|shy|shifting"
-        app:bb_inActiveTabAlpha="0.3"
-        app:bb_inActiveTabColor="@color/colorAccent"
-        app:bb_activeTabColor="@color/colorPrimary" />
 
 </android.support.design.widget.CoordinatorLayout>

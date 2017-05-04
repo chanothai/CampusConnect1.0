@@ -1,9 +1,6 @@
 package com.company.zicure.registerkey;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.os.Build;
 import android.os.PersistableBundle;
 import android.support.annotation.IdRes;
@@ -21,7 +18,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
@@ -39,8 +35,8 @@ import com.company.zicure.registerkey.fragment.AppMenuFragment;
 import com.company.zicure.registerkey.fragment.HomeFragment;
 import com.company.zicure.registerkey.fragment.ScanQRFragment;
 import com.company.zicure.registerkey.fragment.StudentCardFragment;
-import com.company.zicure.registerkey.holder.SlideMenuHolder;
-import com.company.zicure.registerkey.interfaces.ItemClickListener;
+
+import gallery.zicure.company.com.modellibrary.models.CategoryModel;
 import com.company.zicure.registerkey.network.ClientHttp;
 import com.company.zicure.registerkey.security.EncryptionAES;
 import com.company.zicure.registerkey.view.viewgroup.FlyOutContainer;
@@ -70,13 +66,11 @@ import gallery.zicure.company.com.modellibrary.models.ResponseUserInfo;
 import gallery.zicure.company.com.modellibrary.models.drawer.SlideMenuDetail;
 import gallery.zicure.company.com.modellibrary.utilize.EventBusCart;
 import gallery.zicure.company.com.modellibrary.utilize.ModelCart;
-import gallery.zicure.company.com.modellibrary.utilize.NextzyUtil;
 import gallery.zicure.company.com.modellibrary.utilize.ResizeScreen;
 import gallery.zicure.company.com.modellibrary.utilize.ToolbarManager;
 import gallery.zicure.company.com.modellibrary.utilize.VariableConnect;
-import profilemof.zicure.company.com.profilemof.activity.ProfileActivity;
 
-public class MainMenuActivity extends BaseActivity implements OnTabSelectListener,OnTabReselectListener, View.OnClickListener {
+public class MainMenuActivity extends BaseActivity implements  View.OnClickListener {
 
     //layout coordinator cover material layout
     @Bind(R.id.liner_content)
@@ -95,10 +89,6 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
     TextView titleToolbar;
     @Bind(R.id.img_toggle)
     ImageView imgToggle;
-
-    //bottom navigation
-    @Bind(R.id.bottomBar)
-    BottomBar bottomBar;
 
     //list view slide menu
     @Bind(R.id.list_slide_menu)
@@ -123,7 +113,6 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
     private FlyOutContainer root;
 
     //fragment layout
-    private HomeFragment homeFragment = null;
     private ScanQRFragment scanQRFragment = null;
     private StudentCardFragment studentCardFragment = null;
 
@@ -148,9 +137,6 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
         ButterKnife.bind(this);
         setToolbar();
 
-        bottomBar.setVisibility(View.GONE);
-        bottomBar.setOnTabSelectListener(this);
-        bottomBar.setOnTabReselectListener(this);
         setOnTouchView();
 
         if (savedInstanceState == null){
@@ -166,126 +152,13 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        EventBusCart.getInstance().getEventBus().register(this);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        EventBusCart.getInstance().getEventBus().unregister(this);
-    }
-
-    public void setModelUser(){
-        try{
-            ApplicationRequest request = new ApplicationRequest();
-            ApplicationRequest.Application application = new ApplicationRequest.Application();
-            application.setClientID(VariableConnect.clientID);
-            application.setSecret("123456");
-
-            ApplicationRequest.User user = new ApplicationRequest.User();
-            user.setToken(currentToken);
-
-            request.setApplication(application);
-            request.setUser(user);
-
-            Gson gson = new GsonBuilder().disableHtmlEscaping().create();
-            String encrypt = EncryptionAES.newInstance(key).encrypt(gson.toJson(request));
-
-            if (encrypt != null){
-                model = new DataModel();
-                model.setData(encrypt);
-
-                DataModel.User modelUser = new DataModel.User();
-                modelUser.setUsername(currentUsername);
-
-                model.setUser(modelUser);
-
-                showLoadingDialog();
-                ClientHttp.getInstance(this).requestAuthToken(model);
-            }
-        }catch (NullPointerException e){
-            e.printStackTrace();
-        }
-    }
-
-    @Subscribe
-    public void onEventAuthToken(BaseResponse baseResponse){
-        try {
-            if (baseResponse.getResult().getSuccess().equalsIgnoreCase("OK")){
-                String[] splitKey = baseResponse.getResult().geteResult().split(getString(R.string.key_iv));
-                String decrypt = EncryptionAES.newInstance(key).decrypt(splitKey[0], splitKey[1].getBytes());
-                decodeJson(decrypt);
-            }else{
-                Toast.makeText(this, baseResponse.getResult().getError(), Toast.LENGTH_SHORT).show();
-                openActivity(LoginActivity.class, true);
-            }
-        }catch (NullPointerException e){
-            e.printStackTrace();
-        }
-
-        dismissDialog();
-    }
-
-    private void decodeJson(String decrypt){
-        try{
-            JSONObject jsonObject = new JSONObject(decrypt);
-            String success = jsonObject.getString("Success");
-            if (success.equalsIgnoreCase("OK")){
-                jsonObject = jsonObject.getJSONObject("AuthToken");
-
-                ModelCart.getInstance().getAuthToken().setAuthToken(jsonObject.getString("auth_token"));
-                ModelCart.getInstance().getAuthToken().setExpiryDate(jsonObject.getString("auth_token_expiry_date"));
-
-                validateCurrentDate(ModelCart.getInstance().getAuthToken());
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    private void validateCurrentDate(AuthToken authToken){
-        try{
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date date = new Date();
-            Date strDate = dateFormat.parse(authToken.getExpiryDate());
-
-            if (date.after(strDate)){
-
-            }else {
-                String path = authToken.getAuthToken();
-                ClientHttp.getInstance(this).requestUserInfo(path);
-            }
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    @Subscribe
-    public void onEventGetUserInfo(ResponseUserInfo response){
-        if (response.getResult().getSuccess().equalsIgnoreCase("OK")){
-            Log.d("UserInfo", new Gson().toJson(response.getResult()));
-            ModelCart.getInstance().getUserInfo().setResult(response.getResult());
-
-            setSlideMenuAdapter();
-            callHomeFragment();
-        }else{
-            Toast.makeText(this, response.getResult().getError(), Toast.LENGTH_LONG).show();
-        }
-        dismissDialog();
-    }
-
     public void setToolbar(){
         if (Build.VERSION.SDK_INT >= 21){
             ToolbarManager manager = new ToolbarManager(this);
-            manager.setToolbar(toolbarMenu, titleToolbar, getString(R.string.app_name));
-            manager.setAppbarLayout(appBarLayout);
+            manager.setToolbar(toolbarMenu, titleToolbar, "");
 
             imgToggle.setImageResource(R.drawable.ic_action_toc);
-            imgToggle.setColorFilter(ContextCompat.getColor(this, R.color.colorAccent));
+            imgToggle.setColorFilter(ContextCompat.getColor(this, R.color.color_toggle));
             imgToggle.setOnClickListener(this);
             setSupportActionBar(toolbarMenu);
 
@@ -334,6 +207,143 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
             result = getResources().getDimensionPixelSize(resourceId);
         }
         return result;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        EventBusCart.getInstance().getEventBus().register(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        EventBusCart.getInstance().getEventBus().unregister(this);
+    }
+
+    public void callHomeFragment() {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, new HomeFragment());
+        transaction.commit();
+    }
+
+    public void setModelUser(){
+        try{
+            ApplicationRequest request = new ApplicationRequest();
+            ApplicationRequest.Application application = new ApplicationRequest.Application();
+            application.setClientID(VariableConnect.clientID);
+            application.setSecret("123456");
+
+            ApplicationRequest.User user = new ApplicationRequest.User();
+            user.setToken(currentToken);
+
+            request.setApplication(application);
+            request.setUser(user);
+
+            Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+            String encrypt = EncryptionAES.newInstance(key).encrypt(gson.toJson(request));
+
+            if (encrypt != null){
+                model = new DataModel();
+                model.setData(encrypt);
+
+                DataModel.User modelUser = new DataModel.User();
+                modelUser.setUsername(currentUsername);
+
+                model.setUser(modelUser);
+
+                showLoadingDialog();
+                ClientHttp.getInstance(this).requestAuthToken(model);
+            }
+        }catch (NullPointerException e){
+            e.printStackTrace();
+            dismissDialog();
+        }
+    }
+
+    @Subscribe
+    public void onEventAuthToken(BaseResponse baseResponse){
+        try {
+            if (baseResponse.getResult().getSuccess().equalsIgnoreCase("OK")){
+                String[] splitKey = baseResponse.getResult().geteResult().split(getString(R.string.key_iv));
+                String decrypt = EncryptionAES.newInstance(key).decrypt(splitKey[0], splitKey[1].getBytes());
+                decodeJson(decrypt);
+            } else {
+                Toast.makeText(this, baseResponse.getResult().getError(), Toast.LENGTH_SHORT).show();
+                openActivity(LoginActivity.class, true);
+            }
+        }catch (NullPointerException e){
+            e.printStackTrace();
+            dismissDialog();
+        }
+    }
+
+    private void decodeJson(String decrypt){
+        try{
+            JSONObject jsonObject = new JSONObject(decrypt);
+            String success = jsonObject.getString("Success");
+            if (success.equalsIgnoreCase("OK")){
+                jsonObject = jsonObject.getJSONObject("AuthToken");
+
+                ModelCart.getInstance().getAuth().setAuthToken(jsonObject.getString("auth_token"));
+                ModelCart.getInstance().getAuth().setExpiryDate(jsonObject.getString("auth_token_expiry_date"));
+
+                validateCurrentDate(ModelCart.getInstance().getAuth());
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    private void validateCurrentDate(AuthToken authToken){
+        try{
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date date = new Date();
+            Date strDate = dateFormat.parse(authToken.getExpiryDate());
+
+            if (date.after(strDate)){
+
+            }else {
+                String path = authToken.getAuthToken();
+                ClientHttp.getInstance(this).requestUserInfo(path);
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Subscribe
+    public void onEventGetUserInfo(ResponseUserInfo response){
+        try{
+            if (response.getResult().getSuccess().equalsIgnoreCase("OK")){
+                Log.d("UserInfo", new Gson().toJson(response.getResult()));
+                ModelCart.getInstance().getUserInfo().setResult(response.getResult());
+
+                setSlideMenuAdapter();
+
+                ClientHttp.getInstance(this).requestUserBloc(ModelCart.getInstance().getAuth().getAuthToken());
+            }else{
+                Toast.makeText(this, response.getResult().getError(), Toast.LENGTH_LONG).show();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            dismissDialog();
+        }
+    }
+
+    @Subscribe
+    public void onEventResponseUserBloc(CategoryModel response){
+        try{
+            if (response.getResult().getSuccess().equalsIgnoreCase("OK")){
+                ModelCart.getInstance().getCategoryModel().setResult(response.getResult());
+                dismissDialog();
+
+                callHomeFragment();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void setOnTouchView(){
@@ -453,50 +463,12 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
             arrMenu.add(menu);
         }
 
-        ContentAdapterCart adapterCart = new ContentAdapterCart(this);
-        SlideMenuAdapter slideMenuAdapter = adapterCart.setSlideMenuAdapter(arrMenu);
+        ContentAdapterCart adapterCart = new ContentAdapterCart();
+        SlideMenuAdapter slideMenuAdapter = adapterCart.setSlideMenuAdapter(this,arrMenu);
         listSlideMenu.setLayoutManager(new LinearLayoutManager(this));
         listSlideMenu.setAdapter(slideMenuAdapter);
         listSlideMenu.setItemAnimator(new DefaultItemAnimator());
 //        listSlideMenu.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
-    }
-
-    public void callHomeFragment(){
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, new HomeFragment());
-        transaction.commit();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
-
-    //Bottom navigation listener *******************************************
-    @Override
-    public void onTabSelected(@IdRes int tabId) {
-        int count = getSupportFragmentManager().getBackStackEntryCount();
-        if (count > 0){
-            count--;
-        }
-        try{
-            if (tabId == R.id.tab_home) {
-
-            }
-        }catch (NullPointerException e){
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onTabReSelected(@IdRes int tabId) {
-
     }
 
     @Override
@@ -508,14 +480,6 @@ public class MainMenuActivity extends BaseActivity implements OnTabSelectListene
     public void onBackPressed() {
         if (FlyOutContainer.menuCurrentState == FlyOutContainer.MenuState.OPEN){
             setToggle(0,0);
-        }else{
-//            if (AppMenuFragment.webView != null){
-//                if (AppMenuFragment.webView.canGoBack()){
-//                    AppMenuFragment.webView.goBack();
-//                    return;
-//                }
-//            }
-//            super.onBackPressed();
         }
     }
 

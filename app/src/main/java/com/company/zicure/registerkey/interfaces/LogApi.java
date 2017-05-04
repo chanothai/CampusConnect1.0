@@ -1,5 +1,7 @@
 package com.company.zicure.registerkey.interfaces;
 
+import gallery.zicure.company.com.modellibrary.models.CategoryModel;
+
 import java.util.Map;
 
 import gallery.zicure.company.com.modellibrary.models.BaseResponse;
@@ -35,4 +37,7 @@ public interface LogApi {
 
     @POST("Api/secure/approveDevice.json")
     Call<BaseResponse> approveDevice(@Body DataModel dataModel);
+
+    @GET("Api/getUserBlocs.json")
+    Call<CategoryModel> requestUserBloc(@QueryMap Map<String, String> category);
 }

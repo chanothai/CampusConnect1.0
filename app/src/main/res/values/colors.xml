@@ -12,20 +12,22 @@
     <color name="colorGreenPress">#034C64</color>
 
     <color name="colorGrayCorner">#616161</color>
-    <color name="colorBackgroundGray">#efefef</color>
+    <color name="colorBackgroundGray">#f5f5f5</color>
 
     <color name="text_link">#ff6c00</color>
     <color name="text_link_highlight">#ffcc00</color>
 
-    <color name="color_news">#9fa7a7</color>
-    <color name="color_news_press">#7A8989</color>
-    <color name="color_news_gradient">#D7D9D9</color>
-
     <color name="color_dot_active">#ffffff</color>
-    <color name="color_dot_inactive">#878787</color>
+    <color name="color_dot_inactive">#ededed</color>
 
     <color name="color_text">#4793CD</color>
 
     <color name="color_bg">#e4e4e4</color>
+
+    <color name="color_bg_tab">#fbfbfb</color>
+    <color name="color_text_tab">#e1e1e1</color>
+    <color name="color_select_tab">#f36523</color>
+
+    <color name="color_toggle">#707070</color>
 
 </resources>

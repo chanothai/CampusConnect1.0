@@ -41,9 +41,4 @@ public class RestoreLogin {
         String key = pref.getString(activity.getString(R.string.dynamic_key), null);
         return key;
     }
-
-    public String getRestorePhoneNumber(){
-        String phone = pref.getString(activity.getString(R.string.phone_key), null);
-        return phone;
-    }
 }

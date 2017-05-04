@@ -1,6 +1,6 @@
 [
     {
-        "outputFile": "C:\\AndroidProject\\RegisterApp\\Official\\RegisterKey\\bottom-bar\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values-land\\values-land.xml",
+        "outputFile": "/Users/Pakgon/StudioProjects/registerkey/bottom-bar/build/intermediates/incremental/mergeDebugAndroidTestResources/merged.dir/values-land/values-land.xml",
         "map": [
             {
                 "to": {
@@ -11,7 +11,7 @@
                     "endOffset": 111
                 },
                 "from": {
-                    "file": "C:\\AndroidProject\\RegisterApp\\Official\\RegisterKey\\bottom-bar\\build\\intermediates\\bundles\\debug\\res\\values-land\\values-land.xml",
+                    "file": "/Users/Pakgon/StudioProjects/registerkey/bottom-bar/build/intermediates/bundles/debug/res/values-land/values-land.xml",
                     "position": {
                         "startLine": 2,
                         "startColumn": 4,
@@ -30,7 +30,7 @@
                     "endOffset": 181
                 },
                 "from": {
-                    "file": "C:\\Users\\4GRYZ52\\.android\\build-cache\\797c19bf06ec6516a41636af032bce5444de6bbb\\output\\res\\values-land\\values-land.xml",
+                    "file": "/Users/Pakgon/.android/build-cache/41c71a0fc2745c2c9a12254d8747c0deef2bc1aa/output/res/values-land/values-land.xml",
                     "position": {
                         "startLine": 2,
                         "startColumn": 4,
@@ -49,7 +49,7 @@
                     "endOffset": 245
                 },
                 "from": {
-                    "file": "C:\\Users\\4GRYZ52\\.android\\build-cache\\797c19bf06ec6516a41636af032bce5444de6bbb\\output\\res\\values-land\\values-land.xml",
+                    "file": "/Users/Pakgon/.android/build-cache/41c71a0fc2745c2c9a12254d8747c0deef2bc1aa/output/res/values-land/values-land.xml",
                     "position": {
                         "startLine": 3,
                         "startColumn": 4,
@@ -68,7 +68,7 @@
                     "endOffset": 316
                 },
                 "from": {
-                    "file": "C:\\Users\\4GRYZ52\\.android\\build-cache\\797c19bf06ec6516a41636af032bce5444de6bbb\\output\\res\\values-land\\values-land.xml",
+                    "file": "/Users/Pakgon/.android/build-cache/41c71a0fc2745c2c9a12254d8747c0deef2bc1aa/output/res/values-land/values-land.xml",
                     "position": {
                         "startLine": 4,
                         "startColumn": 4,
@@ -87,7 +87,7 @@
                     "endOffset": 384
                 },
                 "from": {
-                    "file": "C:\\Users\\4GRYZ52\\.android\\build-cache\\797c19bf06ec6516a41636af032bce5444de6bbb\\output\\res\\values-land\\values-land.xml",
+                    "file": "/Users/Pakgon/.android/build-cache/41c71a0fc2745c2c9a12254d8747c0deef2bc1aa/output/res/values-land/values-land.xml",
                     "position": {
                         "startLine": 5,
                         "startColumn": 4,
@@ -107,7 +107,7 @@
                     "endOffset": 566
                 },
                 "from": {
-                    "file": "C:\\Users\\4GRYZ52\\.android\\build-cache\\27558604505ad685a5ec042327136d96df2a30f8\\output\\res\\values-land\\values-land.xml",
+                    "file": "/Users/Pakgon/.android/build-cache/3713fdb2971c65e928d2a13a2274cc2f343afc4e/output/res/values-land/values-land.xml",
                     "position": {
                         "startLine": 2,
                         "startColumn": 4,

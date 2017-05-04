@@ -22,7 +22,9 @@ public class CheckLoginActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_login);
 
-        checkLogin();
+        if (savedInstanceState == null) {
+            checkLogin();
+        }
     }
 
 
@@ -38,7 +40,10 @@ public class CheckLoginActivity extends BaseActivity {
             ModelCart.getInstance().getKeyModel().setToken(currentToken);
 
             Bundle bundle = new Bundle();
-            String[] strArr = {currentToken, currentUsername};
+            String[] strArr = new String[2];
+            strArr[0] = currentToken;
+            strArr[1] = currentUsername;
+
             bundle.putStringArray(getString(R.string.user_secret), strArr);
             openActivity(MainMenuActivity.class, bundle, true);
         }else{

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.company.zicure.registerkey.interfaces.LogApi;
+import gallery.zicure.company.com.modellibrary.models.CategoryModel;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -141,7 +142,7 @@ public class ClientHttp {
 
             @Override
             public void onFailure(Call<BaseResponse> call, Throwable t) {
-
+                t.printStackTrace();
             }
         });
     }
@@ -190,6 +191,28 @@ public class ClientHttp {
             }
         });
     }
+
+    public void requestUserBloc(String authToken) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("authToken", authToken);
+        Call<CategoryModel> userBloc = service.requestUserBloc(map);
+        userBloc.enqueue(new Callback<CategoryModel>() {
+            @Override
+            public void onResponse(Call<CategoryModel> call, Response<CategoryModel> response) {
+                try{
+                    EventBusCart.getInstance().getEventBus().post(response.body());
+                }catch(NullPointerException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CategoryModel> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
 
     public void approveDevice(DataModel dataModel){
         Call<BaseResponse> approve = service.approveDevice(dataModel);

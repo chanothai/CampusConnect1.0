@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
 import android.util.Log;
@@ -28,10 +27,8 @@ import com.company.zicure.registerkey.R;
 import java.io.File;
 import java.io.IOException;
 
-import gallery.zicure.company.com.gallery.util.PermissionKeyNumber;
 import gallery.zicure.company.com.gallery.util.PermissionRequest;
 import gallery.zicure.company.com.modellibrary.utilize.JavaScriptInterface;
-import gallery.zicure.company.com.modellibrary.utilize.NextzyUtil;
 import gallery.zicure.company.com.modellibrary.utilize.VariableConnect;
 
 /**
@@ -43,7 +40,6 @@ public class AppMenuFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "url";
-    private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
     private String url;
@@ -67,15 +63,13 @@ public class AppMenuFragment extends Fragment {
      * this fragment using the provided parameters.
      *
      * @param url Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment AppMenuFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AppMenuFragment newInstance(String url, String param2) {
+    public static AppMenuFragment newInstance(String url) {
         AppMenuFragment fragment = new AppMenuFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, url);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -85,7 +79,6 @@ public class AppMenuFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             url = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 

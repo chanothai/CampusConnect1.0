@@ -9,6 +9,10 @@ import android.view.ViewGroup;
 import com.company.zicure.registerkey.holder.MainMenuHolder;
 import com.company.zicure.registerkey.R;
 
+import java.util.List;
+
+import gallery.zicure.company.com.modellibrary.models.CategoryModel;
+
 /**
  * Created by 4GRYZ52 on 10/18/2016.
  */
@@ -16,14 +20,12 @@ abstract public class MainMenuAdapter extends RecyclerView.Adapter<MainMenuHolde
 
     //Properties
     private Context context = null;
-    private String[] menus = null;
-    private int[] imgs = null;
+    private List<CategoryModel.Result.Data.Bloc> arrData = null;
 
     //Constructor
-    public MainMenuAdapter(Context context, String[] menus, int[] imgs){
+    public MainMenuAdapter(Context context, List<CategoryModel.Result.Data.Bloc> arrData){
         this.context = context;
-        this.menus = menus;
-        this.imgs = imgs;
+        this.arrData = arrData;
     }
 
     //When ViewHolder is being create
@@ -38,17 +40,16 @@ abstract public class MainMenuAdapter extends RecyclerView.Adapter<MainMenuHolde
         return mainMenuHolder;
     }
 
-    public String getItemName(int postion){
-        return menus[postion];
-    }
-
     public Context getContext(){
         return context;
     }
 
+    public List<CategoryModel.Result.Data.Bloc> getData(){
+        return arrData;
+    }
 
     @Override
     public int getItemCount() {
-        return menus.length;
+        return arrData.size();
     }
 }

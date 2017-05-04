@@ -48,10 +48,11 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener,Te
     @Bind(R.id.btnConnect)
     Button btnLogin;
     @Bind(R.id.txt_link)
+
+
     TextView txtLink;
 
     private String strUser = "", strPass = "";
-    private String restoreUser = null, restorePass = null;
 
     private SharedPreferences sharedPref = null;
 
@@ -88,7 +89,7 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener,Te
 
         if (strUser.length() == 12 && !strPass.isEmpty()){
             DataModel dataModel = setLoginModel(strUser, strPass, false);
-            String str = new Gson().toJson(dataModel);
+            String str = new GsonBuilder().disableHtmlEscaping().create().toJson(dataModel);
             Log.d("LoginRequest",  str);
             showLoadingDialog();
             ClientHttp.getInstance(this).login(dataModel);

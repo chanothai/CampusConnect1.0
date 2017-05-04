@@ -1,30 +1,38 @@
-<android.support.v4.widget.SwipeRefreshLayout
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/swipeContainer"
+    android:id="@+id/fragment_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <android.support.v4.widget.NestedScrollView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/scrollViewMenu"
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/scroll_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_bg_tab"
+        app:tabTextColor="@color/color_text_tab"
+        app:tabSelectedTextColor="@color/color_select_tab"
+        app:tabIndicatorColor="@color/color_select_tab"
+        app:tabGravity="fill"
+        app:tabMode="scrollable" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager_topic"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:layout_below="@+id/scroll_tabs"/>
 
-        <RelativeLayout
-            android:id="@+id/layout_manage_home"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/white"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    <LinearLayout
+        android:id="@+id/layoutDot"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp"
+        android:layout_alignBottom="@+id/pager_topic"
+        />
 
-            <include layout="@layout/layout_viewpager_banner"/>
-            <include layout="@layout/layout_recyclerview_vertical" />
-
-        </RelativeLayout>
-
-    </android.support.v4.widget.NestedScrollView>
-</android.support.v4.widget.SwipeRefreshLayout>
+</RelativeLayout>

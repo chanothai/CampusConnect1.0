@@ -1,6 +1,7 @@
 package gallery.zicure.company.com.modellibrary.utilize;
 
 import gallery.zicure.company.com.modellibrary.models.AuthToken;
+import gallery.zicure.company.com.modellibrary.models.CategoryModel;
 import gallery.zicure.company.com.modellibrary.models.DateModel;
 import gallery.zicure.company.com.modellibrary.models.KeyModel;
 import gallery.zicure.company.com.modellibrary.models.LocationModel;
@@ -18,6 +19,7 @@ public class ModelCart {
     private AuthToken authToken = null;
     private ResponseUserInfo userInfo = null;
     private ResponseUserCode deviceToken = null;
+    private CategoryModel categoryModel = null;
 
     private ModelCart() {
         listModel = new ListModel();
@@ -27,6 +29,7 @@ public class ModelCart {
         authToken = new AuthToken();
         userInfo = new ResponseUserInfo();
         deviceToken = new ResponseUserCode();
+        categoryModel = new CategoryModel();
     }
 
     public static ModelCart getInstance(){
@@ -45,12 +48,16 @@ public class ModelCart {
         return keyModel;
     }
 
-    public AuthToken getAuthToken(){
+    public AuthToken getAuth(){
         return authToken;
     }
 
     public ResponseUserInfo getUserInfo(){
         return userInfo;
+    }
+
+    public CategoryModel getCategoryModel() {
+        return categoryModel;
     }
 
     public ResponseUserCode getDeviceToken(){
