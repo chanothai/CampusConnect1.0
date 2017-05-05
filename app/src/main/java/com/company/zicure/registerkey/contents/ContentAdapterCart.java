@@ -65,7 +65,6 @@ public class ContentAdapterCart {
                         else if (getTitle(position).equalsIgnoreCase(activity.getString(R.string.menu_feed_th))){
                             activity.showLoadingDialog();
                             ClientHttp.getInstance(activity).requestUserBloc(ModelCart.getInstance().getAuth().getAuthToken());
-                            ((MainMenuActivity)activity).setToggle(0,0);
                         }
                         else if (getTitle(position).equalsIgnoreCase(activity.getString(R.string.logout_menu_th))){
                             SharedPreferences pref = activity.getSharedPreferences(VariableConnect.keyFile, Context.MODE_PRIVATE);
@@ -104,49 +103,45 @@ public class ContentAdapterCart {
                 holder.setItemOnClickListener(new ItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        String checkMenu = getData().get(position).getBlocName();
-                        if (checkMenu.equalsIgnoreCase(activity.getString(R.string.ePayment))){
-                            String authToken = null;
-                            String strPackage = "com.company.zicure.payment";
-                            try{
-                                authToken = ModelCart.getInstance().getKeyModel().getAuthToken();
-                                Intent intent = getContext().getPackageManager().getLaunchIntentForPackage(strPackage);
-                                if (authToken != null){
-                                    intent.addCategory(Intent.CATEGORY_LAUNCHER);
-                                    intent.setType("text/plain");
-                                    intent.putExtra(Intent.EXTRA_TEXT, authToken);
-                                }
-                                activity.startActivity(intent);
-                                ModelCart.getInstance().getKeyModel().setAuthToken("");
-
-                            }catch (NullPointerException e){
-                                e.printStackTrace();
-                                try{
-                                    activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + strPackage)));
-                                }catch (ActivityNotFoundException ef){
-                                    activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + strPackage)));
-                                }
-                            }
-                        }
-
                         Bundle bundle = new Bundle();
+                        bundle.putString(VariableConnect.TITLE_CATEGORY, getData().get(position).getBlocName());
                         bundle.putString(VariableConnect.PATH_BLOC, getData().get(position).getBlocUrl());
                         Intent intent = new Intent(activity, BlocContentActivity.class);
                         intent.putExtras(bundle);
                         activity.startActivity(intent);
+                        activity.overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_scale_out);
                     }
                 });
-            }
-            private void setLayoutParams(MainMenuHolder holder){
-                ResizeScreen resizeScreen = new ResizeScreen(activity);
-                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) holder.imgBtnMenu.getLayoutParams();
-                params.height = resizeScreen.heightScreen(3);
-                holder.imgBtnMenu.setLayoutParams(params);
             }
         };
 
         return mainMenuAdapter;
     }
 
+    /*
+    private void intentToMOFPAY(){
+        String authToken = null;
+        String strPackage = "com.company.zicure.payment";
+        try{
+            authToken = ModelCart.getInstance().getKeyModel().getAuthToken();
+            Intent intent = getContext().getPackageManager().getLaunchIntentForPackage(strPackage);
+            if (authToken != null){
+                intent.addCategory(Intent.CATEGORY_LAUNCHER);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_TEXT, authToken);
+            }
+            activity.startActivity(intent);
+            ModelCart.getInstance().getKeyModel().setAuthToken("");
+
+        }catch (NullPointerException e){
+            e.printStackTrace();
+            try{
+                activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + strPackage)));
+            }catch (ActivityNotFoundException ef){
+                activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + strPackage)));
+            }
+        }
+    }
+    */
 
 }

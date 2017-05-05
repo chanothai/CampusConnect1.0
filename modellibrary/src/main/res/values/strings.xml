@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">ModelLibrary</string>
-    <string name="dialog_loading">Loading</string>
+    <string name="dialog_loading">Loading...</string>
 </resources>

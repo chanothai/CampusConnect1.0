@@ -23,6 +23,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.company.zicure.registerkey.R;
+import com.company.zicure.registerkey.activity.BlocContentActivity;
 
 import java.io.File;
 import java.io.IOException;
@@ -105,6 +106,8 @@ public class AppMenuFragment extends Fragment {
     }
 
     public void setWebView(){
+        ((BlocContentActivity)getActivity()).showLoadingDialog();
+
         webView.setWebViewClient(new AppBrowser());
         webView.setWebChromeClient(new AppBrowserChrome());
         webView.getSettings().setJavaScriptEnabled(true);
@@ -146,6 +149,8 @@ public class AppMenuFragment extends Fragment {
 
                 String result = "javascript:" + builder.toString();
                 view.loadUrl(result);
+
+                ((BlocContentActivity)getActivity()).dismissDialog();
             }catch (Exception e){
                 e.printStackTrace();
             }

@@ -18,14 +18,14 @@
     <color name="text_link_highlight">#ffcc00</color>
 
     <color name="color_dot_active">#ffffff</color>
-    <color name="color_dot_inactive">#ededed</color>
+    <color name="color_dot_inactive">#a5a5a5</color>
 
     <color name="color_text">#4793CD</color>
 
     <color name="color_bg">#e4e4e4</color>
 
     <color name="color_bg_tab">#fbfbfb</color>
-    <color name="color_text_tab">#e1e1e1</color>
+    <color name="color_text_tab">#a5a5a5</color>
     <color name="color_select_tab">#f36523</color>
 
     <color name="color_toggle">#707070</color>

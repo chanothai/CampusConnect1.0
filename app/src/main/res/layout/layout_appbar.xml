@@ -26,14 +26,15 @@
 
         <ImageView
             android:id="@+id/img_toggle"
-            android:layout_width="32dp"
-            android:layout_height="40dp"
-            android:src="@drawable/ic_action_toc"
-            android:paddingTop="@dimen/padding_eight"
-            android:paddingBottom="@dimen/padding_eight"
-            android:paddingEnd="@dimen/padding_eight"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:background="?android:attr/selectableItemBackground"
+            android:paddingBottom="@dimen/padding_medium"
+            android:paddingTop="@dimen/padding_medium"
+            android:paddingRight="@dimen/padding_large"
             android:scaleType="fitXY"
-            android:layout_gravity="start|center_vertical" />
+            android:src="@drawable/ic_action_toc" />
 
     </android.support.v7.widget.Toolbar>
 

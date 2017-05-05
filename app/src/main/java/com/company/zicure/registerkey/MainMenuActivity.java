@@ -337,13 +337,17 @@ public class MainMenuActivity extends BaseActivity implements  View.OnClickListe
         try{
             if (response.getResult().getSuccess().equalsIgnoreCase("OK")){
                 ModelCart.getInstance().getCategoryModel().setResult(response.getResult());
-                dismissDialog();
-
                 callHomeFragment();
+
+                if (FlyOutContainer.menuCurrentState == FlyOutContainer.MenuState.OPEN){
+                    setToggle(0,0);
+                }
             }
         }catch (Exception e){
             e.printStackTrace();
         }
+
+        dismissDialog();
     }
 
     private void setOnTouchView(){

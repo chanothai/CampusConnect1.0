@@ -25,6 +25,7 @@ public class VariableConnect {
     //key call fragment
     public static String appMenuFragmentKey = "app_menu_fragment";
 
-    //key path url for bloc
+    //key for bloc
+    public static String TITLE_CATEGORY = "title_category";
     public static String PATH_BLOC = "path_bloc";
 }

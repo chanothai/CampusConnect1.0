@@ -25,14 +25,4 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/scroll_tabs"/>
 
-    <LinearLayout
-        android:id="@+id/layoutDot"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:layout_marginBottom="10dp"
-        android:layout_alignBottom="@+id/pager_topic"
-        />
-
 </RelativeLayout>
