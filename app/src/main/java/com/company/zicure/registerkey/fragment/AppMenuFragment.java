@@ -98,10 +98,7 @@ public class AppMenuFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState == null){
             scrollView.setNestedScrollingEnabled(true);
-            PermissionRequest permissionRequest = new PermissionRequest(getActivity());
-            if (!permissionRequest.requestCamera()){
-                setWebView();
-            }
+            setWebView();
         }
     }
 

@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.company.zicure.registerkey.R;
 import com.company.zicure.registerkey.fragment.AppMenuFragment;
+import com.company.zicure.registerkey.fragment.IDCardFragment;
 
 import gallery.zicure.company.com.modellibrary.common.BaseActivity;
 import gallery.zicure.company.com.modellibrary.utilize.ModelCart;
@@ -32,13 +33,34 @@ public class BlocContentActivity extends BaseActivity {
         bindView();
 
         if (savedInstanceState == null) {
+            iniBundle();
+            setToolbar();
+            checkIniFragment();
+        }
+    }
+
+    private void iniBundle(){
+        try{
             Bundle bundle = getIntent().getExtras();
             titleBloc = bundle.getString(VariableConnect.TITLE_CATEGORY);
             urlBloc = bundle.getString(VariableConnect.PATH_BLOC);
-
-            setToolbar();
-            iniFragmentBloc();
+        }catch (NullPointerException e){
+            e.printStackTrace();
         }
+    }
+
+    private void checkIniFragment(){
+        if (!urlBloc.equalsIgnoreCase("")){
+            iniFragmentBloc();
+        }else{
+            iniFragmentIDCard();
+        }
+    }
+
+    private void iniFragmentIDCard(){
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container_bloc, new IDCardFragment());
+        transaction.commit();
     }
 
     private void iniFragmentBloc(){
@@ -69,7 +91,11 @@ public class BlocContentActivity extends BaseActivity {
         switch (item.getItemId()){
             case android.R.id.home:{
                 finish();
-                overridePendingTransition(R.anim.anim_scale_in, R.anim.anim_slide_out_right);
+                if (!urlBloc.equalsIgnoreCase("")){
+                    overridePendingTransition(R.anim.anim_scale_in, R.anim.anim_slide_out_right);
+                }else{
+                    overridePendingTransition(R.anim.anim_scale_in, R.anim.anim_slide_out_left);
+                }
                 break;
             }
 

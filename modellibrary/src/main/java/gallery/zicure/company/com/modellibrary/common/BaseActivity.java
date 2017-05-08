@@ -28,7 +28,7 @@ public class BaseActivity extends AppCompatActivity {
         openActivity(cls, bundle, false);
     }
 
-    protected void openActivity(Class<?> cls,Bundle bundle, boolean finishActivity) {
+    public void openActivity(Class<?> cls,Bundle bundle, boolean finishActivity) {
         if (cls != null){
             Intent intent = new Intent(this, cls);
             if (bundle != null){

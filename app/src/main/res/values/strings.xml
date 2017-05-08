@@ -65,14 +65,19 @@
     <string name="token_login">token</string>
     <string name="dynamic_key">dynamic_key</string>
     <string name="phone_key">phone_key</string>
-    <string name="menu_feed_th">ฟีด</string>
-    <string name="setting_menu_th">การตั้งค่า</string>
-    <string name="logout_menu_th">ออกจากระบบ</string>
-    <string name="user_detail_th">ข้อมูลส่วนตัว</string>
-    <string name="activate_user_th">เปิดใช้งานแอพพลิเคชั่น</string>
     <string name="user_secret">user_secret</string>
     <string name="message_get_userinfo_th">MOF PAY APPLICATION : จะขอรับข้อมูลส่วนตัวจาก CONNECT APPLICATION.</string>
     <string name="blog_social_th">Pakgon Social</string>
     <string name="confirm_password">ยืนยันรหัสผ่าน</string>
     <string name="message_check_password_th">รหัสผ่านไม่ถูกต้อง</string>
+
+    //Slide menu
+    <string name="menu_feed_th">ฟีด</string>
+    <string name="setting_menu_th">การตั้งค่า</string>
+    <string name="logout_menu_th">ออกจากระบบ</string>
+    <string name="user_detail_th">ข้อมูลส่วนตัว</string>
+    <string name="activate_user_th">เปิดใช้งานแอพพลิเคชั่น</string>
+    <string name="id_card_th">บัตรประจำตัว</string>
+    <string name="title_id_card_th">IDENTIFICATION NUMBER</string>
+
 </resources>

@@ -2,5 +2,9 @@
     {
         "merged": "/Users/Pakgon/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/androidTest/debug/drawable-nodpi/empty_icon.png",
         "source": "/Users/Pakgon/StudioProjects/registerkey/bottom-bar/src/androidTest/res/drawable-nodpi/empty_icon.png"
+    },
+    {
+        "merged": "/Users/ballomo/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/androidTest/debug/drawable-nodpi/empty_icon.png",
+        "source": "/Users/ballomo/StudioProjects/registerkey/bottom-bar/src/androidTest/res/drawable-nodpi/empty_icon.png"
     }
 ]

@@ -2,15 +2,12 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.company.zicure.registerkey.activity.BlocContentActivity">
+    android:layout_height="match_parent">
 
     <android.support.design.widget.CoordinatorLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintHorizontal_bias="1.0"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -25,12 +22,10 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar_bloc"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_scrollFlags="scroll|enterAlways"
+                android:layout_height="match_parent"
+                app:layout_scrollFlags="enterAlways"
                 android:background="@android:color/white"
-                android:minHeight="?attr/actionBarSize"
-                app:theme="@style/ToolbarColoredBackArrow"
-                app:popupTheme="@style/AppTheme">
+                app:theme="@style/ToolbarColoredBackArrow">
 
                 <TextView
                     android:id="@+id/text_title"
@@ -44,14 +39,13 @@
 
         </android.support.design.widget.AppBarLayout>
 
+
         <FrameLayout
             android:id="@+id/container_bloc"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-
-        </FrameLayout>
     </android.support.design.widget.CoordinatorLayout>
 
 </android.support.constraint.ConstraintLayout>

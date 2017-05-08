@@ -3,7 +3,6 @@ package com.company.zicure.registerkey;
 import android.content.res.Resources;
 import android.os.Build;
 import android.os.PersistableBundle;
-import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -34,7 +33,6 @@ import com.company.zicure.registerkey.contents.ContentAdapterCart;
 import com.company.zicure.registerkey.fragment.AppMenuFragment;
 import com.company.zicure.registerkey.fragment.HomeFragment;
 import com.company.zicure.registerkey.fragment.ScanQRFragment;
-import com.company.zicure.registerkey.fragment.StudentCardFragment;
 
 import gallery.zicure.company.com.modellibrary.models.CategoryModel;
 import com.company.zicure.registerkey.network.ClientHttp;
@@ -43,9 +41,6 @@ import com.company.zicure.registerkey.view.viewgroup.FlyOutContainer;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.joooonho.SelectableRoundedImageView;
-import com.roughike.bottombar.BottomBar;
-import com.roughike.bottombar.OnTabReselectListener;
-import com.roughike.bottombar.OnTabSelectListener;
 import com.squareup.otto.Subscribe;
 
 import org.json.JSONObject;
@@ -114,7 +109,6 @@ public class MainMenuActivity extends BaseActivity implements  View.OnClickListe
 
     //fragment layout
     private ScanQRFragment scanQRFragment = null;
-    private StudentCardFragment studentCardFragment = null;
 
     private static final int PORT = 5055;
     private static final String DEVICEID = "218989";
@@ -456,10 +450,21 @@ public class MainMenuActivity extends BaseActivity implements  View.OnClickListe
 
         profileName.setText(ModelCart.getInstance().getUserInfo().getResult().getData().getUser().getScreenName());
 
-        arrMenu = new ArrayList<SlideMenuDetail>();
+        arrMenu = new ArrayList<>();
         Log.d("SlideMenu",new Gson().toJson(arrMenu));
-        String[] arrTitle = {getString(R.string.menu_feed_th),getString(R.string.user_detail_th),getString(R.string.activate_user_th), getString(R.string.logout_menu_th)};
-        int[] arrImg = {R.drawable.ic_news_feed,R.drawable.ic_person,  R.drawable.ic_edit_user,R.drawable.ic_log_out};
+        String[] arrTitle = {
+                getString(R.string.menu_feed_th),
+                getString(R.string.user_detail_th),
+                getString(R.string.id_card_th),
+                getString(R.string.activate_user_th),
+                getString(R.string.logout_menu_th),};
+
+        int[] arrImg = {
+                R.drawable.ic_news_feed,
+                R.drawable.ic_person,
+                R.drawable.idcard,
+                R.drawable.opensign,
+                R.drawable.ic_log_out};
         for (int i = 0; i < arrTitle.length; i++){
             SlideMenuDetail menu = new SlideMenuDetail();
             menu.setTitle(arrTitle[i]);

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/padding_medium"
+    android:layout_weight="1">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/name_id_card">
+
+        <com.joooonho.SelectableRoundedImageView
+            android:id="@+id/img_id_card"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_action_home"
+            android:scaleType="centerCrop"
+            app:sriv_border_color="@android:color/white"
+            app:sriv_border_width="1dp"
+            app:sriv_oval="true" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/name_id_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:padding="4dp"
+        android:text="Name"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/size_text_large" />
+
+
+</RelativeLayout>

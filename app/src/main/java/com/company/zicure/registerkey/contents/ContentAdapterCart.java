@@ -43,11 +43,15 @@ import profilemof.zicure.company.com.profilemof.activity.ProfileActivity;
  */
 
 public class ContentAdapterCart {
+    private BaseActivity baseActivity = null;
+    private Activity atv = null;
+
     public ContentAdapterCart(){
 
     }
 
-    public SlideMenuAdapter setSlideMenuAdapter(final BaseActivity activity,ArrayList<SlideMenuDetail> arrMenu){
+    public SlideMenuAdapter setSlideMenuAdapter(BaseActivity activity,ArrayList<SlideMenuDetail> arrMenu){
+        baseActivity = activity;
         SlideMenuAdapter slideMenuAdapter = new SlideMenuAdapter(activity, arrMenu) {
             @Override
             public void onBindViewHolder(SlideMenuHolder holder, int position) {
@@ -56,29 +60,35 @@ public class ContentAdapterCart {
                 holder.setItemOnClickListener(new ItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        if (getTitle(position).equalsIgnoreCase(activity.getString(R.string.user_detail_th))){
+                        if (getTitle(position).equalsIgnoreCase(baseActivity.getString(R.string.user_detail_th))){
                             Bundle bundle = new Bundle();
                             bundle.putInt(VariableConnect.pageKey, 0);
-                            activity.openActivity(ProfileActivity.class, bundle);
-                            activity.overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_scale_out);
+                            baseActivity.openActivity(ProfileActivity.class, bundle);
+                            baseActivity.overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_scale_out);
                         }
-                        else if (getTitle(position).equalsIgnoreCase(activity.getString(R.string.menu_feed_th))){
-                            activity.showLoadingDialog();
-                            ClientHttp.getInstance(activity).requestUserBloc(ModelCart.getInstance().getAuth().getAuthToken());
+                        else if (getTitle(position).equalsIgnoreCase(baseActivity.getString(R.string.menu_feed_th))){
+                            baseActivity.showLoadingDialog();
+                            ClientHttp.getInstance(baseActivity).requestUserBloc(ModelCart.getInstance().getAuth().getAuthToken());
                         }
-                        else if (getTitle(position).equalsIgnoreCase(activity.getString(R.string.logout_menu_th))){
-                            SharedPreferences pref = activity.getSharedPreferences(VariableConnect.keyFile, Context.MODE_PRIVATE);
+                        else if (getTitle(position).equalsIgnoreCase(baseActivity.getString(R.string.logout_menu_th))){
+                            SharedPreferences pref = baseActivity.getSharedPreferences(VariableConnect.keyFile, Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = pref.edit();
                             editor.clear();
                             editor.commit();
 
-                            activity.openActivity(LoginActivity.class, true);
+                            baseActivity.openActivity(LoginActivity.class, true);
                         }
-                        else if (getTitle(position).equalsIgnoreCase(activity.getString(R.string.activate_user_th))){
+                        else if (getTitle(position).equalsIgnoreCase(baseActivity.getString(R.string.activate_user_th))){
                             Bundle bundle = new Bundle();
                             bundle.putInt(VariableConnect.pageKey, 1);
-                            activity.openActivity(ProfileActivity.class, bundle);
-                            activity.overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_scale_out);
+                            baseActivity.openActivity(ProfileActivity.class, bundle);
+                            baseActivity.overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_scale_out);
+                        }else if (getTitle(position).equalsIgnoreCase(baseActivity.getString(R.string.id_card_th))){
+                            Bundle bundle = new Bundle();
+                            bundle.putString(VariableConnect.TITLE_CATEGORY, baseActivity.getString(R.string.id_card_th));
+                            bundle.putString(VariableConnect.PATH_BLOC, "");
+                            baseActivity.openActivity(BlocContentActivity.class, bundle, false);
+                            baseActivity.overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_scale_out);
                         }
                     }
                 });
@@ -87,14 +97,15 @@ public class ContentAdapterCart {
         return slideMenuAdapter;
     }
 
-    public MainMenuAdapter setMainMenuAdapter(final Activity activity, final Fragment fragment, final List<CategoryModel.Result.Data.Bloc> arrBloc) {
+    public MainMenuAdapter setMainMenuAdapter(Activity activity, final Fragment fragment, final List<CategoryModel.Result.Data.Bloc> arrBloc) {
+        atv = activity;
         //set adapter
          MainMenuAdapter mainMenuAdapter = new MainMenuAdapter(activity,arrBloc) {
             //Data is bound to view
             @Override
             public void onBindViewHolder(final MainMenuHolder holder, int position) {
                 holder.topicMenu.setText(getData().get(position).getBlocName());
-                Glide.with(activity)
+                Glide.with(atv)
                         .load(getData().get(position).getBlocIconPath())
                         .fitCenter()
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -106,10 +117,10 @@ public class ContentAdapterCart {
                         Bundle bundle = new Bundle();
                         bundle.putString(VariableConnect.TITLE_CATEGORY, getData().get(position).getBlocName());
                         bundle.putString(VariableConnect.PATH_BLOC, getData().get(position).getBlocUrl());
-                        Intent intent = new Intent(activity, BlocContentActivity.class);
+                        Intent intent = new Intent(atv, BlocContentActivity.class);
                         intent.putExtras(bundle);
-                        activity.startActivity(intent);
-                        activity.overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_scale_out);
+                        atv.startActivity(intent);
+                        atv.overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_scale_out);
                     }
                 });
             }
