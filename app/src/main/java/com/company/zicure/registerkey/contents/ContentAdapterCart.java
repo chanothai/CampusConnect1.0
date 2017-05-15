@@ -6,11 +6,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
@@ -50,7 +54,7 @@ public class ContentAdapterCart {
 
     }
 
-    public SlideMenuAdapter setSlideMenuAdapter(BaseActivity activity,ArrayList<SlideMenuDetail> arrMenu){
+    public SlideMenuAdapter setSlideMenuAdapter(BaseActivity activity, ArrayList<SlideMenuDetail> arrMenu){
         baseActivity = activity;
         SlideMenuAdapter slideMenuAdapter = new SlideMenuAdapter(activity, arrMenu) {
             @Override
@@ -71,6 +75,9 @@ public class ContentAdapterCart {
                             ClientHttp.getInstance(baseActivity).requestUserBloc(ModelCart.getInstance().getAuth().getAuthToken());
                         }
                         else if (getTitle(position).equalsIgnoreCase(baseActivity.getString(R.string.logout_menu_th))){
+                            AppMenuFragment fragment = (AppMenuFragment.newInstance(""));
+                            fragment.clearCache();
+
                             SharedPreferences pref = baseActivity.getSharedPreferences(VariableConnect.keyFile, Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = pref.edit();
                             editor.clear();
@@ -97,7 +104,7 @@ public class ContentAdapterCart {
         return slideMenuAdapter;
     }
 
-    public MainMenuAdapter setMainMenuAdapter(Activity activity, final Fragment fragment, final List<CategoryModel.Result.Data.Bloc> arrBloc) {
+    public MainMenuAdapter setMainMenuAdapter(Activity activity, final List<CategoryModel.Result.Data.Bloc> arrBloc) {
         atv = activity;
         //set adapter
          MainMenuAdapter mainMenuAdapter = new MainMenuAdapter(activity,arrBloc) {

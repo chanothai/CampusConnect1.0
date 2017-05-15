@@ -60,6 +60,10 @@ public class ModelCart {
         return categoryModel;
     }
 
+    public void instanceCategory(){
+        categoryModel = new CategoryModel();
+    }
+
     public ResponseUserCode getDeviceToken(){
         return deviceToken;
     }

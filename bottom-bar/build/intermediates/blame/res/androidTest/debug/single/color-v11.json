@@ -4,14 +4,6 @@
         "source": "/Users/Pakgon/.android/build-cache/41c71a0fc2745c2c9a12254d8747c0deef2bc1aa/output/res/color-v11/abc_background_cache_hint_selector_material_light.xml"
     },
     {
-        "merged": "/Users/ballomo/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/androidTest/debug/color-v11/abc_background_cache_hint_selector_material_light.xml",
-        "source": "/Users/ballomo/.android/build-cache/307951dfbd4a0ce2ea696b269b8601698c2fe1d5/output/res/color-v11/abc_background_cache_hint_selector_material_light.xml"
-    },
-    {
-        "merged": "/Users/ballomo/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/androidTest/debug/color-v11/abc_background_cache_hint_selector_material_dark.xml",
-        "source": "/Users/ballomo/.android/build-cache/307951dfbd4a0ce2ea696b269b8601698c2fe1d5/output/res/color-v11/abc_background_cache_hint_selector_material_dark.xml"
-    },
-    {
         "merged": "/Users/Pakgon/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/androidTest/debug/color-v11/abc_background_cache_hint_selector_material_dark.xml",
         "source": "/Users/Pakgon/.android/build-cache/41c71a0fc2745c2c9a12254d8747c0deef2bc1aa/output/res/color-v11/abc_background_cache_hint_selector_material_dark.xml"
     }

@@ -1,18 +1,10 @@
 [
     {
-        "merged": "/Users/ballomo/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/debug/anim-v21/design_bottom_sheet_slide_out.xml",
-        "source": "/Users/ballomo/.android/build-cache/d5cc0a4eafe5880c423808a479799d5b3da5fa88/output/res/anim-v21/design_bottom_sheet_slide_out.xml"
-    },
-    {
         "merged": "/Users/Pakgon/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/debug/anim-v21/design_bottom_sheet_slide_out.xml",
         "source": "/Users/Pakgon/.android/build-cache/3713fdb2971c65e928d2a13a2274cc2f343afc4e/output/res/anim-v21/design_bottom_sheet_slide_out.xml"
     },
     {
         "merged": "/Users/Pakgon/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/debug/anim-v21/design_bottom_sheet_slide_in.xml",
         "source": "/Users/Pakgon/.android/build-cache/3713fdb2971c65e928d2a13a2274cc2f343afc4e/output/res/anim-v21/design_bottom_sheet_slide_in.xml"
-    },
-    {
-        "merged": "/Users/ballomo/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/debug/anim-v21/design_bottom_sheet_slide_in.xml",
-        "source": "/Users/ballomo/.android/build-cache/d5cc0a4eafe5880c423808a479799d5b3da5fa88/output/res/anim-v21/design_bottom_sheet_slide_in.xml"
     }
 ]

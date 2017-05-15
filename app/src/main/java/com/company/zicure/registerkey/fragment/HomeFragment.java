@@ -6,32 +6,42 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.text.Html;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.company.zicure.registerkey.R;
 import com.company.zicure.registerkey.adapter.CategoryPagerAdapter;
+import com.company.zicure.registerkey.adapter.MainMenuAdapter;
+import com.company.zicure.registerkey.contents.ContentAdapterCart;
+import com.company.zicure.registerkey.network.ClientHttp;
 
 import java.util.List;
 
+import gallery.zicure.company.com.modellibrary.models.CategoryModel;
 import gallery.zicure.company.com.modellibrary.utilize.ModelCart;
-
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment implements View.OnClickListener {
+public class HomeFragment extends Fragment implements View.OnClickListener ,ViewPager.OnPageChangeListener, SwipeRefreshLayout.OnRefreshListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     // TODO: Rename and change types of parameters
     private ViewPager categoryPager = null;
-    private TabLayout scrollTabs = null;
+
+    //Swipe for pull to refresh
+    private SwipeRefreshLayout swipeRefreshLayout;
+
+    //list app
+    private RecyclerView recyclerViewMenu;
 
     private String[] bannerImg = null;
     private List<String> arrTitle = null;
@@ -68,24 +78,49 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         categoryPager = (ViewPager) root.findViewById(R.id.pager_topic);
-        scrollTabs = (TabLayout) root.findViewById(R.id.scroll_tabs);
+        recyclerViewMenu = (RecyclerView) root.findViewById(R.id.recycler_menu);
+        swipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.swipeContainer);
+
         return root;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState == null){
+        categoryPager.addOnPageChangeListener(this);
 
+        if (savedInstanceState == null){
             setupViewPager();
+            setSwipeRefreshLayout();
+            setAdapterView(0);
         }
+    }
+
+    private List<CategoryModel.Result.Data> getCategoryData(){
+        return ModelCart.getInstance().getCategoryModel().getResult().getData();
+    }
+
+    private void setSwipeRefreshLayout(){
+        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setColorSchemeColors(
+                getResources().getColor(android.R.color.holo_blue_bright),
+                getResources().getColor(android.R.color.holo_green_light),
+                getResources().getColor(android.R.color.holo_orange_light),
+                getResources().getColor(android.R.color.holo_red_light));
     }
 
     private void setupViewPager(){
         CategoryPagerAdapter adapter = new CategoryPagerAdapter(getChildFragmentManager(), ModelCart.getInstance().getCategoryModel().getResult().getData());
         categoryPager.setAdapter(adapter);
+    }
 
-        scrollTabs.setupWithViewPager(categoryPager);
+    public void setAdapterView(int pager){
+        //set adapter
+        MainMenuAdapter mainMenuAdapter = new ContentAdapterCart().setMainMenuAdapter(getActivity(), getCategoryData().get(pager).getBloc());
+
+        recyclerViewMenu.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        recyclerViewMenu.setAdapter(mainMenuAdapter);
+        recyclerViewMenu.setItemAnimator(new DefaultItemAnimator());
     }
 
 
@@ -97,5 +132,28 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
 
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        Log.d("Pager", Integer.toString(position));
+        setAdapterView(position);
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
+    @Override
+    public void onRefresh() {
+//        ModelCart.getInstance().instanceCategory();
+//        ClientHttp.getInstance(getActivity()).requestUserBloc(ModelCart.getInstance().getAuth().getAuthToken());
+        swipeRefreshLayout.setRefreshing(false);
     }
 }

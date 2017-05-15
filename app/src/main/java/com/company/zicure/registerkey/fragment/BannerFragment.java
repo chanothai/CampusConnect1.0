@@ -36,7 +36,7 @@ import gallery.zicure.company.com.modellibrary.utilize.ResizeScreen;
  * Use the {@link BannerFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BannerFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+public class BannerFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "pager";
@@ -47,12 +47,6 @@ public class BannerFragment extends Fragment implements SwipeRefreshLayout.OnRef
     private ImageView imgBanner;
 
     private int currentPager = 0;
-
-    //list app
-    private RecyclerView recyclerViewMenu;
-
-    //Swipe for pull to refresh
-    private SwipeRefreshLayout swipeRefreshLayout;
 
     //create dots
     private TextView[] dots;
@@ -90,8 +84,6 @@ public class BannerFragment extends Fragment implements SwipeRefreshLayout.OnRef
 
         View root = inflater.inflate(R.layout.fragment_banner, container, false);
         imgBanner = (ImageView)root.findViewById(R.id.banner_img);
-        recyclerViewMenu = (RecyclerView) root.findViewById(R.id.recycler_menu);
-        swipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.swipeContainer);
         dotLayout = (LinearLayout) root.findViewById(R.id.layoutDot);
         return root;
     }
@@ -100,37 +92,10 @@ public class BannerFragment extends Fragment implements SwipeRefreshLayout.OnRef
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        recyclerViewMenu.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-
         if (savedInstanceState == null){
-            setSwipeRefreshLayout();
-            setLayoutParamsBanner();
-
-            setAdapterView();
+            setImageBanner();
             addBottomDots(pager);
         }
-    }
-
-    private void setSwipeRefreshLayout(){
-        swipeRefreshLayout.setOnRefreshListener(this);
-        swipeRefreshLayout.setColorSchemeColors(
-                getResources().getColor(android.R.color.holo_blue_bright),
-                getResources().getColor(android.R.color.holo_green_light),
-                getResources().getColor(android.R.color.holo_orange_light),
-                getResources().getColor(android.R.color.holo_red_light));
-    }
-
-    private void setLayoutParamsBanner(){
-        ResizeScreen resizeScreen = new ResizeScreen(getActivity());
-        int height = resizeScreen.widthScreen(2);
-        int widht = resizeScreen.widthScreen(1);
-
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) imgBanner.getLayoutParams();
-        params.height = height;
-        params.width = widht;
-        imgBanner.setLayoutParams(params);
-
-        setImageBanner();
     }
 
     private List<CategoryModel.Result.Data> getCategoryData(){
@@ -141,16 +106,9 @@ public class BannerFragment extends Fragment implements SwipeRefreshLayout.OnRef
         Glide.with(getActivity())
                 .load(getCategoryData().get(pager).getBlogCategories().getBlocCategoryImagePath())
                 .fitCenter()
+                .override(768, 432)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imgBanner);
-    }
-
-    public void setAdapterView(){
-        //set adapter
-        MainMenuAdapter mainMenuAdapter = new ContentAdapterCart().setMainMenuAdapter(getActivity(), this, getCategoryData().get(pager).getBloc());
-
-        recyclerViewMenu.setAdapter(mainMenuAdapter);
-        recyclerViewMenu.setItemAnimator(new DefaultItemAnimator());
     }
 
     private void addBottomDots(int currentPage){
@@ -171,11 +129,5 @@ public class BannerFragment extends Fragment implements SwipeRefreshLayout.OnRef
         }catch (NullPointerException e){
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void onRefresh() {
-        ClientHttp.getInstance(getActivity()).requestUserBloc(ModelCart.getInstance().getAuth().getAuthToken());
-        swipeRefreshLayout.setRefreshing(false);
     }
 }

@@ -1,12 +1,10 @@
 package com.company.zicure.registerkey.activity;
 
-import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
@@ -15,7 +13,7 @@ import com.company.zicure.registerkey.fragment.AppMenuFragment;
 import com.company.zicure.registerkey.fragment.IDCardFragment;
 
 import gallery.zicure.company.com.modellibrary.common.BaseActivity;
-import gallery.zicure.company.com.modellibrary.utilize.ModelCart;
+import gallery.zicure.company.com.modellibrary.utilize.NextzyUtil;
 import gallery.zicure.company.com.modellibrary.utilize.ToolbarManager;
 import gallery.zicure.company.com.modellibrary.utilize.VariableConnect;
 
@@ -65,7 +63,7 @@ public class BlocContentActivity extends BaseActivity {
 
     private void iniFragmentBloc(){
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container_bloc, AppMenuFragment.newInstance(urlBloc));
+        transaction.replace(R.id.container_bloc, AppMenuFragment.newInstance(urlBloc), VariableConnect.appMenuFragmentKey);
         transaction.commit();
     }
 
@@ -81,8 +79,6 @@ public class BlocContentActivity extends BaseActivity {
 
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
         }
     }
 
@@ -112,5 +108,10 @@ public class BlocContentActivity extends BaseActivity {
         super.onBackPressed();
         finish();
         overridePendingTransition(R.anim.anim_scale_in, R.anim.anim_slide_out_right);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

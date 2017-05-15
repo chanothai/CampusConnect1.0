@@ -1,17 +1,5 @@
 [
     {
-        "merged": "/Users/ballomo/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/androidTest/debug/layout-v21/notification_template_custom_big.xml",
-        "source": "/Users/ballomo/.android/build-cache/307951dfbd4a0ce2ea696b269b8601698c2fe1d5/output/res/layout-v21/notification_template_custom_big.xml"
-    },
-    {
-        "merged": "/Users/ballomo/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/androidTest/debug/layout-v21/notification_template_icon_group.xml",
-        "source": "/Users/ballomo/.android/build-cache/307951dfbd4a0ce2ea696b269b8601698c2fe1d5/output/res/layout-v21/notification_template_icon_group.xml"
-    },
-    {
-        "merged": "/Users/ballomo/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/androidTest/debug/layout-v21/notification_action_tombstone.xml",
-        "source": "/Users/ballomo/.android/build-cache/307951dfbd4a0ce2ea696b269b8601698c2fe1d5/output/res/layout-v21/notification_action_tombstone.xml"
-    },
-    {
         "merged": "/Users/Pakgon/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/androidTest/debug/layout-v21/notification_action_tombstone.xml",
         "source": "/Users/Pakgon/.android/build-cache/41c71a0fc2745c2c9a12254d8747c0deef2bc1aa/output/res/layout-v21/notification_action_tombstone.xml"
     },
@@ -26,9 +14,5 @@
     {
         "merged": "/Users/Pakgon/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/androidTest/debug/layout-v21/notification_template_icon_group.xml",
         "source": "/Users/Pakgon/.android/build-cache/41c71a0fc2745c2c9a12254d8747c0deef2bc1aa/output/res/layout-v21/notification_template_icon_group.xml"
-    },
-    {
-        "merged": "/Users/ballomo/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/androidTest/debug/layout-v21/notification_action.xml",
-        "source": "/Users/ballomo/.android/build-cache/307951dfbd4a0ce2ea696b269b8601698c2fe1d5/output/res/layout-v21/notification_action.xml"
     }
 ]

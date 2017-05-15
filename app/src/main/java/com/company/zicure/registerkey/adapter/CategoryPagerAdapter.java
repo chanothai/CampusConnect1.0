@@ -31,9 +31,4 @@ public class CategoryPagerAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return data.size();
     }
-
-    @Override
-    public CharSequence getPageTitle(int position) {
-        return data.get(position).getBlogCategories().getBlocCategoryName();
-    }
 }

@@ -50,6 +50,13 @@ abstract public class MainMenuAdapter extends RecyclerView.Adapter<MainMenuHolde
 
     @Override
     public int getItemCount() {
-        return arrData.size();
+        try {
+            if (arrData.size() > 0) {
+                return arrData.size();
+            }
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
+        return 0;
     }
 }

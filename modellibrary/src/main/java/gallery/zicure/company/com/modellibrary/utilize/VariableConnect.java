@@ -28,4 +28,5 @@ public class VariableConnect {
     //key for bloc
     public static String TITLE_CATEGORY = "title_category";
     public static String PATH_BLOC = "path_bloc";
+    public static String TAG_FRAGMENT_APP_MENU = "tag_fragment_app_menu";
 }

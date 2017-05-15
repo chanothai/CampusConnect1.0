@@ -1,34 +1,34 @@
 package com.company.zicure.registerkey.fragment;
 
-
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.company.zicure.registerkey.MainMenuActivity;
 import com.company.zicure.registerkey.R;
 import com.company.zicure.registerkey.activity.BlocContentActivity;
 
 import java.io.File;
 import java.io.IOException;
 
-import gallery.zicure.company.com.gallery.util.PermissionRequest;
 import gallery.zicure.company.com.modellibrary.utilize.JavaScriptInterface;
 import gallery.zicure.company.com.modellibrary.utilize.VariableConnect;
 
@@ -89,7 +89,7 @@ public class AppMenuFragment extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_app_menu, container, false);
         webView = (WebView) root.findViewById(R.id.appView);
-        scrollView = (NestedScrollView) root.findViewById(R.id.scrollViewFragment);
+
         return root;
     }
 
@@ -97,7 +97,9 @@ public class AppMenuFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState == null){
-            scrollView.setNestedScrollingEnabled(true);
+            SharedPreferences pref = getActivity().getSharedPreferences(VariableConnect.keyFile, Context.MODE_PRIVATE);
+            token = pref.getString(getString(R.string.token_login), null);
+
             setWebView();
         }
     }
@@ -107,23 +109,39 @@ public class AppMenuFragment extends Fragment {
 
         webView.setWebViewClient(new AppBrowser());
         webView.setWebChromeClient(new AppBrowserChrome());
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setDomStorageEnabled(true);
-        webView.getSettings().setAllowFileAccess(true);
+        webView.setVerticalScrollBarEnabled(true);
+        webView.setClickable(true);
+
+        // improve webView performance
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
+//        webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+//        webSettings.setAppCacheEnabled(true);
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setDomStorageEnabled(true);
+        webSettings.setAllowFileAccess(true);
+
         webView.addJavascriptInterface(new JavaScriptInterface(), "Token");
 
-        SharedPreferences pref = getActivity().getSharedPreferences(VariableConnect.keyFile, Context.MODE_PRIVATE);
-        token = pref.getString(getString(R.string.token_login), null);
-
         webView.loadUrl(url);
+    }
 
-        webView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                view.getParent().requestDisallowInterceptTouchEvent(true);
-                return false;
-            }
-        });
+    public void clearCache(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            CookieManager.getInstance().removeAllCookies(null);
+            CookieManager.getInstance().flush();
+        }else{
+            CookieSyncManager cookieSyncManager = CookieSyncManager.createInstance(getActivity());
+            cookieSyncManager.startSync();
+            CookieManager cookieManager = CookieManager.getInstance();
+            cookieManager.removeAllCookie();
+            cookieManager.removeSessionCookie();
+            cookieSyncManager.stopSync();
+            cookieSyncManager.sync();
+        }
+
+        webView.clearCache(true);
+        webView.clearHistory();
     }
 
     public class AppBrowser extends WebViewClient {
@@ -135,7 +153,7 @@ public class AppMenuFragment extends Fragment {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            //filter url to same url between url blog and url of webview loadding
+//            //filter url to same url between url blog and url of webview loadding
             try{
                 StringBuilder builder = new StringBuilder();
                 builder.append("(function() {");
@@ -146,15 +164,16 @@ public class AppMenuFragment extends Fragment {
 
                 String result = "javascript:" + builder.toString();
                 view.loadUrl(result);
-
-                ((BlocContentActivity)getActivity()).dismissDialog();
             }catch (Exception e){
                 e.printStackTrace();
             }
+
+            ((BlocContentActivity)getActivity()).dismissDialog();
         }
     }
 
     public class AppBrowserChrome extends WebChromeClient {
+
         @Override
         public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
             mUploadMesssage = filePathCallback;
@@ -196,30 +215,8 @@ public class AppMenuFragment extends Fragment {
         }
     }
 
-
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 2500){
-            Log.d("TestWebView", "here1");
-            if (null == this.mUploadMesssage) {
-                return;
-            }
-
-            if (resultCode == getActivity().RESULT_OK){
-                mUploadMesssage.onReceiveValue(new Uri[] {mCapturedImageURI});
-            }else{
-                if (mUploadMesssage != null){
-                    mUploadMesssage.onReceiveValue(null);
-                    mUploadMesssage = null;
-                }
-            }
-        }
-    }
-
     @Override
     public void onDestroy() {
         super.onDestroy();
-
     }
 }
