@@ -12,138 +12,141 @@
         android:orientation="vertical"
         android:background="?android:attr/selectableItemBackground">
 
-        <LinearLayout
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:paddingTop="@dimen/padding_top_five">
 
-            <android.support.design.widget.TextInputLayout
+            <EditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="@dimen/padding_top_five">
+                android:layout_height="match_parent"
+                android:id="@+id/identity_card"
+                android:inputType="number"
+                android:maxLines="1"
+                android:maxLength="13"
+                android:imeOptions="actionNext"
+                android:padding="@dimen/padding_large"
+                android:hint="@string/identity_card_th" />
 
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/identity_card"
-                    android:inputType="number"
-                    android:maxLines="1"
-                    android:maxLength="13"
-                    android:imeOptions="actionNext"
-                    android:padding="@dimen/padding_large"
-                    android:hint="@string/identity_card_th" />
+        </android.support.design.widget.TextInputLayout>
 
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="@dimen/padding_top_five">
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/edit_first_name"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:imeOptions="actionNext"
-                    android:padding="@dimen/padding_large"
-                    android:hint="@string/firstname_th" />
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="@dimen/padding_top_five">
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/edit_last_name"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:imeOptions="actionNext"
-                    android:padding="@dimen/padding_large"
-                    android:hint="@string/lastname_th" />
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="@dimen/padding_top_five">
-
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/birth_date"
-                    android:maxLines="1"
-                    android:padding="@dimen/padding_large"
-                    android:hint="@string/birth_date_th"
-                    />
-            </android.support.design.widget.TextInputLayout>
-        </LinearLayout>
-
-
-        <LinearLayout
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:paddingTop="@dimen/padding_top_five">
 
-            <android.support.design.widget.TextInputLayout
+            <EditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="@dimen/padding_top_five">
+                android:layout_height="match_parent"
+                android:id="@+id/edit_first_name"
+                android:inputType="text"
+                android:maxLines="1"
+                android:imeOptions="actionNext"
+                android:padding="@dimen/padding_large"
+                android:hint="@string/firstname_th" />
 
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/phone_number"
-                    android:inputType="number"
-                    android:maxLines="1"
-                    android:padding="@dimen/padding_large"
-                    android:imeOptions="actionNext"
-                    android:maxLength="12"
-                    android:hint="@string/phone_number_th" />
+        </android.support.design.widget.TextInputLayout>
 
-            </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/padding_top_five">
 
-            <android.support.design.widget.TextInputLayout
+            <EditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="@dimen/padding_top_five">
+                android:layout_height="match_parent"
+                android:id="@+id/edit_last_name"
+                android:inputType="text"
+                android:maxLines="1"
+                android:imeOptions="actionNext"
+                android:padding="@dimen/padding_large"
+                android:hint="@string/lastname_th" />
 
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/edit_password"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:padding="@dimen/padding_large"
-                    android:imeOptions="actionNext"
-                    android:hint="@string/hint_password_th" />
+        </android.support.design.widget.TextInputLayout>
 
-            </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/padding_top_five">
 
-            <android.support.design.widget.TextInputLayout
+            <EditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="@dimen/padding_top_five">
+                android:layout_height="match_parent"
+                android:id="@+id/birth_date"
+                android:maxLines="1"
+                android:padding="@dimen/padding_large"
+                android:hint="@string/birth_date_th"
+                />
+        </android.support.design.widget.TextInputLayout>
 
-                <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:id="@+id/edit_confirm_password"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:padding="@dimen/padding_large"
-                    android:imeOptions="actionDone"
-                    android:hint="@string/confirm_password" />
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/padding_top_five">
 
-            </android.support.design.widget.TextInputLayout>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/phone_number"
+                android:inputType="number"
+                android:maxLines="1"
+                android:padding="@dimen/padding_large"
+                android:imeOptions="actionNext"
+                android:maxLength="12"
+                android:hint="@string/phone_number_th" />
 
-        </LinearLayout>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/padding_top_five">
+
+            <EditText
+                android:id="@+id/edit_email"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/email_th"
+                android:imeOptions="actionNext"
+                android:inputType="textEmailAddress|number"
+                android:maxLines="1"
+                android:padding="@dimen/padding_large" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/padding_top_five">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/edit_password"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="@dimen/padding_large"
+                android:imeOptions="actionNext"
+                android:hint="@string/hint_password_th" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/padding_top_five">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/edit_confirm_password"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:padding="@dimen/padding_large"
+                android:imeOptions="actionDone"
+                android:hint="@string/confirm_password" />
+
+        </android.support.design.widget.TextInputLayout>
 
         <Button
             android:id="@+id/btn_register"
@@ -156,6 +159,5 @@
             android:text="@string/confirm_th"
             android:textColor="@android:color/white"
             android:background="@drawable/selector_btn_edit_user" />
-
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

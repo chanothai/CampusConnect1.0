@@ -76,7 +76,7 @@ public class ContentAdapterCart {
                         }
                         else if (getTitle(position).equalsIgnoreCase(baseActivity.getString(R.string.logout_menu_th))){
                             AppMenuFragment fragment = (AppMenuFragment.newInstance(""));
-                            fragment.clearCache();
+                            fragment.clearCookies();
 
                             SharedPreferences pref = baseActivity.getSharedPreferences(VariableConnect.keyFile, Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = pref.edit();
@@ -135,31 +135,4 @@ public class ContentAdapterCart {
 
         return mainMenuAdapter;
     }
-
-    /*
-    private void intentToMOFPAY(){
-        String authToken = null;
-        String strPackage = "com.company.zicure.payment";
-        try{
-            authToken = ModelCart.getInstance().getKeyModel().getAuthToken();
-            Intent intent = getContext().getPackageManager().getLaunchIntentForPackage(strPackage);
-            if (authToken != null){
-                intent.addCategory(Intent.CATEGORY_LAUNCHER);
-                intent.setType("text/plain");
-                intent.putExtra(Intent.EXTRA_TEXT, authToken);
-            }
-            activity.startActivity(intent);
-            ModelCart.getInstance().getKeyModel().setAuthToken("");
-
-        }catch (NullPointerException e){
-            e.printStackTrace();
-            try{
-                activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + strPackage)));
-            }catch (ActivityNotFoundException ef){
-                activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + strPackage)));
-            }
-        }
-    }
-    */
-
 }

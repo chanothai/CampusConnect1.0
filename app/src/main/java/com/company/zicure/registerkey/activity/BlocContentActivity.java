@@ -69,16 +69,13 @@ public class BlocContentActivity extends BaseActivity {
 
     private void bindView(){
         toolbar = (Toolbar) findViewById(R.id.toolbar_bloc);
-        textTitle = (TextView) findViewById(R.id.text_title);
+        textTitle = (TextView) toolbar.findViewById(R.id.text_title);
     }
 
     private void setToolbar(){
         if (Build.VERSION.SDK_INT >= 21) {
             ToolbarManager manager = new ToolbarManager(this);
-            manager.setToolbar(toolbar, textTitle, titleBloc);
-
-            setSupportActionBar(toolbar);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            manager.setToolbar(toolbar, textTitle, null, titleBloc);
         }
     }
 
@@ -113,5 +110,7 @@ public class BlocContentActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        AppMenuFragment fragment = (AppMenuFragment.newInstance(""));
+        fragment.clearCache();
     }
 }

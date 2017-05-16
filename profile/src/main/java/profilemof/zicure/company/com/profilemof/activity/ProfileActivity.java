@@ -59,7 +59,6 @@ public class ProfileActivity extends BaseActivity implements TabLayout.OnTabSele
         EventBusCart.getInstance().getEventBus().register(this);
         bindView();
         setToolbar();
-        setStatusBarTint();
 
         if (savedInstanceState == null){
             setImgProfile();
@@ -93,23 +92,12 @@ public class ProfileActivity extends BaseActivity implements TabLayout.OnTabSele
         imgEditProfile.setLayoutParams(params2);
     }
 
-    private void setStatusBarTint(){
-        if (Build.VERSION.SDK_INT < 21){
-            //create our manager instance after the content view is set
-            SystemBarTintManager tintManager = new SystemBarTintManager(this);
-            //enable status bar tint
-            tintManager.setStatusBarTintEnabled(true);
-            //enable navigation bar tint
-            tintManager.setNavigationBarTintEnabled(true);
-            //set the transparent color of the status bar 20% darker
-            tintManager.setTintColor(Color.parseColor("#20000000"));
-        }
-    }
+
 
     private void setToolbar(){
         ToolbarManager toolbarManager = new ToolbarManager(this);
-        toolbarManager.setToolbar(toolbar, null, getString(R.string.app_name));
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbarManager.setToolbar(toolbar, null, null, null);
+
     }
 
     private void setupViewPager(ViewPager viewPager){

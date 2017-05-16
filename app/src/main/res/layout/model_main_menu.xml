@@ -30,14 +30,16 @@
                 android:scaleType="fitXY" />
 
             <TextView
+                android:id="@+id/topic_menu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed"
                 android:gravity="start"
-                android:padding="@dimen/padding_eight"
                 android:maxLines="1"
-                android:textSize="@dimen/size_text_small"
+                android:padding="@dimen/padding_eight"
+                android:text="Test"
                 android:textColor="#4e4e4e"
-                android:id="@+id/topic_menu"/>
+                android:textSize="@dimen/size_text_small" />
 
         </LinearLayout>
     </RelativeLayout>

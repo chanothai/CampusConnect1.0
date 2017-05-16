@@ -110,16 +110,18 @@ public class IDCardFragment extends Fragment {
     }
 
     private void setInformation(){
-        Glide.with(getActivity())
-                .load(getInformation().getImgPath())
-                .fitCenter()
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(imgProfileCard);
+        if (getInformation().getImgPath() != null){
+            Glide.with(getActivity())
+                    .load(getInformation().getImgPath())
+                    .fitCenter()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(imgProfileCard);
+        }
 
         txtFullName.setText(getInformation().getFirstName() + " " + getInformation().getLastName());
         txtIDCard.setText(getInformation().getCitizenID());
-        txtMajor.setText("คณะ : ");
-        txtStudy.setText("สาขา : ");
+        txtMajor.setText("คณะ : วิทยาศาสตร์");
+        txtStudy.setText("สาขา : วิทยาการคอมพิวเตอร์");
 
         generateQRCode(500, 500);
     }

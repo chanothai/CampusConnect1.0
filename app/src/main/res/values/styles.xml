@@ -10,6 +10,15 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    //Style padding
+    <style name="TextPadding">
+        <item name="android:paddingBottom">2dp</item>
+        <item name="android:paddingTop">2dp</item>
+        <item name="android:paddingEnd">2dp</item>
+        <item name="android:paddingStart">4dp</item>
+        <item name="android:textAlignment">viewStart</item>
+    </style>
+
     <style name="SpaceBody">
         <item name="android:layout_marginTop">@dimen/margin_top_twenty</item>
         <item name="android:padding">@dimen/padding_sixteen</item>

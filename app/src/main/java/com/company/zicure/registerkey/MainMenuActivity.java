@@ -1,6 +1,9 @@
 package com.company.zicure.registerkey;
 
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Build;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
@@ -17,6 +20,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
@@ -80,10 +85,6 @@ public class MainMenuActivity extends BaseActivity implements  View.OnClickListe
     AppBarLayout appBarLayout;
     @Bind(R.id.toolbar)
     Toolbar toolbarMenu;
-    @Bind(R.id.title_toolbar)
-    TextView titleToolbar;
-    @Bind(R.id.img_toggle)
-    ImageView imgToggle;
 
     //list view slide menu
     @Bind(R.id.list_slide_menu)
@@ -149,12 +150,7 @@ public class MainMenuActivity extends BaseActivity implements  View.OnClickListe
     public void setToolbar(){
         if (Build.VERSION.SDK_INT >= 21){
             ToolbarManager manager = new ToolbarManager(this);
-            manager.setToolbar(toolbarMenu, titleToolbar, "");
-
-            imgToggle.setImageResource(R.drawable.ic_action_toc);
-            imgToggle.setColorFilter(ContextCompat.getColor(this, R.color.color_toggle));
-            imgToggle.setOnClickListener(this);
-            setSupportActionBar(toolbarMenu);
+            manager.setToolbar(toolbarMenu,null, getDrawable(R.drawable.menu_toggle), null);
 
             setLayoutHeadDrawer();
         }else{
@@ -481,6 +477,48 @@ public class MainMenuActivity extends BaseActivity implements  View.OnClickListe
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_settion, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            setToggle(0,0);
+        }
+        else if (item.getItemId() == R.id.action_payment){
+            intentToPayment();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void intentToPayment(){
+        String authToken = null;
+        String strPackage = "com.company.zicure.payment";
+        try{
+            authToken = ModelCart.getInstance().getKeyModel().getAuthToken();
+            Intent intent = getPackageManager().getLaunchIntentForPackage(strPackage);
+            if (authToken != null){
+                intent.addCategory(Intent.CATEGORY_LAUNCHER);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_TEXT, authToken);
+            }
+            startActivity(intent);
+            ModelCart.getInstance().getKeyModel().setAuthToken("");
+
+        }catch (NullPointerException e){
+            e.printStackTrace();
+            try{
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + strPackage)));
+            }catch (ActivityNotFoundException ef){
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + strPackage)));
+            }
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
     }
@@ -499,9 +537,7 @@ public class MainMenuActivity extends BaseActivity implements  View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.img_toggle){
-            setToggle(0,0);
-        }
+
     }
 
     @Override

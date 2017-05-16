@@ -15,59 +15,44 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/number_id_card"
+                style="@style/TextPadding"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="2dp"
-                android:paddingEnd="2dp"
-                android:paddingStart="4dp"
-                android:paddingTop="2dp"
                 android:text="NumberID"
-                android:textAlignment="viewStart"
                 android:textColor="@color/bb_tabletRightBorderDark"
                 android:textSize="@dimen/size_text_medium" />
 
             <TextView
                 android:id="@+id/title_id_number_label"
+                style="@style/TextPadding"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="2dp"
-                android:paddingEnd="2dp"
-                android:paddingStart="4dp"
-                android:paddingTop="2dp"
                 android:text="@string/title_id_card_th"
-                android:textAlignment="viewStart"
                 android:textColor="@color/bb_tabletRightBorderDark"
                 android:textSize="@dimen/size_text_small" />
 
             <TextView
                 android:id="@+id/major_label"
+                style="@style/TextPadding"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="2dp"
-                android:paddingEnd="2dp"
-                android:paddingStart="4dp"
-                android:paddingTop="2dp"
                 android:text="major"
-                android:textAlignment="viewStart"
                 android:textColor="@color/bb_tabletRightBorderDark"
                 android:textSize="@dimen/size_text_small" />
 
             <TextView
                 android:id="@+id/study_label"
+                style="@style/TextPadding"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingBottom="2dp"
-                android:paddingEnd="2dp"
-                android:paddingStart="4dp"
-                android:paddingTop="2dp"
                 android:text="study"
-                android:textAlignment="viewStart"
                 android:textColor="@color/bb_tabletRightBorderDark"
                 android:textSize="@dimen/size_text_small" />
 
@@ -77,6 +62,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="gone"
         android:layout_weight="2">
 
         <ImageView

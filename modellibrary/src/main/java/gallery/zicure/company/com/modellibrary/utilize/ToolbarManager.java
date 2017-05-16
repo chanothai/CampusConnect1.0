@@ -1,11 +1,13 @@
 package gallery.zicure.company.com.modellibrary.utilize;
 
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
+
 
 /**
  * Created by 4GRYZ52 on 3/26/2017.
@@ -14,19 +16,45 @@ import android.widget.TextView;
 public class ToolbarManager {
 
     private AppCompatActivity activity = null;
+    private Toolbar toolbarMenu = null;
+    private TextView textTitle = null;
+    private Drawable menuToggle = null;
 
     public ToolbarManager(AppCompatActivity activity){
         this.activity = activity;
     }
 
-    public void setToolbar(Toolbar toolbar, TextView titleToolbar, String title){
-        toolbar.setTitle("");
-        toolbar.setPadding(0, getStatusBarHeight() - 8, 0,0);
+    public void setToolbar(Toolbar toolbarMenu, TextView textTitle, Drawable menuToggle, String title){
+        this.toolbarMenu = toolbarMenu;
+        this.textTitle = textTitle;
+        this.menuToggle = menuToggle;
 
-        if (titleToolbar != null){
-            titleToolbar.setText(title);
+        toolbarMenu.setFitsSystemWindows(true);
+        setTitle(title);
+        setIndicator();
+        enableHomeButton();
+    }
+
+    private void setTitle(String title){
+        if (title != null){
+            textTitle.setText(title);
+            toolbarMenu.setTitle("");
+            activity.setSupportActionBar(toolbarMenu);
+        }else{
+            activity.setSupportActionBar(toolbarMenu);
+            activity.getSupportActionBar().setDisplayShowTitleEnabled(false);
         }
-        activity.setSupportActionBar(toolbar);
+    }
+
+    private void setIndicator(){
+        if (menuToggle != null){
+            activity.getSupportActionBar().setHomeAsUpIndicator(menuToggle);
+        }
+    }
+
+    private void enableHomeButton(){
+        activity.getSupportActionBar().setHomeButtonEnabled(true);
+        activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     private int getActionBarHeight(){

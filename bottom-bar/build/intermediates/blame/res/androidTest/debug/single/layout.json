@@ -1,11 +1,11 @@
 [
     {
-        "merged": "/Users/Pakgon/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/androidTest/debug/layout/abc_dialog_title_material.xml",
-        "source": "/Users/Pakgon/.android/build-cache/41c71a0fc2745c2c9a12254d8747c0deef2bc1aa/output/res/layout/abc_dialog_title_material.xml"
-    },
-    {
         "merged": "/Users/Pakgon/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/androidTest/debug/layout/design_bottom_navigation_item.xml",
         "source": "/Users/Pakgon/.android/build-cache/3713fdb2971c65e928d2a13a2274cc2f343afc4e/output/res/layout/design_bottom_navigation_item.xml"
+    },
+    {
+        "merged": "/Users/Pakgon/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/androidTest/debug/layout/abc_dialog_title_material.xml",
+        "source": "/Users/Pakgon/.android/build-cache/41c71a0fc2745c2c9a12254d8747c0deef2bc1aa/output/res/layout/abc_dialog_title_material.xml"
     },
     {
         "merged": "/Users/Pakgon/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/androidTest/debug/layout/abc_alert_dialog_material.xml",
@@ -76,16 +76,16 @@
         "source": "/Users/Pakgon/.android/build-cache/41c71a0fc2745c2c9a12254d8747c0deef2bc1aa/output/res/layout/notification_template_media.xml"
     },
     {
-        "merged": "/Users/Pakgon/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/androidTest/debug/layout/abc_action_mode_bar.xml",
-        "source": "/Users/Pakgon/.android/build-cache/41c71a0fc2745c2c9a12254d8747c0deef2bc1aa/output/res/layout/abc_action_mode_bar.xml"
+        "merged": "/Users/Pakgon/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/androidTest/debug/layout/bb_bottom_bar_item_container.xml",
+        "source": "/Users/Pakgon/StudioProjects/registerkey/bottom-bar/build/intermediates/bundles/debug/res/layout/bb_bottom_bar_item_container.xml"
     },
     {
         "merged": "/Users/Pakgon/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/androidTest/debug/layout/select_dialog_singlechoice_material.xml",
         "source": "/Users/Pakgon/.android/build-cache/41c71a0fc2745c2c9a12254d8747c0deef2bc1aa/output/res/layout/select_dialog_singlechoice_material.xml"
     },
     {
-        "merged": "/Users/Pakgon/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/androidTest/debug/layout/bb_bottom_bar_item_container.xml",
-        "source": "/Users/Pakgon/StudioProjects/registerkey/bottom-bar/build/intermediates/bundles/debug/res/layout/bb_bottom_bar_item_container.xml"
+        "merged": "/Users/Pakgon/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/androidTest/debug/layout/abc_action_mode_bar.xml",
+        "source": "/Users/Pakgon/.android/build-cache/41c71a0fc2745c2c9a12254d8747c0deef2bc1aa/output/res/layout/abc_action_mode_bar.xml"
     },
     {
         "merged": "/Users/Pakgon/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/androidTest/debug/layout/abc_screen_toolbar.xml",

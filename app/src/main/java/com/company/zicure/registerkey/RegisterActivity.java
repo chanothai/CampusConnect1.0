@@ -58,8 +58,10 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
     EditText editPass;
     @Bind(R.id.edit_confirm_password)
     EditText editConfirmPass;
+    @Bind(R.id.edit_email)
+    EditText editEmail;
 
-    private String strIdCard, strBirthDate, strPhone, firstName, lastName, screenName, pass, confirmPass;
+    private String strIdCard, strBirthDate, strPhone, firstName, lastName, screenName, pass, confirmPass, email;
     //Context
     private Context context = this;
     @Override
@@ -99,9 +101,10 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
         lastName = editLastName.getText().toString().trim();
         pass = editPass.getText().toString().trim();
         confirmPass = editConfirmPass.getText().toString().trim();
+        email = editEmail.getText().toString().trim();
 
         if (confirmPass.equalsIgnoreCase(pass) && !confirmPass.isEmpty() && !pass.isEmpty()){
-            if (strIdCard.length() == 13 && !strBirthDate.isEmpty() && strPhone.length() == 12 && !lastName.isEmpty() && !firstName.isEmpty()){
+            if (strIdCard.length() == 13 && !strBirthDate.isEmpty() && strPhone.length() == 12 && !lastName.isEmpty() && !firstName.isEmpty() && !email.isEmpty()){
                 String[] phone = strPhone.split("-");
                 String currentPhone = phone[0] + phone[1] + phone[2];
                 screenName = firstName + " " + lastName;
@@ -128,6 +131,7 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
         user.setScreenName(screenName);
         user.setPassword(pass);
         user.setRePassword(confirmPass);
+        user.setEmail(email);
 
         request.setUser(user);
 
@@ -258,6 +262,8 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
             }
         }
     }
+
+
 
     @Override
     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {

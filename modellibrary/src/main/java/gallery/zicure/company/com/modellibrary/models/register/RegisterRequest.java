@@ -34,6 +34,8 @@ public class RegisterRequest {
         private String password;
         @SerializedName("re_password")
         private String rePassword;
+        @SerializedName("email")
+        private String email;
 
         public String getCitizenId() {
             return citizenId;
@@ -97,6 +99,14 @@ public class RegisterRequest {
 
         public void setRePassword(String rePassword) {
             this.rePassword = rePassword;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
         }
     }
 }

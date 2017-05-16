@@ -10,6 +10,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +52,7 @@ public class AppMenuFragment extends Fragment {
     //VIew
     public static WebView webView = null;
     private NestedScrollView scrollView = null;
+    private WebSettings webSettings = null;
 
     public ValueCallback<Uri[]> mUploadMesssage = null;
     public Uri mCapturedImageURI = null;
@@ -112,21 +114,35 @@ public class AppMenuFragment extends Fragment {
         webView.setVerticalScrollBarEnabled(true);
         webView.setClickable(true);
 
+        webSettings = webView.getSettings();
+
         // improve webView performance
-        WebSettings webSettings = webView.getSettings();
         webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
-//        webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
-//        webSettings.setAppCacheEnabled(true);
         webSettings.setJavaScriptEnabled(true);
         webSettings.setDomStorageEnabled(true);
         webSettings.setAllowFileAccess(true);
 
-        webView.addJavascriptInterface(new JavaScriptInterface(), "Token");
+        String cookies = CookieManager.getInstance().getCookie(url);
+        if (cookies!= null){
+            Log.d("tag_cookies", cookies);
+            webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+            webSettings.setAppCacheEnabled(true);
+        }
 
+        webView.addJavascriptInterface(new JavaScriptInterface(), "Token");
         webView.loadUrl(url);
     }
 
     public void clearCache(){
+        try{
+            webView.clearCache(true);
+            webView.clearHistory();
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void clearCookies(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
             CookieManager.getInstance().removeAllCookies(null);
             CookieManager.getInstance().flush();
@@ -139,9 +155,6 @@ public class AppMenuFragment extends Fragment {
             cookieSyncManager.stopSync();
             cookieSyncManager.sync();
         }
-
-        webView.clearCache(true);
-        webView.clearHistory();
     }
 
     public class AppBrowser extends WebViewClient {
@@ -194,7 +207,6 @@ public class AppMenuFragment extends Fragment {
                 if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mCapturedImageURI);
                 }
-
 
                 Intent contentSelectionIntent = new Intent(Intent.ACTION_GET_CONTENT);
                 contentSelectionIntent.addCategory(Intent.CATEGORY_OPENABLE);
