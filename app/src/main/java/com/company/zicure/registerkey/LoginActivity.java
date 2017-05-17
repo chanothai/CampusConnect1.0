@@ -40,7 +40,7 @@ import gallery.zicure.company.com.modellibrary.utilize.EventBusCart;
 import gallery.zicure.company.com.modellibrary.utilize.ModelCart;
 import gallery.zicure.company.com.modellibrary.utilize.VariableConnect;
 
-public class LoginActivity extends BaseActivity implements View.OnKeyListener,TextWatcher, EditText.OnEditorActionListener{
+public class LoginActivity extends BaseActivity implements View.OnKeyListener, EditText.OnEditorActionListener{
     @Bind(R.id.username)
     EditText editUser;
     @Bind(R.id.password)
@@ -63,7 +63,6 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener,Te
         EventBusCart.getInstance().getEventBus().register(this);
         ButterKnife.bind(this);
         editUser.setOnKeyListener(this);
-        editUser.addTextChangedListener(this);
         setTextClick();
 
         if (savedInstanceState == null){
@@ -87,7 +86,7 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener,Te
         strUser = editUser.getText().toString().trim();
         strPass = editPass.getText().toString().trim();
 
-        if (strUser.length() == 12 && !strPass.isEmpty()){
+        if (!strUser.isEmpty() && !strPass.isEmpty()){
             DataModel dataModel = setLoginModel(strUser, strPass, false);
             String str = new GsonBuilder().disableHtmlEscaping().create().toJson(dataModel);
             Log.d("LoginRequest",  str);
@@ -99,11 +98,6 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener,Te
     private DataModel setLoginModel(String strUser, String strPass, boolean restore){
         LoginRequest loginRequest = new LoginRequest();
         LoginRequest.User result = new LoginRequest.User();
-
-        if (!restore){
-            String[] user = strUser.split("-");
-            strUser = user[0]+ user[1] + user[2];
-        }
 
         this.strUser = strUser;
         result.setUsername(strUser);
@@ -196,13 +190,8 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener,Te
         int start = strAll.indexOf(strLinkSignUP);
         int end = start + strLinkSignUP.length();
 
-//        String strLinkForgotPass = getString(R.string.forgot_password_link);
-//        int start2 = strAll.indexOf(strLinkForgotPass);
-//        int end2 = start2 + strLinkForgotPass.length();
-
         SpannableString spannableString = new SpannableString(strAll);
         spannableString.setSpan(new CallLink(), start, end,0);
-//        spannableString.setSpan(new CallLink(), start2, end2, 0);
 
         txtLink.setText(spannableString);
         txtLink.setMovementMethod(new LinkMovementMethod());
@@ -215,43 +204,6 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener,Te
             return true;
         }
         return super.onKeyDown(keyCode, event);
-    }
-
-    @Override
-    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-    }
-
-    @Override
-    public void onTextChanged(CharSequence charSequence, int position, int i1, int i2) {
-        String txtResult =  "";
-        try {
-            if (position == 2){
-                txtResult = editUser.getText().toString().trim() + "-";
-                editUser.setText(txtResult);
-                editUser.setSelection(4);
-            }
-            else if (position == 6){
-                txtResult = editUser.getText().toString().trim() + "-";
-                editUser.setText(txtResult);
-                editUser.setSelection(8);
-            }
-            else if (position == 7){
-                if (!txtResult.equalsIgnoreCase("-")){
-                    txtResult = "-" + txtResult;
-                    editUser.setText(txtResult);
-                    editUser.setSelection(9);
-                }
-            }
-        }catch (Exception e){
-            editUser.setText("");
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void afterTextChanged(Editable editable) {
-
     }
 
     @Override

@@ -34,7 +34,7 @@ public class RegisterRequest {
         private String password;
         @SerializedName("re_password")
         private String rePassword;
-        @SerializedName("email")
+        @SerializedName("username")
         private String email;
 
         public String getCitizenId() {

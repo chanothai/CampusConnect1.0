@@ -115,12 +115,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener ,View
     }
 
     public void setAdapterView(int pager){
-        //set adapter
-        MainMenuAdapter mainMenuAdapter = new ContentAdapterCart().setMainMenuAdapter(getActivity(), getCategoryData().get(pager).getBloc());
+        if (getCategoryData().size() > 0){
+            //set adapter
+            MainMenuAdapter mainMenuAdapter = new ContentAdapterCart().setMainMenuAdapter(getActivity(), getCategoryData().get(pager).getBloc());
 
-        recyclerViewMenu.setLayoutManager(new GridLayoutManager(getActivity(), 2));
-        recyclerViewMenu.setAdapter(mainMenuAdapter);
-        recyclerViewMenu.setItemAnimator(new DefaultItemAnimator());
+            recyclerViewMenu.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+            recyclerViewMenu.setAdapter(mainMenuAdapter);
+            recyclerViewMenu.setItemAnimator(new DefaultItemAnimator());
+        }
     }
 
 

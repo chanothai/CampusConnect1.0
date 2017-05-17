@@ -1,11 +1,13 @@
 package com.company.zicure.registerkey.activity;
 
 import android.os.Build;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.company.zicure.registerkey.R;
@@ -18,23 +20,33 @@ import gallery.zicure.company.com.modellibrary.utilize.ToolbarManager;
 import gallery.zicure.company.com.modellibrary.utilize.VariableConnect;
 
 public class BlocContentActivity extends BaseActivity {
-
+    private FrameLayout frameLayout = null;
+    private AppBarLayout appBarLayout = null;
     private Toolbar toolbar = null;
     private TextView textTitle = null;
 
     private String titleBloc = null;
     private String urlBloc = null;
+
+    private AppMenuFragment appMenuFragment = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bloc_content);
         bindView();
+        iniBundle();
+        setToolbar();
 
         if (savedInstanceState == null) {
-            iniBundle();
-            setToolbar();
             checkIniFragment();
         }
+    }
+
+    private void bindView(){
+        frameLayout = (FrameLayout) findViewById(R.id.container_bloc);
+        appBarLayout = (AppBarLayout) findViewById(R.id.appbar_layout);
+        toolbar = (Toolbar) findViewById(R.id.toolbar_bloc);
+        textTitle = (TextView) toolbar.findViewById(R.id.text_title);
     }
 
     private void iniBundle(){
@@ -67,11 +79,6 @@ public class BlocContentActivity extends BaseActivity {
         transaction.commit();
     }
 
-    private void bindView(){
-        toolbar = (Toolbar) findViewById(R.id.toolbar_bloc);
-        textTitle = (TextView) toolbar.findViewById(R.id.text_title);
-    }
-
     private void setToolbar(){
         if (Build.VERSION.SDK_INT >= 21) {
             ToolbarManager manager = new ToolbarManager(this);
@@ -101,6 +108,20 @@ public class BlocContentActivity extends BaseActivity {
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        appMenuFragment = (AppMenuFragment.newInstance(urlBloc));
+        appMenuFragment.saveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        appMenuFragment = (AppMenuFragment.newInstance(urlBloc));
+        appMenuFragment.restoreInstanceState(savedInstanceState);
+    }
+
+    @Override
     public void onBackPressed() {
         super.onBackPressed();
         finish();
@@ -110,7 +131,7 @@ public class BlocContentActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        AppMenuFragment fragment = (AppMenuFragment.newInstance(""));
-        fragment.clearCache();
+        appMenuFragment = (AppMenuFragment.newInstance(urlBloc));
+        appMenuFragment.clearCache();
     }
 }

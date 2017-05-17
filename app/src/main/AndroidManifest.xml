@@ -87,7 +87,7 @@
 
         <activity
             android:name=".activity.BlocContentActivity"
-            android:screenOrientation="portrait">
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize">
 
         </activity>
 

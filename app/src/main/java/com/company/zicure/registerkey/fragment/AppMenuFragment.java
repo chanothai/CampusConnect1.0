@@ -1,5 +1,6 @@
 package com.company.zicure.registerkey.fragment;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
 import android.util.Log;
@@ -22,8 +24,8 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
-import com.company.zicure.registerkey.MainMenuActivity;
 import com.company.zicure.registerkey.R;
 import com.company.zicure.registerkey.activity.BlocContentActivity;
 
@@ -122,17 +124,17 @@ public class AppMenuFragment extends Fragment {
         webSettings.setDomStorageEnabled(true);
         webSettings.setAllowFileAccess(true);
 
-        String cookies = CookieManager.getInstance().getCookie(url);
-        if (cookies!= null){
-            Log.d("tag_cookies", cookies);
-            webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
-            webSettings.setAppCacheEnabled(true);
-        }
+//        String cookies = CookieManager.getInstance().getCookie(url);
+//        if (cookies!= null){
+//            Log.d("tag_cookies", cookies);
+//            webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
+//            webSettings.setAppCacheEnabled(true);
+//        }
 
         webView.addJavascriptInterface(new JavaScriptInterface(), "Token");
         webView.loadUrl(url);
     }
-
+    
     public void clearCache(){
         try{
             webView.clearCache(true);
@@ -156,6 +158,7 @@ public class AppMenuFragment extends Fragment {
             cookieSyncManager.sync();
         }
     }
+
 
     public class AppBrowser extends WebViewClient {
         @Override
@@ -227,8 +230,11 @@ public class AppMenuFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void saveInstanceState(Bundle outState) {
+        webView.saveState(outState);
+    }
+
+    public void restoreInstanceState(Bundle savedInstanceState) {
+        webView.restoreState(savedInstanceState);
     }
 }
