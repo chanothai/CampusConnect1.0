@@ -1,7 +1,9 @@
 package com.company.zicure.registerkey.activity;
 
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
@@ -14,6 +16,7 @@ import com.company.zicure.registerkey.R;
 import com.company.zicure.registerkey.fragment.AppMenuFragment;
 import com.company.zicure.registerkey.fragment.IDCardFragment;
 
+import gallery.zicure.company.com.gallery.util.PermissionKeyNumber;
 import gallery.zicure.company.com.modellibrary.common.BaseActivity;
 import gallery.zicure.company.com.modellibrary.utilize.NextzyUtil;
 import gallery.zicure.company.com.modellibrary.utilize.ToolbarManager;
@@ -60,7 +63,7 @@ public class BlocContentActivity extends BaseActivity {
     }
 
     private void checkIniFragment(){
-        if (!urlBloc.equalsIgnoreCase("")){
+        if (!urlBloc.isEmpty()){
             iniFragmentBloc();
         }else{
             iniFragmentIDCard();
@@ -83,6 +86,25 @@ public class BlocContentActivity extends BaseActivity {
         if (Build.VERSION.SDK_INT >= 21) {
             ToolbarManager manager = new ToolbarManager(this);
             manager.setToolbar(toolbar, textTitle, null, titleBloc);
+
+            if (urlBloc.isEmpty()){
+                CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) frameLayout.getLayoutParams();
+                params.setBehavior(new AppBarLayout.ScrollingViewBehavior());
+                frameLayout.requestLayout();
+            }
+
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (PermissionKeyNumber.getInstance().getPermissionCameraKey() == requestCode){
+            if (grantResults[0] != -1){
+                FragmentManager fm = getSupportFragmentManager();
+                AppMenuFragment fragment = (AppMenuFragment) fm.findFragmentByTag(VariableConnect.appMenuFragmentKey);
+                fragment.setWebView();
+            }
         }
     }
 

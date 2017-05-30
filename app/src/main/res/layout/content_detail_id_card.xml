@@ -15,7 +15,7 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:orientation="vertical">
@@ -25,7 +25,8 @@
                 style="@style/TextPadding"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="NumberID"
+                android:fontFamily="sans-serif-condensed"
+                android:textAlignment="center"
                 android:textColor="@color/bb_tabletRightBorderDark"
                 android:textSize="@dimen/size_text_medium" />
 
@@ -34,7 +35,9 @@
                 style="@style/TextPadding"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed"
                 android:text="@string/title_id_card_th"
+                android:textAlignment="center"
                 android:textColor="@color/bb_tabletRightBorderDark"
                 android:textSize="@dimen/size_text_small" />
 
@@ -43,6 +46,7 @@
                 style="@style/TextPadding"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed"
                 android:text="major"
                 android:textColor="@color/bb_tabletRightBorderDark"
                 android:textSize="@dimen/size_text_small" />
@@ -52,28 +56,12 @@
                 style="@style/TextPadding"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed"
                 android:text="study"
                 android:textColor="@color/bb_tabletRightBorderDark"
                 android:textSize="@dimen/size_text_small" />
 
         </LinearLayout>
     </LinearLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        android:layout_weight="2">
-
-        <ImageView
-            android:id="@+id/img_qrcode_id_catd"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/opensign"
-            android:layout_centerHorizontal="true"
-            android:layout_alignParentTop="true"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop" />
-    </RelativeLayout>
 
 </LinearLayout>

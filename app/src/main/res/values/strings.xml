@@ -78,7 +78,7 @@
     <string name="user_detail_th">ข้อมูลส่วนตัว</string>
     <string name="activate_user_th">เปิดใช้งานแอพพลิเคชั่น</string>
     <string name="id_card_th">บัตรประจำตัว</string>
-    <string name="title_id_card_th">IDENTIFICATION NUMBER</string>
+    <string name="title_id_card_th">เลขบัตรประจำตัวประชาชน</string>
     <string name="email_th">อีเมล์</string>
 
 </resources>

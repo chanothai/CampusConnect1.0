@@ -13,10 +13,6 @@ import gallery.zicure.company.com.modellibrary.common.BaseActivity;
 import gallery.zicure.company.com.modellibrary.utilize.ModelCart;
 
 public class CheckLoginActivity extends BaseActivity {
-    private String currentToken = null;
-    private String currentDynamicKey = null;
-    private String currentUsername = null;
-    private byte[] key = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,25 +25,10 @@ public class CheckLoginActivity extends BaseActivity {
 
 
     private void checkLogin(){
-        currentToken = RestoreLogin.getInstance(this).getRestoreToken();
-        currentDynamicKey = RestoreLogin.getInstance(this).getRestoreKey();
-        currentUsername = RestoreLogin.getInstance(this).getRestoreUser();
-
-        if (currentDynamicKey != null && currentToken != null && currentUsername != null && !currentUsername.isEmpty()){
-            key = Base64.decode(currentDynamicKey.getBytes(), Base64.NO_WRAP);
-            ModelCart.getInstance().getKeyModel().setKey(key);
-            ModelCart.getInstance().getKeyModel().setUsername(currentUsername);
-            ModelCart.getInstance().getKeyModel().setToken(currentToken);
-
-            Bundle bundle = new Bundle();
-            String[] strArr = new String[2];
-            strArr[0] = currentToken;
-            strArr[1] = currentUsername;
-
-            bundle.putStringArray(getString(R.string.user_secret), strArr);
+        Bundle bundle = getIntent().getExtras();
+        String[] strArr = bundle.getStringArray(getString(R.string.user_secret));
+        if (strArr != null) {
             openActivity(MainMenuActivity.class, bundle, true);
-        }else{
-            openActivity(LoginActivity.class, true);
         }
     }
 }

@@ -18,6 +18,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -135,15 +136,19 @@ public class MainMenuActivity extends BaseActivity implements  View.OnClickListe
         setOnTouchView();
 
         if (savedInstanceState == null){
-            key = ModelCart.getInstance().getKeyModel().getKey();
-            Bundle bundle = getIntent().getExtras();
-            strArr = bundle.getStringArray(getString(R.string.user_secret));
-            currentToken = strArr[0];
-            currentUsername = strArr[1];
+            initParameter();
+        }
+    }
 
-            if (currentUsername != null && currentToken != null){
-                setModelUser();
-            }
+    private void initParameter(){
+        Bundle bundle = getIntent().getExtras();
+        strArr = bundle.getStringArray(getString(R.string.user_secret));
+        currentToken = strArr[0];
+        currentUsername = strArr[1];
+        key = Base64.decode(strArr[2], Base64.NO_WRAP);
+
+        if (currentUsername != null && currentToken != null){
+            setModelUser();
         }
     }
 

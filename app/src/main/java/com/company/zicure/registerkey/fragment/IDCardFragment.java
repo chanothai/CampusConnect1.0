@@ -34,19 +34,24 @@ import gallery.zicure.company.com.modellibrary.utilize.ResizeScreen;
  * Use the {@link IDCardFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class IDCardFragment extends Fragment {
+public class IDCardFragment extends Fragment implements View.OnClickListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
+
+    //MAKE : Parameters
     private String mParam1;
     private String mParam2;
     private MultiFormatWriter multiFormatWriter = null;
+    private BitMatrix bitMatrix = null;
+    private BarcodeEncoder barcodeEncoder = null;
+    private int width = 0, statusIMG = 0;
 
-    //View
-    private ImageView imgProfileCard = null, imgQRCard = null;
+    //MAKE : View
+    private ImageView imgProfileCard = null, imgSwitch = null;
     private TextView txtIDCard = null, txtMajor = null, txtStudy = null, txtFullName = null;
 
 
@@ -87,11 +92,13 @@ public class IDCardFragment extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_idcard, container, false);
         imgProfileCard = (ImageView) root.findViewById(R.id.img_id_card);
-        imgQRCard = (ImageView) root.findViewById(R.id.img_qrcode_id_catd);
+        imgSwitch = (ImageView) root.findViewById(R.id.icon_change_img);
         txtIDCard = (TextView) root.findViewById(R.id.number_id_card);
         txtMajor = (TextView) root.findViewById(R.id.major_label);
         txtStudy = (TextView) root.findViewById(R.id.study_label);
         txtFullName = (TextView) root.findViewById(R.id.name_id_card);
+
+        imgSwitch.setOnClickListener(this);
 
         return root;
     }
@@ -110,46 +117,80 @@ public class IDCardFragment extends Fragment {
     }
 
     private void setInformation(){
-        if (getInformation().getImgPath() != null){
-            Glide.with(getActivity())
-                    .load(getInformation().getImgPath())
-                    .fitCenter()
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .into(imgProfileCard);
-        }
+        changedImage();
 
         txtFullName.setText(getInformation().getFirstName() + " " + getInformation().getLastName());
         txtIDCard.setText(getInformation().getCitizenID());
         txtMajor.setText("คณะ : วิทยาศาสตร์");
         txtStudy.setText("สาขา : วิทยาการคอมพิวเตอร์");
 
-        generateQRCode(500, 500);
     }
 
-    private void generateQRCode(int width, int height){
+    private Bitmap generateQRCode(int width, int height){
         if (multiFormatWriter == null){
             multiFormatWriter = new MultiFormatWriter();
 
             try{
-                BitMatrix bitMatrix = multiFormatWriter.encode(getInformation().getCitizenID(), BarcodeFormat.QR_CODE, width, height);
-                BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+                bitMatrix = multiFormatWriter.encode(getInformation().getCitizenID(), BarcodeFormat.QR_CODE, width, height);
+                barcodeEncoder = new BarcodeEncoder();
                 Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
-                imgQRCard.setImageBitmap(bitmap);
+
+                return bitmap;
             }catch (WriterException e){
                 e.printStackTrace();
+                return null;
+            }
+        }
+
+        Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+        return bitmap;
+    }
+
+    private void changedImage(){
+        switch (statusIMG){
+            case 0: {
+                if (getInformation().getImgPath() != null) {
+                    Glide.with(getActivity())
+                            .load(getInformation().getImgPath())
+                            .fitCenter()
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .into(imgProfileCard);
+
+                    imgSwitch.setImageDrawable(getActivity().getDrawable(R.drawable.ic_qrcode));
+                    statusIMG = 1;
+                }break;
+            }
+            case 1:{
+                imgProfileCard.setImageBitmap(generateQRCode(width,width));
+                Glide.with(getActivity())
+                        .load(getInformation().getImgPath())
+                        .fitCenter()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(imgSwitch);
+                statusIMG = 0;
             }
         }
     }
 
     private void resizeScaleImage() {
         ResizeScreen resize = new ResizeScreen(getActivity());
-        int width = resize.widthScreen(2) + 100;
+        width = resize.widthScreen(2) + 100;
 
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) imgProfileCard.getLayoutParams();
         params.width = width;
         params.height = width;
 
         imgProfileCard.setLayoutParams(params);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.icon_change_img:{
+                changedImage();
+                break;
+            }
+        }
     }
 
     /**

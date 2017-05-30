@@ -24,12 +24,18 @@ import gallery.zicure.company.com.modellibrary.common.BaseActivity;
 import gallery.zicure.company.com.modellibrary.models.BaseResponse;
 import gallery.zicure.company.com.modellibrary.security.EncryptionAES;
 import gallery.zicure.company.com.modellibrary.utilize.EventBusCart;
+import gallery.zicure.company.com.modellibrary.utilize.ModelCart;
 import gallery.zicure.company.com.modellibrary.utilize.VariableConnect;
 
 public class SplashScreenActivity extends BaseActivity implements Animator.AnimatorListener{
 
     private String authCode = null;
     private PermissionRequest permissionRequest = null;
+
+    private String currentToken = null;
+    private String currentDynamicKey = null;
+    private String currentUsername = null;
+    private byte[] key = null;
 
     @Bind(R.id.img_logo)
     ImageView imgLogo;
@@ -67,7 +73,7 @@ public class SplashScreenActivity extends BaseActivity implements Animator.Anima
         }
     }
 
-    public void animationFadeOut(){
+    public void animationFadeOut() {
         AnimatorSet animSet = new AnimatorSet();
         ObjectAnimator animatorFadeIn = ObjectAnimator.ofFloat(imgLogo, View.ALPHA, 1f);
         ObjectAnimator animatorFadeOut = ObjectAnimator.ofFloat(imgLogo, View.ALPHA, 0f);
@@ -75,10 +81,6 @@ public class SplashScreenActivity extends BaseActivity implements Animator.Anima
         animSet.setDuration(1000);
         animSet.addListener(this);
         animSet.start();
-    }
-
-    public void intentActivity(){
-        openActivity(CheckLoginActivity.class , true);
     }
 
 
@@ -99,7 +101,26 @@ public class SplashScreenActivity extends BaseActivity implements Animator.Anima
 
     @Override
     public void onAnimationEnd(Animator animation) {
-        intentActivity();
+        checkLogin();
+    }
+
+    private void checkLogin(){
+        currentToken = RestoreLogin.getInstance(this).getRestoreToken();
+        currentDynamicKey = RestoreLogin.getInstance(this).getRestoreKey();
+        currentUsername = RestoreLogin.getInstance(this).getRestoreUser();
+
+        if (currentDynamicKey != null && currentToken != null && currentUsername != null && !currentUsername.isEmpty()){
+            Bundle bundle = new Bundle();
+            String[] strArr = new String[3];
+            strArr[0] = currentToken;
+            strArr[1] = currentUsername;
+            strArr[2] = currentDynamicKey;
+
+            bundle.putStringArray(getString(R.string.user_secret), strArr);
+            openActivity(MainMenuActivity.class, bundle, true);
+        }else{
+            openActivity(LoginActivity.class, true);
+        }
     }
 
     @Override

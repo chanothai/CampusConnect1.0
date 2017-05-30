@@ -32,6 +32,7 @@ import com.company.zicure.registerkey.activity.BlocContentActivity;
 import java.io.File;
 import java.io.IOException;
 
+import gallery.zicure.company.com.gallery.util.PermissionRequest;
 import gallery.zicure.company.com.modellibrary.utilize.JavaScriptInterface;
 import gallery.zicure.company.com.modellibrary.utilize.VariableConnect;
 
@@ -104,6 +105,13 @@ public class AppMenuFragment extends Fragment {
             SharedPreferences pref = getActivity().getSharedPreferences(VariableConnect.keyFile, Context.MODE_PRIVATE);
             token = pref.getString(getString(R.string.token_login), null);
 
+            requestCamera();
+        }
+    }
+
+    private void requestCamera(){
+        PermissionRequest permissionRequest = new PermissionRequest(getActivity());
+        if (!permissionRequest.requestCamera()){
             setWebView();
         }
     }
@@ -115,6 +123,7 @@ public class AppMenuFragment extends Fragment {
         webView.setWebChromeClient(new AppBrowserChrome());
         webView.setVerticalScrollBarEnabled(true);
         webView.setClickable(true);
+        webView.requestFocus(View.FOCUS_DOWN);
 
         webSettings = webView.getSettings();
 
@@ -169,7 +178,7 @@ public class AppMenuFragment extends Fragment {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-//            //filter url to same url between url blog and url of webview loadding
+            //filter url to same url between url blog and url of webview loadding
             try{
                 StringBuilder builder = new StringBuilder();
                 builder.append("(function() {");
@@ -231,10 +240,36 @@ public class AppMenuFragment extends Fragment {
     }
 
     public void saveInstanceState(Bundle outState) {
-        webView.saveState(outState);
+        try {
+            webView.saveState(outState);
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
     }
 
     public void restoreInstanceState(Bundle savedInstanceState) {
-        webView.restoreState(savedInstanceState);
+        try{
+            webView.restoreState(savedInstanceState);
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 2500){
+            Log.d("TestWebView", "here1");
+            if (null == this.mUploadMesssage) {
+                return;
+            }
+            if (resultCode == getActivity().RESULT_OK){
+                mUploadMesssage.onReceiveValue(new Uri[] {mCapturedImageURI});
+            }else{
+                if (mUploadMesssage != null){
+                    mUploadMesssage.onReceiveValue(null);
+                    mUploadMesssage = null;
+                }
+            }
+        }
     }
 }

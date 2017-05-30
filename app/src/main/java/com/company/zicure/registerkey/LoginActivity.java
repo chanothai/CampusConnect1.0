@@ -22,8 +22,11 @@ import android.widget.Toast;
 import com.company.zicure.registerkey.activity.CheckLoginActivity;
 import com.company.zicure.registerkey.network.ClientHttp;
 import com.company.zicure.registerkey.security.EncryptionAES;
+import com.company.zicure.registerkey.security.FingerPrintAuthentication;
+import com.company.zicure.registerkey.security.FingerprintHandler;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.multidots.fingerprintauth.FingerPrintAuthHelper;
 import com.squareup.otto.Subscribe;
 
 import org.json.JSONException;
@@ -51,9 +54,9 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener, E
 
 
     TextView txtLink;
-
     private String strUser = "", strPass = "";
-
+    private byte[] keyByte = null;
+    private FingerPrintAuthHelper mFingerPrintAuthHelper = null;
     private SharedPreferences sharedPref = null;
 
     @Override
@@ -67,14 +70,12 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener, E
 
         if (savedInstanceState == null){
             sharedPref = getSharedPreferences(VariableConnect.keyFile, Context.MODE_PRIVATE);
-            byte[] keyByte = Base64.decode(VariableConnect.staticKey.getBytes(), Base64.NO_WRAP);
-            ModelCart.getInstance().getKeyModel().setKey(keyByte);
-        }
-    }
+            keyByte = Base64.decode(VariableConnect.staticKey.getBytes(), Base64.NO_WRAP);
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+            FingerprintHandler handler = new FingerprintHandler(this);
+            mFingerPrintAuthHelper = handler.initFingerprint();
+            mFingerPrintAuthHelper.startAuth();
+        }
     }
 
     @OnClick(R.id.btnConnect)
@@ -109,7 +110,7 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener, E
 
         Gson gson = new GsonBuilder().disableHtmlEscaping().create();
         String resultEncrypt = null;
-        resultEncrypt = EncryptionAES.newInstance(ModelCart.getInstance().getKeyModel().getKey()).encrypt(gson.toJson(loginRequest));
+        resultEncrypt = EncryptionAES.newInstance(keyByte).encrypt(gson.toJson(loginRequest));
         Log.d("LoginModel", resultEncrypt);
 
         final DataModel dataModel = new DataModel();
@@ -125,7 +126,7 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener, E
         BaseResponse.Result result = baseResponse.getResult();
         if (!result.getSuccess().isEmpty()){
             String[] arrStr = result.geteResult().split(getString(R.string.key_iv));
-            String decryptStr = EncryptionAES.newInstance(ModelCart.getInstance().getKeyModel().getKey()).decrypt(arrStr[0], arrStr[1].getBytes());//(text, key
+            String decryptStr = EncryptionAES.newInstance(keyByte).decrypt(arrStr[0], arrStr[1].getBytes());//(text, key
             Log.d("Decrypt", "DecryptDynamicKey: " + decryptStr);
 
             if (decryptStr != null){
@@ -135,12 +136,6 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener, E
             Toast.makeText(getApplicationContext(), result.getError(), Toast.LENGTH_LONG).show();
             dismissDialog();
         }
-    }
-
-    private Bundle setBundle(String[] strArr){
-        Bundle bundle = new Bundle();
-        bundle.putStringArray(getString(R.string.user_secret), strArr);
-        return bundle;
     }
 
     private void decodeJson(String decryptStr){
@@ -155,7 +150,7 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener, E
                 String dynamicKey = jsonObject.getString("dynamic_key");
 
                 store(token, dynamicKey);
-                String[] strArr = {token, strUser};
+                String[] strArr = {token, strUser,dynamicKey};
                 Bundle bundle = setBundle(strArr);
 
                 openActivity(CheckLoginActivity.class,bundle ,true);
@@ -171,6 +166,12 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener, E
         dismissDialog();
     }
 
+    private Bundle setBundle(String[] strArr){
+        Bundle bundle = new Bundle();
+        bundle.putStringArray(getString(R.string.user_secret), strArr);
+        return bundle;
+    }
+
 
     private void store(String token, String dynamicKey){
         byte[] key = Base64.decode(dynamicKey.getBytes(), Base64.NO_WRAP);
@@ -180,7 +181,7 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener, E
         editor.putString(getString(R.string.token_login), token);
         editor.putString(getString(R.string.dynamic_key), dynamicKey);
         editor.putString(getString(R.string.username), strUser);
-        editor.commit();
+        editor.apply();
     }
 
 
@@ -196,6 +197,7 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener, E
         txtLink.setText(spannableString);
         txtLink.setMovementMethod(new LinkMovementMethod());
     }
+
 
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -217,6 +219,7 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener, E
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mFingerPrintAuthHelper.stopAuth();
         EventBusCart.getInstance().getEventBus().unregister(this);
     }
 
