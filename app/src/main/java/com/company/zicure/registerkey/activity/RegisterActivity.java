@@ -1,4 +1,4 @@
-package com.company.zicure.registerkey;
+package com.company.zicure.registerkey.activity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -17,6 +17,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.company.zicure.registerkey.R;
+import com.company.zicure.registerkey.activity.LoginActivity;
 import com.company.zicure.registerkey.dialog.DatePickerFragment;
 import com.company.zicure.registerkey.network.ClientHttp;
 import com.company.zicure.registerkey.security.EncryptionAES;
@@ -40,20 +42,14 @@ import gallery.zicure.company.com.modellibrary.utilize.KeyboardUtil;
 import gallery.zicure.company.com.modellibrary.utilize.ModelCart;
 import gallery.zicure.company.com.modellibrary.utilize.VariableConnect;
 
-public class RegisterActivity extends BaseActivity implements View.OnFocusChangeListener, TextWatcher, EditText.OnEditorActionListener{
+public class RegisterActivity extends BaseActivity implements TextWatcher, EditText.OnEditorActionListener{
 
     @Bind(R.id.identity_card)
     EditText idCard;
-    @Bind(R.id.birth_date)
-    EditText birthDate;
     @Bind(R.id.btn_register)
     Button btnRegister;
     @Bind(R.id.phone_number)
     EditText phoneNumber;
-    @Bind(R.id.edit_first_name)
-    EditText editFirstName;
-    @Bind(R.id.edit_last_name)
-    EditText editLastName;
     @Bind(R.id.edit_password)
     EditText editPass;
     @Bind(R.id.edit_confirm_password)
@@ -61,7 +57,7 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
     @Bind(R.id.edit_email)
     EditText editEmail;
 
-    private String strIdCard, strBirthDate, strPhone, firstName, lastName, screenName, pass, confirmPass, email;
+    private String strIdCard, strPhone, pass, confirmPass, email;
     //Context
     private Context context = this;
     @Override
@@ -70,7 +66,6 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
         EventBusCart.getInstance().getEventBus().register(this);
-        birthDate.setOnFocusChangeListener(this);
 
         phoneNumber.addTextChangedListener(this);
         phoneNumber.setOnEditorActionListener(this);
@@ -95,19 +90,15 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
 
     private void checkInput(){
         strIdCard = idCard.getText().toString().trim();
-        strBirthDate = birthDate.getText().toString().trim();
         strPhone = phoneNumber.getText().toString().trim();
-        firstName = editFirstName.getText().toString().trim();
-        lastName = editLastName.getText().toString().trim();
         pass = editPass.getText().toString().trim();
         confirmPass = editConfirmPass.getText().toString().trim();
         email = editEmail.getText().toString().trim();
 
         if (confirmPass.equalsIgnoreCase(pass) && !confirmPass.isEmpty() && !pass.isEmpty()){
-            if (strIdCard.length() == 13 && !strBirthDate.isEmpty() && strPhone.length() == 12 && !lastName.isEmpty() && !firstName.isEmpty() && !email.isEmpty()){
+            if (strIdCard.length() == 13 && strPhone.length() == 12 && !email.isEmpty()){
                 String[] phone = strPhone.split("-");
                 String currentPhone = phone[0] + phone[1] + phone[2];
-                screenName = firstName + " " + lastName;
 
                 DataModel dataModel = createModel(currentPhone);
 
@@ -124,11 +115,7 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
         RegisterRequest request = new RegisterRequest();
         RegisterRequest.User user = new RegisterRequest.User();
         user.setCitizenId(strIdCard);
-        user.setBirthDate(strBirthDate);
         user.setPhone(currentPhone);
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setScreenName(screenName);
         user.setPassword(pass);
         user.setRePassword(confirmPass);
         user.setEmail(email);
@@ -155,7 +142,7 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
         SharedPreferences sharedPref = getSharedPreferences(VariableConnect.keyFile, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(getString(R.string.phone_key), strPhone);
-        editor.commit();
+        editor.apply();
     }
 
     @Subscribe
@@ -202,68 +189,11 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
         }
     }
 
-
-    @Subscribe
-    public void onEvent(DateModel date){
-        String strDay = "", strMonth = "";
-
-        if (date.getMonth() < 10){
-            strMonth = "0" + date.getMonth();
-            strDay = getCurrentDay(date);
-            birthDate.setText(date.getYear() +"-"+strMonth+"-"+strDay);
-            birthDate.setSelection(birthDate.getText().length());
-        }else{
-            strMonth = String.valueOf(date.getMonth());
-            strDay = getCurrentDay(date);
-            birthDate.setText(date.getYear() +"-"+strMonth+"-"+strDay);
-            birthDate.setSelection(birthDate.getText().length());
-        }
-
-        phoneNumber.requestFocus();
-        KeyboardUtil.newInstance(this).getKeySoft().toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-        dismissDialog();
-    }
-
-    private String getCurrentDay(DateModel date){
-        String strDay = "";
-        if (date.getDay() < 10){
-            strDay = "0" + date.getDay();
-        }else{
-            strDay = String.valueOf(date.getDay());
-        }
-
-        return strDay;
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
         EventBusCart.getInstance().getEventBus().unregister(this);
     }
-
-    private void showDialog(){
-        DialogFragment dialogFragment = new DatePickerFragment();
-        dialogFragment.setCancelable(false);
-        dialogFragment.show(getSupportFragmentManager(), "datePicker");
-    }
-
-    @OnClick(R.id.birth_date)
-    public void onClick(){
-        showDialog();
-    }
-
-    @Override
-    public void onFocusChange(View view, boolean hasFocus) {
-        if (hasFocus){
-            switch (view.getId()){
-                case R.id.birth_date:
-                    showDialog();
-                    break;
-            }
-        }
-    }
-
-
 
     @Override
     public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -307,6 +237,7 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
         if (actionId == EditorInfo.IME_ACTION_DONE){
             checkInput();
         }
+
         return false;
     }
 }

@@ -188,6 +188,7 @@ public class AppMenuFragment extends Fragment {
                 builder.append("})();");
 
                 String result = "javascript:" + builder.toString();
+                Log.d("Script", result);
                 view.loadUrl(result);
             }catch (Exception e){
                 e.printStackTrace();

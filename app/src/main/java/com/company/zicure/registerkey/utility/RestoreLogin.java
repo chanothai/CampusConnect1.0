@@ -1,8 +1,10 @@
-package com.company.zicure.registerkey;
+package com.company.zicure.registerkey.utility;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+
+import com.company.zicure.registerkey.R;
 
 import gallery.zicure.company.com.modellibrary.utilize.VariableConnect;
 

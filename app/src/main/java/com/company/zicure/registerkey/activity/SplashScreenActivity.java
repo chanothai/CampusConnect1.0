@@ -1,19 +1,16 @@
-package com.company.zicure.registerkey;
+package com.company.zicure.registerkey.activity;
 
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.content.Intent;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.util.Base64;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.company.zicure.registerkey.activity.CheckLoginActivity;
+import com.company.zicure.registerkey.R;
 import com.company.zicure.registerkey.network.ClientHttp;
+import com.company.zicure.registerkey.utility.RestoreLogin;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
@@ -22,9 +19,7 @@ import gallery.zicure.company.com.gallery.util.PermissionKeyNumber;
 import gallery.zicure.company.com.gallery.util.PermissionRequest;
 import gallery.zicure.company.com.modellibrary.common.BaseActivity;
 import gallery.zicure.company.com.modellibrary.models.BaseResponse;
-import gallery.zicure.company.com.modellibrary.security.EncryptionAES;
 import gallery.zicure.company.com.modellibrary.utilize.EventBusCart;
-import gallery.zicure.company.com.modellibrary.utilize.ModelCart;
 import gallery.zicure.company.com.modellibrary.utilize.VariableConnect;
 
 public class SplashScreenActivity extends BaseActivity implements Animator.AnimatorListener{

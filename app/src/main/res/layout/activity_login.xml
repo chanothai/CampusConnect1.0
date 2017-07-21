@@ -4,82 +4,119 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rootLayout"
     android:layout_width="match_parent"
-    android:padding="@dimen/padding_medium"
     android:layout_height="match_parent"
-    tools:context="com.company.zicure.registerkey.LoginActivity"
-    android:background="@color/colorBackgroundGray">
+    android:layout_marginTop="24dp"
+    tools:context="com.company.zicure.registerkey.activity.LoginActivity"
+    android:background="@android:color/white">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <include
-            layout="@layout/content_header_layout" />
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:orientation="vertical"
-            android:id="@+id/form_login">
+            android:padding="@dimen/padding_eight">
 
-            <android.support.design.widget.TextInputLayout
+            <include layout="@layout/content_header_layout" />
+
+            <LinearLayout
+                android:id="@+id/form_login"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="@dimen/padding_top_five">
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingEnd="@dimen/padding_extra_large"
+                android:paddingStart="@dimen/padding_extra_large">
 
-                <EditText
-                    android:id="@+id/username"
+                <com.company.zicure.registerkey.customView.TextInputView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:hint="@string/email_th"
-                    android:inputType="textEmailAddress"
-                    android:maxLines="1"
-                    android:padding="@dimen/padding_large" />
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/padding_top_five">
 
-            </android.support.design.widget.TextInputLayout>
+                    <com.company.zicure.registerkey.customView.EditTextView
+                        android:id="@+id/username"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/btn_height"
+                        android:hint="@string/text_id_card_th"
+                        android:inputType="textEmailAddress"
+                        android:maxLines="1"
+                        android:padding="@dimen/padding_large" />
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="@dimen/padding_top_five">
+                </com.company.zicure.registerkey.customView.TextInputView>
 
-                <EditText
+                <com.company.zicure.registerkey.customView.TextInputView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:inputType="textPassword"
-                    android:padding="@dimen/padding_large"
-                    android:maxLines="1"
-                    android:id="@+id/password"
-                    android:hint="@string/hint_password_th" />
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_height="wrap_content"
+                    android:paddingTop="@dimen/padding_top_five">
 
-            <Button
-                android:id="@+id/btnConnect"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="@dimen/size_text_small"
-                android:textStyle="bold"
-                android:padding="@dimen/padding_large"
-                android:text="@string/btn_login"
-                android:textColor="@android:color/white"
-                android:layout_marginTop="@dimen/padding_large"
-                android:background="@drawable/selector_btn_edit_user" />
+                    <com.company.zicure.registerkey.customView.EditTextView
+                        android:id="@+id/password"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/btn_height"
+                        android:hint="@string/hint_password_th"
+                        android:inputType="textPassword"
+                        android:maxLines="1"
+                        android:padding="@dimen/padding_large" />
+                </com.company.zicure.registerkey.customView.TextInputView>
 
-            <TextView
-                android:id="@+id/txt_link"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:textSize="@dimen/size_text_small"
-                android:padding="@dimen/padding_small"
-                android:textColor="@android:color/black"
-                android:textColorLink="@color/colorAccent"
-                android:text="@string/detail_link" />
+                <com.company.zicure.registerkey.customView.ButtonView
+                    android:id="@+id/btnConnect"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/btn_height"
+                    android:layout_marginEnd="@dimen/padding_large"
+                    android:layout_marginStart="@dimen/padding_large"
+                    android:layout_marginTop="@dimen/padding_large"
+                    android:text="@string/text_btn_login_th"
+                    android:textStyle="bold" />
+                
+                <com.company.zicure.registerkey.customView.LabelView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/margin_padding_normal"
+                    android:paddingEnd="@dimen/margin_padding_normal"
+                    android:paddingTop="@dimen/padding_large"
+                    android:paddingBottom="@dimen/padding_large"
+                    android:textSize="@dimen/size_text_small"
+                    android:text="@string/text_forgot_password_th"
+                    android:layout_gravity="end"/>
+            </LinearLayout>
         </LinearLayout>
 
-    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:background="@color/background_tab_bottom">
+
+            <com.company.zicure.registerkey.customView.LabelView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="end|center_vertical"
+                android:textSize="@dimen/size_text_small"
+                android:text="@string/text_ask_th"
+                android:paddingStart="@dimen/padding_four"
+                android:paddingEnd="@dimen/padding_four"/>
+
+            <com.company.zicure.registerkey.customView.LabelView
+                android:id="@+id/txt_link"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="start|center_vertical"
+                android:textSize="@dimen/size_text_small"
+                android:textColor="@color/text_link"
+                android:textColorLink="@color/color_text_link"
+                android:text="@string/text_link_th"
+                android:paddingStart="@dimen/padding_four"
+                android:paddingEnd="@dimen/padding_four"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>
 

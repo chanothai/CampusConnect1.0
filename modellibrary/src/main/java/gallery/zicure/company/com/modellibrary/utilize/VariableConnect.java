@@ -6,7 +6,6 @@ package gallery.zicure.company.com.modellibrary.utilize;
 
 public class VariableConnect {
     public static String clientID = "abcdef";
-    public static String urlIdentityServer = "http://api.psp.pakgon.com/";
 
     public static String staticKey = "APuT9Gt43aGNLUwn+ewtjzV+1cXjdLcSe/TYXf7n8Vs=";
     public static String versionAndroid = "0.0.1";

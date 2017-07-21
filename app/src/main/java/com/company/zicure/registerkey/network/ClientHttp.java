@@ -14,7 +14,6 @@ import gallery.zicure.company.com.modellibrary.models.BaseResponse;
 import gallery.zicure.company.com.modellibrary.models.DataModel;
 import gallery.zicure.company.com.modellibrary.models.ResponseUserInfo;
 import gallery.zicure.company.com.modellibrary.utilize.EventBusCart;
-import gallery.zicure.company.com.modellibrary.utilize.VariableConnect;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -23,6 +22,7 @@ import retrofit2.Retrofit;
 /**
  * Created by BallOmO on 10/13/2016 AD.
  */
+
 public class ClientHttp {
     private Context context = null;
     private static ClientHttp me;
@@ -36,7 +36,8 @@ public class ClientHttp {
 
     public ClientHttp(Context context){
         this.context = context;
-        retrofit = RetrofitAPI.newInstance(VariableConnect.urlIdentityServer).getRetrofit();
+        String urlIdentityServer = "http://api.psp.pakgon.com/";
+        retrofit = RetrofitAPI.newInstance(urlIdentityServer).getRetrofit();
         service = retrofit.create(LogApi.class);
         gson = new GsonBuilder().disableHtmlEscaping().create();
     }

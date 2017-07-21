@@ -5,7 +5,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.HTTP;
 
 /**
  * Created by 4GRYZ52 on 11/26/2016.

@@ -14,7 +14,6 @@ import android.widget.TextView;
  */
 
 public class ToolbarManager {
-
     private AppCompatActivity activity = null;
     private Toolbar toolbarMenu = null;
     private TextView textTitle = null;

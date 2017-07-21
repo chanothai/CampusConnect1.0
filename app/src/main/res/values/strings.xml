@@ -7,11 +7,8 @@
     <string name="store_login">com.zicure.login</string>
     <string name="priKey">private_key</string>
     <string name="pubKey">public_key</string>
-    <string name="btn_login">Log In</string>
     <string name="hint_password_th">รหัสผ่าน</string>
     <string name="pubServ_key">pubServ_key</string>
-    <string name="detail_link">Register</string>
-    <string name="signup_link">Register</string>
     <string name="forgot_password_link">ForgotPassword?</string>
     <string name="news">News</string>
     <string name="map">Map</string>
@@ -35,16 +32,6 @@
     <string name="url_calendar">http://bloc.pakgon.com/Events/calendar</string>
     <string name="url_news">http://bloc.pakgon.com/news/feednews</string>
     <string name="url_subject">http://bloc.pakgon.com/News/subject</string>
-
-    //Form Register Thai
-    <string name="identity_card_th">หมายเลขบัตรประชาชน</string>
-    <string name="birth_date_th">ปี-เดือน-วัน</string>
-    <string name="phone_number_th">หมายเลขโทรศัพท์</string>
-
-    //Form Register English
-    <string name="identity_card">Identification Card</string>
-    <string name="birth_date">Birth Date</string>
-    <string name="phone_number">Phone Number</string>
 
     //Validate
     <string name="confirm_th">Confirm</string>
@@ -81,4 +68,23 @@
     <string name="title_id_card_th">เลขบัตรประจำตัวประชาชน</string>
     <string name="email_th">อีเมล์</string>
 
+
+    //Login thai
+    <string name="text_link_th">สมัครสมาชิก</string>
+    <string name="text_ask_th">ไม่มีบัญชี?</string>
+    <string name="text_btn_login_th">เข้าสู่ระบบ</string>
+    <string name="text_forgot_password_th">ลืมรหัสผ่าน?</string>
+    <string name="text_id_card_th">หมายเลขบัตรประชาชน</string>
+
+    //Register Thai
+    <string name="text_title_register">ลงทะเบียน</string>
+    <string name="identity_card_th">หมายเลขบัตรประชาชน</string>
+    <string name="birth_date_th">ปี-เดือน-วัน</string>
+    <string name="phone_number_th">หมายเลขโทรศัพท์</string>
+    <string name="text_btn_confirm_th">ยืนยัน</string>
+
+    //Register English
+    <string name="identity_card">Identification Card</string>
+    <string name="birth_date">Birth Date</string>
+    <string name="phone_number">Phone Number</string>
 </resources>

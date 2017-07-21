@@ -1,4 +1,4 @@
-package com.company.zicure.registerkey;
+package com.company.zicure.registerkey.activity;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
@@ -34,6 +34,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.company.zicure.registerkey.R;
+import com.company.zicure.registerkey.activity.LoginActivity;
 import com.company.zicure.registerkey.adapter.SlideMenuAdapter;
 import com.company.zicure.registerkey.contents.ContentAdapterCart;
 import com.company.zicure.registerkey.fragment.AppMenuFragment;
@@ -148,6 +150,11 @@ public class MainMenuActivity extends BaseActivity implements  View.OnClickListe
         key = Base64.decode(strArr[2], Base64.NO_WRAP);
 
         if (currentUsername != null && currentToken != null){
+            // set data for profile activity
+            ModelCart.getInstance().getKeyModel().setToken(currentToken);
+            ModelCart.getInstance().getKeyModel().setKey(key);
+            ModelCart.getInstance().getKeyModel().setUsername(currentUsername);
+
             setModelUser();
         }
     }

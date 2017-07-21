@@ -34,17 +34,21 @@
     <dimen name="scale_icon_normal">24dp</dimen>
     <dimen name="scale_icon_tablet">48dp</dimen>
 
+    //button
+    <dimen name="btn_height">48dp</dimen>
 
     //new text size
     <dimen name="size_text_small">16sp</dimen>
     <dimen name="size_text_medium">22sp</dimen>
     <dimen name="size_text_large">28sp</dimen>
+    <dimen name="size_text_extra_large">48sp</dimen>
 
     //new padding
     <dimen name="padding_small">4dp</dimen>
     <dimen name="padding_medium">8dp</dimen>
     <dimen name="padding_large">16dp</dimen>
-    <dimen name="padding_very_large">40dp</dimen>
+    <dimen name="padding_extra_large">24dp</dimen>
+    <dimen name="padding_very_large">48dp</dimen>
 
     //new size image circle profile
     <dimen name="size_image_circle">100dp</dimen>

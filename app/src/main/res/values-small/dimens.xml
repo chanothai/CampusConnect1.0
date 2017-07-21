@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    //button
+    <dimen name="btn_height">24dp</dimen>
+
+    //new text size
+    <dimen name="size_text_small">12sp</dimen>
+    <dimen name="size_text_medium">18sp</dimen>
+    <dimen name="size_text_large">24sp</dimen>
+    <dimen name="size_text_extra_large">36sp</dimen>
+
+    //new padding
+    <dimen name="padding_medium">4dp</dimen>
+    <dimen name="padding_large">8dp</dimen>
+    <dimen name="padding_extra_large">16dp</dimen>
+    <dimen name="padding_very_large">36dp</dimen>
+</resources>

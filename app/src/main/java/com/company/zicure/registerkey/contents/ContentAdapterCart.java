@@ -8,24 +8,15 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.webkit.CookieManager;
-import android.webkit.CookieSyncManager;
-import android.widget.RelativeLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.company.zicure.registerkey.LoginActivity;
-import com.company.zicure.registerkey.MainMenuActivity;
 import com.company.zicure.registerkey.R;
 import com.company.zicure.registerkey.activity.BlocContentActivity;
+import com.company.zicure.registerkey.activity.LoginActivity;
 import com.company.zicure.registerkey.adapter.MainMenuAdapter;
 import com.company.zicure.registerkey.adapter.SlideMenuAdapter;
-import com.company.zicure.registerkey.fragment.AppMenuFragment;
 import com.company.zicure.registerkey.holder.MainMenuHolder;
 import com.company.zicure.registerkey.holder.SlideMenuHolder;
 import com.company.zicure.registerkey.interfaces.ItemClickListener;
@@ -75,8 +66,8 @@ public class ContentAdapterCart {
                             ClientHttp.getInstance(baseActivity).requestUserBloc(ModelCart.getInstance().getAuth().getAuthToken());
                         }
                         else if (getTitle(position).equalsIgnoreCase(baseActivity.getString(R.string.logout_menu_th))){
-                            AppMenuFragment fragment = (AppMenuFragment.newInstance(""));
-                            fragment.clearCookies();
+//                            AppMenuFragment fragment = (AppMenuFragment.newInstance(""));
+//                            fragment.clearCookies();
 
                             SharedPreferences pref = baseActivity.getSharedPreferences(VariableConnect.keyFile, Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = pref.edit();

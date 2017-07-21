@@ -174,6 +174,7 @@ public class ProfileActivity extends BaseActivity implements TabLayout.OnTabSele
                     intent.setType("text/plain");
                     intent.putExtra(Intent.EXTRA_TEXT, authToken);
                 }
+
                 startActivity(intent);
                 ModelCart.getInstance().getKeyModel().setAuthToken("");
             }

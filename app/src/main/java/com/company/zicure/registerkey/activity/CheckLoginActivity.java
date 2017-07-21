@@ -1,16 +1,9 @@
 package com.company.zicure.registerkey.activity;
 
 import android.os.Bundle;
-import android.util.Base64;
-
-import com.company.zicure.registerkey.LoginActivity;
-import com.company.zicure.registerkey.MainMenuActivity;
 import com.company.zicure.registerkey.R;
-import com.company.zicure.registerkey.RegisterActivity;
-import com.company.zicure.registerkey.RestoreLogin;
 
 import gallery.zicure.company.com.modellibrary.common.BaseActivity;
-import gallery.zicure.company.com.modellibrary.utilize.ModelCart;
 
 public class CheckLoginActivity extends BaseActivity {
     @Override

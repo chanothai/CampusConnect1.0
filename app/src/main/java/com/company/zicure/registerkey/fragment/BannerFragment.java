@@ -3,27 +3,17 @@ package com.company.zicure.registerkey.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.company.zicure.registerkey.MainMenuActivity;
 import com.company.zicure.registerkey.R;
-import com.company.zicure.registerkey.adapter.MainMenuAdapter;
-import com.company.zicure.registerkey.contents.ContentAdapterCart;
-import com.company.zicure.registerkey.network.ClientHttp;
 
 import java.util.List;
 

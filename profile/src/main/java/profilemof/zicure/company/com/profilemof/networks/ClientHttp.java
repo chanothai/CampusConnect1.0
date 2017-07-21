@@ -29,7 +29,8 @@ public class ClientHttp {
 
     public ClientHttp(Context context){
         this.context = context;
-        retrofit = RetrofitAPI.newInstance(VariableConnect.urlIdentityServer).getRetrofit();
+        String urlIdentityServer = "http://api.psp.pakgon.com/";
+        retrofit = RetrofitAPI.newInstance(urlIdentityServer).getRetrofit();
         service = retrofit.create(LogApi.class);
         gson = new GsonBuilder().disableHtmlEscaping().create();
     }

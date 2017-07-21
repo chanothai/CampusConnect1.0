@@ -1,12 +1,10 @@
-package com.company.zicure.registerkey;
+package com.company.zicure.registerkey.activity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.SpannableString;
 import android.text.Spanned;
-import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.Base64;
@@ -19,10 +17,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.company.zicure.registerkey.activity.CheckLoginActivity;
+import com.company.zicure.registerkey.R;
 import com.company.zicure.registerkey.network.ClientHttp;
 import com.company.zicure.registerkey.security.EncryptionAES;
-import com.company.zicure.registerkey.security.FingerPrintAuthentication;
 import com.company.zicure.registerkey.security.FingerprintHandler;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -186,8 +183,8 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener, E
 
 
     public void setTextClick(){
-        String strAll= getString(R.string.detail_link);
-        String strLinkSignUP = getString(R.string.signup_link);
+        String strAll= getString(R.string.text_link_th);
+        String strLinkSignUP = getString(R.string.text_link_th);
         int start = strAll.indexOf(strLinkSignUP);
         int end = start + strLinkSignUP.length();
 
@@ -233,7 +230,7 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener, E
 
             String checkLink = spanned.subSequence(start,end).toString();
 
-            if (checkLink.equalsIgnoreCase(getString(R.string.signup_link))){
+            if (checkLink.equalsIgnoreCase(getString(R.string.text_link_th))){
                 openActivity(RegisterActivity.class, true);
             }
         }

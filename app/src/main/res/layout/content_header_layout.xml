@@ -5,25 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_vertical"
-    android:layout_weight="3">
+    android:padding="@dimen/padding_very_large"
+    android:layout_weight="1">
 
-    <TextView
-        android:id="@+id/header_login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/connect_account"
-        android:textStyle="bold"
-        android:textColor="@color/colorAccent"
-        android:textSize="@dimen/size_text_large"/>
-
-    <TextView
-        android:id="@+id/header_detail_login"
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:textColor="@android:color/black"
-        android:textSize="@dimen/size_text_small"
-        android:text="@string/header_login" />
+        android:layout_height="match_parent"
+        android:scaleType="centerInside"
+        android:src="@drawable/logo_intro"/>
 
 </LinearLayout>

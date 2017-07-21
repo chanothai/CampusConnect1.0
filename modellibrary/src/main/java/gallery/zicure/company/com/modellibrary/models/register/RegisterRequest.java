@@ -21,16 +21,8 @@ public class RegisterRequest {
     public static class User{
         @SerializedName("citizen_id")
         private String citizenId;
-        @SerializedName("birth_date")
-        private String birthDate;
         @SerializedName("phone")
         private String phone;
-        @SerializedName("first_name")
-        private String firstName;
-        @SerializedName("last_name")
-        private String lastName;
-        @SerializedName("screen_name")
-        private String screenName;
         private String password;
         @SerializedName("re_password")
         private String rePassword;
@@ -45,44 +37,12 @@ public class RegisterRequest {
             this.citizenId = citizenId;
         }
 
-        public String getBirthDate() {
-            return birthDate;
-        }
-
-        public void setBirthDate(String birthDate) {
-            this.birthDate = birthDate;
-        }
-
         public String getPhone() {
             return phone;
         }
 
         public void setPhone(String phone) {
             this.phone = phone;
-        }
-
-        public String getFirstName() {
-            return firstName;
-        }
-
-        public void setFirstName(String firstName) {
-            this.firstName = firstName;
-        }
-
-        public String getLastName() {
-            return lastName;
-        }
-
-        public void setLastName(String lastName) {
-            this.lastName = lastName;
-        }
-
-        public String getScreenName() {
-            return screenName;
-        }
-
-        public void setScreenName(String screenName) {
-            this.screenName = screenName;
         }
 
         public String getPassword() {

@@ -3,9 +3,9 @@
 
     <item
         android:state_pressed="true"
-        android:drawable="@drawable/btn_edit_user_press"/>
+        android:drawable="@drawable/btn_login_press"/>
 
     <item
-        android:drawable="@drawable/btn_edit_user_normal"/>
+        android:drawable="@drawable/btn_login_normal"/>
 
 </selector>
