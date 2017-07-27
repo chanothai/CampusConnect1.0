@@ -99,25 +99,15 @@ public class UserDetailFragment extends Fragment {
 
     private void setUserDetailView(){
         initialUserDetail();
-        adapter = new UserDetailAdapter(listTopic, ModelCart.getInstance().getUserInfo()) {
+        adapter = new UserDetailAdapter(listTopic, ModelCart.getInstance().getUserBloc()) {
             @Override
             public void onBindViewHolder(UserDetailHolder holder, int position) {
                 holder.topic.setText(getTopic(position));
-                if (getTopic(position).equalsIgnoreCase(getString(R.string.id_card_th))){
-                    holder.content.setText(getUserInfo().getCitizenID());
-                }
-                else if (getTopic(position).equalsIgnoreCase(getString(R.string.firstname_th))){
-                    holder.content.setText(getUserInfo().getFirstName());
+                if (getTopic(position).equalsIgnoreCase(getString(R.string.firstname_th))){
+                    holder.content.setText(getUserInfo().getFirstNameTH());
                 }
                 else if (getTopic(position).equalsIgnoreCase(getString(R.string.lastname_th))){
-                    holder.content.setText(getUserInfo().getLastName());
-                }
-                else if (getTopic(position).equalsIgnoreCase(getString(R.string.birthday_th))){
-                    String[] splite = getUserInfo().getBirthday().split(" ");
-                    holder.content.setText(splite[0]);
-                }
-                else if (getTopic(position).equalsIgnoreCase(getString(R.string.number_phone_th))){
-                    holder.content.setText(getUserInfo().getPhone());
+                    holder.content.setText(getUserInfo().getLastNameTH());
                 }
             }
         };

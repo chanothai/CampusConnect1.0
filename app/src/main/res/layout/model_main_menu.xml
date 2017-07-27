@@ -25,19 +25,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
-                android:background="@null"
                 android:cropToPadding="true"
+                android:background="@null"
                 android:scaleType="fitXY" />
 
-            <TextView
+            <com.company.zicure.registerkey.customView.LabelView
                 android:id="@+id/topic_menu"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-condensed"
-                android:gravity="start"
+                android:gravity="center_horizontal"
                 android:maxLines="1"
                 android:padding="@dimen/padding_eight"
-                android:text="Test"
+                android:textStyle="bold"
                 android:textColor="#4e4e4e"
                 android:textSize="@dimen/size_text_small" />
 

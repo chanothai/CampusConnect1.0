@@ -8,7 +8,7 @@ public class VariableConnect {
     public static String clientID = "abcdef";
 
     public static String staticKey = "APuT9Gt43aGNLUwn+ewtjzV+1cXjdLcSe/TYXf7n8Vs=";
-    public static String versionAndroid = "0.0.1";
+    public static String versionAndroid = "connect1.0";
 
     //store file key
     public static String keyFile = "file_key";

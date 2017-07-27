@@ -15,10 +15,11 @@
         android:background="@android:color/white">
 
         <ImageView
-            android:layout_width="133dp"
+            android:layout_width="?attr/actionBarSize"
             android:layout_height="?attr/actionBarSize"
             android:layout_gravity="center"
             android:scaleType="fitXY"
+            android:padding="@dimen/padding_eight"
             android:src="@drawable/logo_connect" />
     </android.support.v7.widget.Toolbar>
 

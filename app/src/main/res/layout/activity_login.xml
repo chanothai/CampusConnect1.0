@@ -38,11 +38,13 @@
                     <com.company.zicure.registerkey.customView.EditTextView
                         android:id="@+id/username"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/btn_height"
+                        android:layout_height="match_parent"
                         android:hint="@string/text_id_card_th"
                         android:inputType="textEmailAddress"
+                        android:textSize="@dimen/size_text_medium"
                         android:maxLines="1"
-                        android:padding="@dimen/padding_large" />
+                        android:padding="@dimen/padding_large"
+                        android:imeOptions="actionNext"/>
 
                 </com.company.zicure.registerkey.customView.TextInputView>
 
@@ -54,11 +56,13 @@
                     <com.company.zicure.registerkey.customView.EditTextView
                         android:id="@+id/password"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/btn_height"
+                        android:layout_height="match_parent"
                         android:hint="@string/hint_password_th"
                         android:inputType="textPassword"
+                        android:textSize="@dimen/size_text_medium"
                         android:maxLines="1"
-                        android:padding="@dimen/padding_large" />
+                        android:padding="@dimen/padding_large"
+                        android:imeOptions="actionDone"/>
                 </com.company.zicure.registerkey.customView.TextInputView>
 
                 <com.company.zicure.registerkey.customView.ButtonView
@@ -72,12 +76,13 @@
                     android:textStyle="bold" />
                 
                 <com.company.zicure.registerkey.customView.LabelView
+                    android:id="@+id/label_forgot_password"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingStart="@dimen/margin_padding_normal"
                     android:paddingEnd="@dimen/margin_padding_normal"
-                    android:paddingTop="@dimen/padding_large"
-                    android:paddingBottom="@dimen/padding_large"
+                    android:paddingTop="@dimen/margin_padding_normal"
+                    android:paddingBottom="@dimen/margin_padding_normal"
                     android:textSize="@dimen/size_text_small"
                     android:text="@string/text_forgot_password_th"
                     android:layout_gravity="end"/>

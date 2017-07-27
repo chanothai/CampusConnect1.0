@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.company.zicure.registerkey.R;
+import com.company.zicure.registerkey.customView.LabelView;
 import com.company.zicure.registerkey.interfaces.ItemClickListener;
 
 
@@ -20,7 +21,7 @@ import com.company.zicure.registerkey.interfaces.ItemClickListener;
 public class MainMenuHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
     //View
-    public TextView topicMenu;
+    public LabelView topicMenu;
     public ImageView imgBtnMenu;
     public RelativeLayout cardMenu;
     //Interface
@@ -28,7 +29,7 @@ public class MainMenuHolder extends RecyclerView.ViewHolder implements View.OnCl
 
     public MainMenuHolder(View itemView) {
         super(itemView);
-        topicMenu = (TextView) itemView.findViewById(R.id.topic_menu);
+        topicMenu = (LabelView) itemView.findViewById(R.id.topic_menu);
         imgBtnMenu = (ImageView) itemView.findViewById(R.id.img_btn_menu);
         cardMenu = (RelativeLayout) itemView.findViewById(R.id.item_card_main_menu);
 

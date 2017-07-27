@@ -1,12 +1,9 @@
 package com.company.zicure.registerkey.contents;
 
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 
@@ -26,10 +23,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gallery.zicure.company.com.modellibrary.common.BaseActivity;
-import gallery.zicure.company.com.modellibrary.models.CategoryModel;
+import gallery.zicure.company.com.modellibrary.models.bloc.ResponseBlocUser;
 import gallery.zicure.company.com.modellibrary.models.drawer.SlideMenuDetail;
 import gallery.zicure.company.com.modellibrary.utilize.ModelCart;
-import gallery.zicure.company.com.modellibrary.utilize.ResizeScreen;
 import gallery.zicure.company.com.modellibrary.utilize.VariableConnect;
 import profilemof.zicure.company.com.profilemof.activity.ProfileActivity;
 
@@ -63,24 +59,15 @@ public class ContentAdapterCart {
                         }
                         else if (getTitle(position).equalsIgnoreCase(baseActivity.getString(R.string.menu_feed_th))){
                             baseActivity.showLoadingDialog();
-                            ClientHttp.getInstance(baseActivity).requestUserBloc(ModelCart.getInstance().getAuth().getAuthToken());
+                            ClientHttp.getInstance(baseActivity).requestUserBloc(ModelCart.getInstance().getKeyModel().getToken());
                         }
                         else if (getTitle(position).equalsIgnoreCase(baseActivity.getString(R.string.logout_menu_th))){
-//                            AppMenuFragment fragment = (AppMenuFragment.newInstance(""));
-//                            fragment.clearCookies();
-
                             SharedPreferences pref = baseActivity.getSharedPreferences(VariableConnect.keyFile, Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = pref.edit();
                             editor.clear();
-                            editor.commit();
+                            editor.apply();
 
                             baseActivity.openActivity(LoginActivity.class, true);
-                        }
-                        else if (getTitle(position).equalsIgnoreCase(baseActivity.getString(R.string.activate_user_th))){
-                            Bundle bundle = new Bundle();
-                            bundle.putInt(VariableConnect.pageKey, 1);
-                            baseActivity.openActivity(ProfileActivity.class, bundle);
-                            baseActivity.overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_scale_out);
                         }else if (getTitle(position).equalsIgnoreCase(baseActivity.getString(R.string.id_card_th))){
                             Bundle bundle = new Bundle();
                             bundle.putString(VariableConnect.TITLE_CATEGORY, baseActivity.getString(R.string.id_card_th));
@@ -95,16 +82,16 @@ public class ContentAdapterCart {
         return slideMenuAdapter;
     }
 
-    public MainMenuAdapter setMainMenuAdapter(Activity activity, final List<CategoryModel.Result.Data.Bloc> arrBloc) {
+    public MainMenuAdapter setMainMenuAdapter(Activity activity, final List<ResponseBlocUser.ResultBlocUser.DataBloc.UserAccessControl.BlocUser> arrBloc) {
         atv = activity;
         //set adapter
          MainMenuAdapter mainMenuAdapter = new MainMenuAdapter(activity,arrBloc) {
             //Data is bound to view
             @Override
             public void onBindViewHolder(final MainMenuHolder holder, int position) {
-                holder.topicMenu.setText(getData().get(position).getBlocName());
+                holder.topicMenu.setText(getData().get(position).getBlocNameTH());
                 Glide.with(atv)
-                        .load(getData().get(position).getBlocIconPath())
+                        .load(getData().get(position).getImagePath())
                         .fitCenter()
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(holder.imgBtnMenu);
@@ -112,13 +99,24 @@ public class ContentAdapterCart {
                 holder.setItemOnClickListener(new ItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        Bundle bundle = new Bundle();
-                        bundle.putString(VariableConnect.TITLE_CATEGORY, getData().get(position).getBlocName());
-                        bundle.putString(VariableConnect.PATH_BLOC, getData().get(position).getBlocUrl());
-                        Intent intent = new Intent(atv, BlocContentActivity.class);
-                        intent.putExtras(bundle);
-                        atv.startActivity(intent);
-                        atv.overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_scale_out);
+                        if (position == 1){
+                            Bundle bundle = new Bundle();
+                            bundle.putString(VariableConnect.TITLE_CATEGORY, atv.getString(R.string.id_card_th));
+                            bundle.putString(VariableConnect.PATH_BLOC, "");
+                            Intent intent = new Intent(atv, BlocContentActivity.class);
+                            intent.putExtras(bundle);
+
+                            atv.startActivity(intent);
+                            atv.overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_scale_out);
+                        }else{
+                            Bundle bundle = new Bundle();
+                            bundle.putString(VariableConnect.TITLE_CATEGORY, getData().get(position).getBlocNameTH());
+                            bundle.putString(VariableConnect.PATH_BLOC, getData().get(position).getBlocURL());
+                            Intent intent = new Intent(atv, BlocContentActivity.class);
+                            intent.putExtras(bundle);
+                            atv.startActivity(intent);
+                            atv.overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_scale_out);
+                        }
                     }
                 });
             }

@@ -46,18 +46,6 @@ public class EncryptionAES {
         return me;
     }
 
-    public static byte[] generateKey(){
-        try{
-            KeyGenerator keyGen = KeyGenerator.getInstance("AES");
-            keyGen.init(256);
-            SecretKey secretKey = keyGen.generateKey();
-            return secretKey.getEncoded();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     public String encrypt(String plain){
         String encToStr;
         try{
@@ -92,7 +80,7 @@ public class EncryptionAES {
 
                 IvParameterSpec ivSpec = new IvParameterSpec(ivBytes);
                 Cipher cipher = null;
-                cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+                cipher = Cipher.getInstance("AES/CBC/ZeroPadding");
                 cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, ivSpec);
                 return new String(cipher.doFinal(textBytes));
             }

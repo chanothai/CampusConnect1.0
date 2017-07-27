@@ -3,7 +3,6 @@ package com.company.zicure.registerkey.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -19,11 +18,10 @@ import com.company.zicure.registerkey.R;
 import com.company.zicure.registerkey.adapter.CategoryPagerAdapter;
 import com.company.zicure.registerkey.adapter.MainMenuAdapter;
 import com.company.zicure.registerkey.contents.ContentAdapterCart;
-import com.company.zicure.registerkey.network.ClientHttp;
 
 import java.util.List;
 
-import gallery.zicure.company.com.modellibrary.models.CategoryModel;
+import gallery.zicure.company.com.modellibrary.models.bloc.ResponseBlocUser;
 import gallery.zicure.company.com.modellibrary.utilize.ModelCart;
 
 /**
@@ -96,8 +94,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener ,View
         }
     }
 
-    private List<CategoryModel.Result.Data> getCategoryData(){
-        return ModelCart.getInstance().getCategoryModel().getResult().getData();
+    private List<ResponseBlocUser.ResultBlocUser.DataBloc.UserAccessControl> getCategoryData(){
+        return ModelCart.getInstance().getUserBloc().getResult().getData().getBloc();
     }
 
     private void setSwipeRefreshLayout(){
@@ -110,14 +108,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener ,View
     }
 
     private void setupViewPager(){
-        CategoryPagerAdapter adapter = new CategoryPagerAdapter(getChildFragmentManager(), ModelCart.getInstance().getCategoryModel().getResult().getData());
+        CategoryPagerAdapter adapter = new CategoryPagerAdapter(getChildFragmentManager(), ModelCart.getInstance().getUserBloc().getResult().getData().getBloc());
         categoryPager.setAdapter(adapter);
     }
 
     public void setAdapterView(int pager){
         if (getCategoryData().size() > 0){
             //set adapter
-            MainMenuAdapter mainMenuAdapter = new ContentAdapterCart().setMainMenuAdapter(getActivity(), getCategoryData().get(pager).getBloc());
+            MainMenuAdapter mainMenuAdapter = new ContentAdapterCart().setMainMenuAdapter(getActivity(), getCategoryData().get(pager).getBlocs());
 
             recyclerViewMenu.setLayoutManager(new GridLayoutManager(getActivity(), 2));
             recyclerViewMenu.setAdapter(mainMenuAdapter);

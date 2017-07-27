@@ -91,7 +91,6 @@ public class FlyOutContainer extends LinearLayout {
 	}
 
 	private void openning(){
-//		setMarginLayout(20);
 		menuCurrentState = MenuState.OPEN; //Content is opening
 		layoutGhost.setVisibility(View.VISIBLE);
 	}

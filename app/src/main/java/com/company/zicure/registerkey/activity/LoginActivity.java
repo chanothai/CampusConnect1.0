@@ -36,6 +36,7 @@ import gallery.zicure.company.com.modellibrary.common.BaseActivity;
 import gallery.zicure.company.com.modellibrary.models.BaseResponse;
 import gallery.zicure.company.com.modellibrary.models.DataModel;
 import gallery.zicure.company.com.modellibrary.models.login.LoginRequest;
+import gallery.zicure.company.com.modellibrary.models.login.LoginResponse;
 import gallery.zicure.company.com.modellibrary.utilize.EventBusCart;
 import gallery.zicure.company.com.modellibrary.utilize.ModelCart;
 import gallery.zicure.company.com.modellibrary.utilize.VariableConnect;
@@ -85,15 +86,24 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener, E
         strPass = editPass.getText().toString().trim();
 
         if (!strUser.isEmpty() && !strPass.isEmpty()){
-            DataModel dataModel = setLoginModel(strUser, strPass, false);
-            String str = new GsonBuilder().disableHtmlEscaping().create().toJson(dataModel);
-            Log.d("LoginRequest",  str);
+//            DataModel dataModel = setLoginModel(strUser, strPass);
+//            String str = new GsonBuilder().disableHtmlEscaping().create().toJson(dataModel);
+//            Log.d("LoginRequest",  str);
+//            showLoadingDialog();
+//            ClientHttp.getInstance(this).loginSecure(dataModel);
+
+            LoginRequest loginRequest = new LoginRequest();
+            LoginRequest.User result = new LoginRequest.User();
+            result.setUsername(strUser);
+            result.setPassword(strPass);
+            loginRequest.setUser(result);
+
             showLoadingDialog();
-            ClientHttp.getInstance(this).login(dataModel);
+            ClientHttp.getInstance(this).login(loginRequest);
         }
     }
 
-    private DataModel setLoginModel(String strUser, String strPass, boolean restore){
+    private DataModel setLoginModel(String strUser, String strPass){
         LoginRequest loginRequest = new LoginRequest();
         LoginRequest.User result = new LoginRequest.User();
 
@@ -116,8 +126,28 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener, E
         return dataModel;
     }
 
+    //Subscribe
     @Subscribe
-    public void onEventLogin(BaseResponse baseResponse){
+    public void onEventLogin(LoginResponse response) {
+        String str = new Gson().toJson(response);
+        Log.d("LoginResponse", str);
+        if (response.getResult().getSuccess().equalsIgnoreCase("OK")){
+            String token = response.getResult().getData().getUser().getToken();
+            String dynamicKey = response.getResult().getData().getUser().getDynamicKey();
+            store(token, dynamicKey);
+
+            String[] strArr = {token, strUser, dynamicKey};
+            Bundle bundle = setBundle(strArr);
+
+            openActivity(CheckLoginActivity.class, bundle, true);
+            overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
+        }
+
+        dismissDialog();
+    }
+
+    @Subscribe
+    public void onEventLoginSecure(BaseResponse baseResponse){
         String str = new Gson().toJson(baseResponse);
         Log.d("BaseResponse", str);
         BaseResponse.Result result = baseResponse.getResult();
@@ -138,6 +168,7 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener, E
     private void decodeJson(String decryptStr){
         try{
             JSONObject jsonObject = new JSONObject(decryptStr);
+
             String success = jsonObject.getString("Success");
             if (!success.isEmpty()){
                 jsonObject = jsonObject.getJSONObject("Data");
@@ -169,7 +200,6 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener, E
         return bundle;
     }
 
-
     private void store(String token, String dynamicKey){
         byte[] key = Base64.decode(dynamicKey.getBytes(), Base64.NO_WRAP);
         ModelCart.getInstance().getKeyModel().setKey(key);
@@ -194,7 +224,6 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener, E
         txtLink.setText(spannableString);
         txtLink.setMovementMethod(new LinkMovementMethod());
     }
-
 
     @Override
     public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -231,7 +260,7 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener, E
             String checkLink = spanned.subSequence(start,end).toString();
 
             if (checkLink.equalsIgnoreCase(getString(R.string.text_link_th))){
-                openActivity(RegisterActivity.class, true);
+                openActivity(RegisterActivity.class, false);
             }
         }
     }

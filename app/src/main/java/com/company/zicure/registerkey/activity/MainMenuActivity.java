@@ -12,7 +12,6 @@ import android.support.design.widget.CoordinatorLayout;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.VelocityTrackerCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,7 +26,6 @@ import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,19 +33,16 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.company.zicure.registerkey.R;
-import com.company.zicure.registerkey.activity.LoginActivity;
 import com.company.zicure.registerkey.adapter.SlideMenuAdapter;
 import com.company.zicure.registerkey.contents.ContentAdapterCart;
 import com.company.zicure.registerkey.fragment.AppMenuFragment;
 import com.company.zicure.registerkey.fragment.HomeFragment;
 import com.company.zicure.registerkey.fragment.ScanQRFragment;
 
-import gallery.zicure.company.com.modellibrary.models.CategoryModel;
 import com.company.zicure.registerkey.network.ClientHttp;
 import com.company.zicure.registerkey.security.EncryptionAES;
 import com.company.zicure.registerkey.view.viewgroup.FlyOutContainer;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.joooonho.SelectableRoundedImageView;
 import com.squareup.otto.Subscribe;
 
@@ -61,11 +56,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import gallery.zicure.company.com.gallery.util.PermissionKeyNumber;
 import gallery.zicure.company.com.modellibrary.common.BaseActivity;
-import gallery.zicure.company.com.modellibrary.models.ApplicationRequest;
 import gallery.zicure.company.com.modellibrary.models.AuthToken;
 import gallery.zicure.company.com.modellibrary.models.BaseResponse;
 import gallery.zicure.company.com.modellibrary.models.DataModel;
-import gallery.zicure.company.com.modellibrary.models.ResponseUserInfo;
+import gallery.zicure.company.com.modellibrary.models.bloc.ResponseBlocUser;
 import gallery.zicure.company.com.modellibrary.models.drawer.SlideMenuDetail;
 import gallery.zicure.company.com.modellibrary.utilize.EventBusCart;
 import gallery.zicure.company.com.modellibrary.utilize.ModelCart;
@@ -231,115 +225,20 @@ public class MainMenuActivity extends BaseActivity implements  View.OnClickListe
 
     public void setModelUser(){
         try{
-            ApplicationRequest request = new ApplicationRequest();
-            ApplicationRequest.Application application = new ApplicationRequest.Application();
-            application.setClientID(VariableConnect.clientID);
-            application.setSecret("123456");
-
-            ApplicationRequest.User user = new ApplicationRequest.User();
-            user.setToken(currentToken);
-
-            request.setApplication(application);
-            request.setUser(user);
-
-            Gson gson = new GsonBuilder().disableHtmlEscaping().create();
-            String encrypt = EncryptionAES.newInstance(key).encrypt(gson.toJson(request));
-
-            if (encrypt != null){
-                model = new DataModel();
-                model.setData(encrypt);
-
-                DataModel.User modelUser = new DataModel.User();
-                modelUser.setUsername(currentUsername);
-
-                model.setUser(modelUser);
-
-                showLoadingDialog();
-                ClientHttp.getInstance(this).requestAuthToken(model);
-            }
+            showLoadingDialog();
+            ClientHttp.getInstance(this).requestUserBloc(currentToken);
         }catch (NullPointerException e){
             e.printStackTrace();
-            dismissDialog();
         }
     }
 
     @Subscribe
-    public void onEventAuthToken(BaseResponse baseResponse){
-        try {
-            if (baseResponse.getResult().getSuccess().equalsIgnoreCase("OK")){
-                String[] splitKey = baseResponse.getResult().geteResult().split(getString(R.string.key_iv));
-                String decrypt = EncryptionAES.newInstance(key).decrypt(splitKey[0], splitKey[1].getBytes());
-                decodeJson(decrypt);
-            } else {
-                Toast.makeText(this, baseResponse.getResult().getError(), Toast.LENGTH_SHORT).show();
-                openActivity(LoginActivity.class, true);
-            }
-        }catch (NullPointerException e){
-            e.printStackTrace();
-            dismissDialog();
-        }
-    }
-
-    private void decodeJson(String decrypt){
-        try{
-            JSONObject jsonObject = new JSONObject(decrypt);
-            String success = jsonObject.getString("Success");
-            if (success.equalsIgnoreCase("OK")){
-                jsonObject = jsonObject.getJSONObject("AuthToken");
-
-                ModelCart.getInstance().getAuth().setAuthToken(jsonObject.getString("auth_token"));
-                ModelCart.getInstance().getAuth().setExpiryDate(jsonObject.getString("auth_token_expiry_date"));
-
-                validateCurrentDate(ModelCart.getInstance().getAuth());
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    private void validateCurrentDate(AuthToken authToken){
-        try{
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date date = new Date();
-            Date strDate = dateFormat.parse(authToken.getExpiryDate());
-
-            if (date.after(strDate)){
-
-            }else {
-                String path = authToken.getAuthToken();
-                ClientHttp.getInstance(this).requestUserInfo(path);
-            }
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    @Subscribe
-    public void onEventGetUserInfo(ResponseUserInfo response){
+    public void onEventResponseUserBloc(ResponseBlocUser response){
         try{
             if (response.getResult().getSuccess().equalsIgnoreCase("OK")){
-                Log.d("UserInfo", new Gson().toJson(response.getResult()));
-                ModelCart.getInstance().getUserInfo().setResult(response.getResult());
-
-                setSlideMenuAdapter();
-
-                ClientHttp.getInstance(this).requestUserBloc(ModelCart.getInstance().getAuth().getAuthToken());
-            }else{
-                Toast.makeText(this, response.getResult().getError(), Toast.LENGTH_LONG).show();
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-            dismissDialog();
-        }
-    }
-
-    @Subscribe
-    public void onEventResponseUserBloc(CategoryModel response){
-        try{
-            if (response.getResult().getSuccess().equalsIgnoreCase("OK")){
-                ModelCart.getInstance().getCategoryModel().setResult(response.getResult());
+                ModelCart.getInstance().getUserBloc().setResult(response.getResult());
                 callHomeFragment();
+                setSlideMenuAdapter();
 
                 if (FlyOutContainer.menuCurrentState == FlyOutContainer.MenuState.OPEN){
                     setToggle(0,0);
@@ -449,30 +348,26 @@ public class MainMenuActivity extends BaseActivity implements  View.OnClickListe
     }
 
     public void setSlideMenuAdapter(){
-        String pathImg = ModelCart.getInstance().getUserInfo().getResult().getData().getUser().getImgPath();
+        String pathImg = ModelCart.getInstance().getUserBloc().getResult().getData().getUserInfo().getImgPath();
         Glide.with(this)
                 .load(pathImg)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .centerCrop()
                 .into(imgProfile);
 
-        profileName.setText(ModelCart.getInstance().getUserInfo().getResult().getData().getUser().getScreenName());
+        String screenName = ModelCart.getInstance().getUserBloc().getResult().getData().getUserInfo().getFirstNameTH() + " " + ModelCart.getInstance().getUserBloc().getResult().getData().getUserInfo().getLastNameTH();
+        profileName.setText(screenName);
 
         arrMenu = new ArrayList<>();
         Log.d("SlideMenu",new Gson().toJson(arrMenu));
         String[] arrTitle = {
                 getString(R.string.menu_feed_th),
-                getString(R.string.user_detail_th),
-                getString(R.string.id_card_th),
-                getString(R.string.activate_user_th),
                 getString(R.string.logout_menu_th),};
 
         int[] arrImg = {
                 R.drawable.ic_news_feed,
-                R.drawable.ic_person,
-                R.drawable.idcard,
-                R.drawable.opensign,
-                R.drawable.ic_log_out};
+                R.drawable.exit};
+
         for (int i = 0; i < arrTitle.length; i++){
             SlideMenuDetail menu = new SlideMenuDetail();
             menu.setTitle(arrTitle[i]);
@@ -485,7 +380,6 @@ public class MainMenuActivity extends BaseActivity implements  View.OnClickListe
         listSlideMenu.setLayoutManager(new LinearLayoutManager(this));
         listSlideMenu.setAdapter(slideMenuAdapter);
         listSlideMenu.setItemAnimator(new DefaultItemAnimator());
-//        listSlideMenu.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
     }
 
     @Override
@@ -498,9 +392,6 @@ public class MainMenuActivity extends BaseActivity implements  View.OnClickListe
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             setToggle(0,0);
-        }
-        else if (item.getItemId() == R.id.action_payment){
-            intentToPayment();
         }
 
         return super.onOptionsItemSelected(item);

@@ -1,12 +1,11 @@
 package gallery.zicure.company.com.modellibrary.utilize;
 
 import gallery.zicure.company.com.modellibrary.models.AuthToken;
-import gallery.zicure.company.com.modellibrary.models.CategoryModel;
 import gallery.zicure.company.com.modellibrary.models.DateModel;
 import gallery.zicure.company.com.modellibrary.models.KeyModel;
 import gallery.zicure.company.com.modellibrary.models.LocationModel;
 import gallery.zicure.company.com.modellibrary.models.ResponseUserCode;
-import gallery.zicure.company.com.modellibrary.models.ResponseUserInfo;
+import gallery.zicure.company.com.modellibrary.models.bloc.ResponseBlocUser;
 
 /**
  * Created by 4GRYZ52 on 10/25/2016.
@@ -17,9 +16,8 @@ public class ModelCart {
     private ListModel listModel = null;
     private KeyModel keyModel = null;
     private AuthToken authToken = null;
-    private ResponseUserInfo userInfo = null;
+    private ResponseBlocUser userInfo = null;
     private ResponseUserCode deviceToken = null;
-    private CategoryModel categoryModel = null;
 
     private ModelCart() {
         listModel = new ListModel();
@@ -27,9 +25,8 @@ public class ModelCart {
         listModel.dateModel = new DateModel();
         keyModel = new KeyModel();
         authToken = new AuthToken();
-        userInfo = new ResponseUserInfo();
+        userInfo = new ResponseBlocUser();
         deviceToken = new ResponseUserCode();
-        categoryModel = new CategoryModel();
     }
 
     public static ModelCart getInstance(){
@@ -52,16 +49,8 @@ public class ModelCart {
         return authToken;
     }
 
-    public ResponseUserInfo getUserInfo(){
+    public ResponseBlocUser getUserBloc(){
         return userInfo;
-    }
-
-    public CategoryModel getCategoryModel() {
-        return categoryModel;
-    }
-
-    public void instanceCategory(){
-        categoryModel = new CategoryModel();
     }
 
     public ResponseUserCode getDeviceToken(){

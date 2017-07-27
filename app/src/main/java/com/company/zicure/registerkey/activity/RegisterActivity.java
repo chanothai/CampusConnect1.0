@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.company.zicure.registerkey.R;
 import com.company.zicure.registerkey.activity.LoginActivity;
+import com.company.zicure.registerkey.dialog.AwesomeDialogFragment;
 import com.company.zicure.registerkey.dialog.DatePickerFragment;
 import com.company.zicure.registerkey.network.ClientHttp;
 import com.company.zicure.registerkey.security.EncryptionAES;
@@ -37,12 +38,15 @@ import gallery.zicure.company.com.modellibrary.models.BaseResponse;
 import gallery.zicure.company.com.modellibrary.models.DataModel;
 import gallery.zicure.company.com.modellibrary.models.DateModel;
 import gallery.zicure.company.com.modellibrary.models.register.RegisterRequest;
+import gallery.zicure.company.com.modellibrary.models.register.ResponseRegister;
+import gallery.zicure.company.com.modellibrary.models.register.VerifyRequest;
+import gallery.zicure.company.com.modellibrary.models.register.VerifyResponse;
 import gallery.zicure.company.com.modellibrary.utilize.EventBusCart;
 import gallery.zicure.company.com.modellibrary.utilize.KeyboardUtil;
 import gallery.zicure.company.com.modellibrary.utilize.ModelCart;
 import gallery.zicure.company.com.modellibrary.utilize.VariableConnect;
 
-public class RegisterActivity extends BaseActivity implements TextWatcher, EditText.OnEditorActionListener{
+public class RegisterActivity extends BaseActivity implements EditText.OnEditorActionListener, AwesomeDialogFragment.OnDialogListener{
 
     @Bind(R.id.identity_card)
     EditText idCard;
@@ -60,6 +64,7 @@ public class RegisterActivity extends BaseActivity implements TextWatcher, EditT
     private String strIdCard, strPhone, pass, confirmPass, email;
     //Context
     private Context context = this;
+    private boolean isSuccess = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +72,6 @@ public class RegisterActivity extends BaseActivity implements TextWatcher, EditT
         ButterKnife.bind(this);
         EventBusCart.getInstance().getEventBus().register(this);
 
-        phoneNumber.addTextChangedListener(this);
         phoneNumber.setOnEditorActionListener(this);
 
         idCard.requestFocus();
@@ -96,14 +100,26 @@ public class RegisterActivity extends BaseActivity implements TextWatcher, EditT
         email = editEmail.getText().toString().trim();
 
         if (confirmPass.equalsIgnoreCase(pass) && !confirmPass.isEmpty() && !pass.isEmpty()){
-            if (strIdCard.length() == 13 && strPhone.length() == 12 && !email.isEmpty()){
-                String[] phone = strPhone.split("-");
-                String currentPhone = phone[0] + phone[1] + phone[2];
+            if (strIdCard.length() == 13 && strPhone.length() == 10 && !email.isEmpty()){
+//                DataModel dataModel = createModel();
+//
+//                showLoadingDialog();
+//                ClientHttp.getInstance(context).registerSecure(dataModel);
 
-                DataModel dataModel = createModel(currentPhone);
+                RegisterRequest request = new RegisterRequest();
+                RegisterRequest.User user = new RegisterRequest.User();
+                user.setCitizenId(strIdCard);
+                user.setPhone(strPhone);
+                user.setPassword(pass);
+                user.setRePassword(confirmPass);
+                user.setEmail(email);
+                request.setUser(user);
+
+                String str = new Gson().toJson(request);
+                Log.d("RegisterRequest", str);
 
                 showLoadingDialog();
-                ClientHttp.getInstance(context).register(dataModel);
+                ClientHttp.getInstance(context).register(request);
             }
         }else{
             editConfirmPass.requestFocus();
@@ -111,11 +127,11 @@ public class RegisterActivity extends BaseActivity implements TextWatcher, EditT
         }
     }
 
-    private DataModel createModel(String currentPhone){
+    private DataModel createModel(){
         RegisterRequest request = new RegisterRequest();
         RegisterRequest.User user = new RegisterRequest.User();
         user.setCitizenId(strIdCard);
-        user.setPhone(currentPhone);
+        user.setPhone(strPhone);
         user.setPassword(pass);
         user.setRePassword(confirmPass);
         user.setEmail(email);
@@ -145,8 +161,43 @@ public class RegisterActivity extends BaseActivity implements TextWatcher, EditT
         editor.apply();
     }
 
+    //Subscribe
     @Subscribe
-    public void onEvent(BaseResponse registerResponse){
+    public void onEventResponseRegister(ResponseRegister response) {
+        if (response.getResult().getSuccess().equalsIgnoreCase("OK")) {
+            isSuccess = true;
+            showAlertDialog(isSuccess);
+        }else{
+            isSuccess = false;
+            showAlertDialog(isSuccess);
+        }
+
+        dismissDialog();
+    }
+
+    private void showAlertDialog(boolean isSuccess) {
+        String tag = "RegisterError";
+        AwesomeDialogFragment.Builder builder = new AwesomeDialogFragment.Builder();
+        if (isSuccess){
+            builder.setTitle(R.string.dialog_title_pin_th)
+                    .setMessage(R.string.dialog_message_pin_th)
+                    .setPositive(R.string.dialog_pin_button_positive_th)
+                    .setNegative(R.string.dialog_button_negative_th)
+                    .setPIN(isSuccess);
+        }else{
+            builder.setTitle(R.string.dialog_title_th)
+                    .setMessage(R.string.dialog_message_fail_th)
+                    .setPositive(R.string.dialog_button_positive_th)
+                    .setNegative(R.string.dialog_button_negative_th)
+                    .setPIN(isSuccess);
+        }
+
+        AwesomeDialogFragment fragment = builder.build();
+        fragment.show(getSupportFragmentManager(), tag);
+    }
+
+    @Subscribe
+    public void onEventResponseRegisterSecure(BaseResponse registerResponse){
         try{
             String str = new Gson().toJson(registerResponse);
             Log.d("registerResponse", str);
@@ -189,47 +240,19 @@ public class RegisterActivity extends BaseActivity implements TextWatcher, EditT
         }
     }
 
+    @Subscribe
+    public void onEventVerifyUser(VerifyResponse response) {
+        if (response.getResult().getSuccess().equalsIgnoreCase("OK")){
+            finish();
+        }
+
+        dismissDialog();
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         EventBusCart.getInstance().getEventBus().unregister(this);
-    }
-
-    @Override
-    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-    }
-
-    @Override
-    public void onTextChanged(CharSequence charSequence, int position, int i1, int i2) {
-        String txtResult =  "";
-        try {
-            if (position == 2){
-                txtResult = phoneNumber.getText().toString().trim() + "-";
-                phoneNumber.setText(txtResult);
-                phoneNumber.setSelection(4);
-            }
-            else if (position == 6){
-                txtResult = phoneNumber.getText().toString().trim() + "-";
-                phoneNumber.setText(txtResult);
-                phoneNumber.setSelection(8);
-            }
-            else if (position == 7){
-                if (!txtResult.equalsIgnoreCase("-")){
-                    txtResult = "-" + txtResult;
-                    phoneNumber.setText(txtResult);
-                    phoneNumber.setSelection(9);
-                }
-            }
-        }catch (Exception e){
-            phoneNumber.setText("");
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void afterTextChanged(Editable editable) {
-
     }
 
     @Override
@@ -239,5 +262,31 @@ public class RegisterActivity extends BaseActivity implements TextWatcher, EditT
         }
 
         return false;
+    }
+
+    @Override
+    public void onPositiveButtonClick(String pinCode) {
+        if (isSuccess) {
+            if (pinCode != null){
+                Toast.makeText(getApplicationContext(), pinCode, Toast.LENGTH_SHORT).show();
+
+                VerifyRequest request = new VerifyRequest();
+                VerifyRequest.VerifyUser verifyUser = new VerifyRequest.VerifyUser();
+                verifyUser.setPinCode(pinCode);
+                verifyUser.setUsername(strIdCard);
+                request.setUser(verifyUser);
+
+                showLoadingDialog();
+                ClientHttp.getInstance(this).verifyUser(request);
+            }
+        }else{
+            finish();
+            startActivity(getIntent());
+        }
+    }
+
+    @Override
+    public void onNegativeButtonClick() {
+        finish();
     }
 }

@@ -19,14 +19,14 @@ public class RegisterRequest {
     }
 
     public static class User{
-        @SerializedName("citizen_id")
+        @SerializedName("username")
         private String citizenId;
-        @SerializedName("phone")
+        @SerializedName("phone_no")
         private String phone;
         private String password;
         @SerializedName("re_password")
         private String rePassword;
-        @SerializedName("username")
+        @SerializedName("email")
         private String email;
 
         public String getCitizenId() {

@@ -4,7 +4,7 @@
     android:id="@+id/header_drawer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg_material_profile"
+    android:background="@android:color/transparent"
     android:padding="@dimen/padding_large">
 
     <RelativeLayout
@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:scaleType="centerCrop"
             app:sriv_border_color="@android:color/white"
-            app:sriv_border_width="1dp"
+            app:sriv_border_width="2dp"
             app:sriv_oval="true"
             android:layout_alignParentStart="true" />
 
@@ -29,11 +29,10 @@
             android:layout_below="@+id/img_profile"
             android:gravity="center_vertical">
 
-            <TextView
+            <com.company.zicure.registerkey.customView.LabelView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/profile_name"
-                android:text="Preeda Likitbavon"
                 android:textSize="@dimen/size_text_small"
                 android:textColor="@android:color/white"
                 android:textStyle="bold" />

@@ -122,12 +122,12 @@ public class ProfileActivity extends BaseActivity implements TabLayout.OnTabSele
         try{
             imgEditProfile.setImageResource(R.drawable.ic_google_images);
             Glide.with(this)
-                    .load(ModelCart.getInstance().getUserInfo().getResult().getData().getUser().getImgPath())
+                    .load(ModelCart.getInstance().getUserBloc().getResult().getData().getUserInfo().getImgPath())
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .centerCrop()
                     .into(imgProfile);
 
-            String screenName = ModelCart.getInstance().getUserInfo().getResult().getData().getUser().getScreenName();
+            String screenName = ModelCart.getInstance().getUserBloc().getResult().getData().getUserInfo().getFirstNameTH();
             accountProfile.setText(screenName);
 
         }catch (NullPointerException e){

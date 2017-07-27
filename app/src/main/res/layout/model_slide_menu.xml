@@ -14,14 +14,16 @@
             android:adjustViewBounds="true"
             android:tint="@android:color/darker_gray"
             android:src="@drawable/ic_action_home"
+            android:cropToPadding="true"
             android:layout_centerVertical="true"/>
 
-        <TextView
+        <com.company.zicure.registerkey.customView.LabelView
             android:id="@+id/sub_title"
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:gravity="center_vertical"
             android:text="Home"
+            android:textColor="@android:color/white"
             android:layout_marginStart="56dp"
             android:textSize="@dimen/size_text_small"
             android:layout_centerVertical="true"/>

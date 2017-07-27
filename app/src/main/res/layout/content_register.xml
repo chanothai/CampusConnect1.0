@@ -45,7 +45,7 @@
                 android:maxLines="1"
                 android:padding="@dimen/padding_large"
                 android:imeOptions="actionNext"
-                android:maxLength="12"
+                android:maxLength="10"
                 android:hint="@string/phone_number_th" />
 
         </android.support.design.widget.TextInputLayout>
@@ -91,7 +91,7 @@
 
             <com.company.zicure.registerkey.customView.EditTextView
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="match_parent"
                 android:id="@+id/edit_confirm_password"
                 android:inputType="textPassword"
                 android:maxLines="1"

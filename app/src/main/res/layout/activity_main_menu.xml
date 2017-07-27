@@ -4,13 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/background_dark"
-    tools:context="com.company.zicure.registerkey.MainMenuActivity">
-
+    android:background="@android:color/black"
+    tools:context="com.company.zicure.registerkey.activity.MainMenuActivity">
 
     <include
         layout="@layout/content_drawer_navigation"/>
-
 
     <RelativeLayout
         android:id="@+id/liner_content"
@@ -27,8 +25,6 @@
             layout="@layout/layout_main_menu"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignStart="@id/shadow" />
+            android:layout_alignStart="@id/shadow"/>
     </RelativeLayout>
-
-
 </com.company.zicure.registerkey.view.viewgroup.FlyOutContainer>

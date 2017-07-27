@@ -64,7 +64,6 @@
     <string name="logout_menu_th">ออกจากระบบ</string>
     <string name="user_detail_th">ข้อมูลส่วนตัว</string>
     <string name="activate_user_th">เปิดใช้งานแอพพลิเคชั่น</string>
-    <string name="id_card_th">บัตรประจำตัว</string>
     <string name="title_id_card_th">เลขบัตรประจำตัวประชาชน</string>
     <string name="email_th">อีเมล์</string>
 
@@ -82,6 +81,14 @@
     <string name="birth_date_th">ปี-เดือน-วัน</string>
     <string name="phone_number_th">หมายเลขโทรศัพท์</string>
     <string name="text_btn_confirm_th">ยืนยัน</string>
+
+    <string name="dialog_title_th">ต้องการลงทะเบียนใหม่อีกครั้ง?</string>
+    <string name="dialog_title_pin_th">ต้องการยืนยันตัวตน?</string>
+    <string name="dialog_message_fail_th">คุณกรอกข้อมูลไม่ถูกต้อง จึงต้องลงทะเบียนใหม่อีกครั้ง</string>
+    <string name="dialog_message_pin_th">การยืนยันตัวตน ต้องใส่ PIN CODE เพื่อยืนยันตัวตนของคุณ </string>
+    <string name="dialog_button_positive_th">ลงทะเบียน</string>
+    <string name="dialog_button_negative_th">ยกเลิก</string>
+    <string name="dialog_pin_button_positive_th">ยืนยันตัวตน</string>
 
     //Register English
     <string name="identity_card">Identification Card</string>

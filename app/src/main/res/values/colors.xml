@@ -34,4 +34,7 @@
     <color name="color_btn_login_press">#39414b</color>
 
     <color name="background_tab_bottom">#EFEFF4</color>
+
+    <color name="bg_color_drawer">#39414b</color>
+    <color name="bg_color_drawer2">#727c89</color>
 </resources>

@@ -1,12 +1,9 @@
 package com.company.zicure.registerkey.fragment;
 
-import android.content.Context;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.TextViewCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +20,7 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
-import gallery.zicure.company.com.modellibrary.models.ResponseUserInfo;
+import gallery.zicure.company.com.modellibrary.models.bloc.ResponseBlocUser;
 import gallery.zicure.company.com.modellibrary.utilize.ModelCart;
 import gallery.zicure.company.com.modellibrary.utilize.ResizeScreen;
 
@@ -112,15 +109,15 @@ public class IDCardFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    private ResponseUserInfo.ResultUserInfo.DataUserInfo.User getInformation(){
-        return ModelCart.getInstance().getUserInfo().getResult().getData().getUser();
+    private ResponseBlocUser.ResultBlocUser.DataBloc.UserInfo getInformation(){
+        return ModelCart.getInstance().getUserBloc().getResult().getData().getUserInfo();
     }
 
     private void setInformation(){
         changedImage();
 
-        txtFullName.setText(getInformation().getFirstName() + " " + getInformation().getLastName());
-        txtIDCard.setText(getInformation().getCitizenID());
+        txtFullName.setText(getInformation().getFirstNameTH() + " " + getInformation().getLastNameTH());
+        txtIDCard.setText("");
         txtMajor.setText("คณะ : วิทยาศาสตร์");
         txtStudy.setText("สาขา : วิทยาการคอมพิวเตอร์");
 
@@ -131,7 +128,7 @@ public class IDCardFragment extends Fragment implements View.OnClickListener{
             multiFormatWriter = new MultiFormatWriter();
 
             try{
-                bitMatrix = multiFormatWriter.encode(getInformation().getCitizenID(), BarcodeFormat.QR_CODE, width, height);
+                bitMatrix = multiFormatWriter.encode("1719900291478", BarcodeFormat.QR_CODE, width, height);
                 barcodeEncoder = new BarcodeEncoder();
                 Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
 

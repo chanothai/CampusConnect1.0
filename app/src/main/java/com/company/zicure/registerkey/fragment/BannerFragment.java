@@ -17,9 +17,8 @@ import com.company.zicure.registerkey.R;
 
 import java.util.List;
 
-import gallery.zicure.company.com.modellibrary.models.CategoryModel;
+import gallery.zicure.company.com.modellibrary.models.bloc.ResponseBlocUser;
 import gallery.zicure.company.com.modellibrary.utilize.ModelCart;
-import gallery.zicure.company.com.modellibrary.utilize.ResizeScreen;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -88,13 +87,13 @@ public class BannerFragment extends Fragment {
         }
     }
 
-    private List<CategoryModel.Result.Data> getCategoryData(){
-        return ModelCart.getInstance().getCategoryModel().getResult().getData();
+    private List<ResponseBlocUser.ResultBlocUser.DataBloc.UserAccessControl> getCategoryData(){
+        return ModelCart.getInstance().getUserBloc().getResult().getData().getBloc();
     }
 
     private void setImageBanner(){
         Glide.with(getActivity())
-                .load(getCategoryData().get(pager).getBlogCategories().getBlocCategoryImagePath())
+                .load(getCategoryData().get(pager).getCategory().getImagePath())
                 .fitCenter()
                 .override(768, 432)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)

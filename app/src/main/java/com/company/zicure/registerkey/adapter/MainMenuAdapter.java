@@ -11,7 +11,7 @@ import com.company.zicure.registerkey.R;
 
 import java.util.List;
 
-import gallery.zicure.company.com.modellibrary.models.CategoryModel;
+import gallery.zicure.company.com.modellibrary.models.bloc.ResponseBlocUser;
 
 /**
  * Created by 4GRYZ52 on 10/18/2016.
@@ -20,10 +20,10 @@ abstract public class MainMenuAdapter extends RecyclerView.Adapter<MainMenuHolde
 
     //Properties
     private Context context = null;
-    private List<CategoryModel.Result.Data.Bloc> arrData = null;
+    private List<ResponseBlocUser.ResultBlocUser.DataBloc.UserAccessControl.BlocUser> arrData = null;
 
     //Constructor
-    public MainMenuAdapter(Context context, List<CategoryModel.Result.Data.Bloc> arrData){
+    public MainMenuAdapter(Context context, List<ResponseBlocUser.ResultBlocUser.DataBloc.UserAccessControl.BlocUser> arrData){
         this.context = context;
         this.arrData = arrData;
     }
@@ -44,7 +44,7 @@ abstract public class MainMenuAdapter extends RecyclerView.Adapter<MainMenuHolde
         return context;
     }
 
-    public List<CategoryModel.Result.Data.Bloc> getData(){
+    public List<ResponseBlocUser.ResultBlocUser.DataBloc.UserAccessControl.BlocUser> getData(){
         return arrData;
     }
 

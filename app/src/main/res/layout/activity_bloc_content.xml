@@ -6,8 +6,8 @@
     android:layout_height="match_parent">
 
     <android.support.design.widget.CoordinatorLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -26,12 +26,11 @@
                 android:background="@android:color/white"
                 app:theme="@style/ToolbarColoredBackArrow">
 
-                <TextView
+                <com.company.zicure.registerkey.customView.LabelView
                     android:id="@+id/text_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:fontFamily="sans-serif-condensed"
                     android:textColor="@color/color_toggle"
                     android:textSize="20sp" />
 
@@ -43,7 +42,8 @@
         <FrameLayout
             android:id="@+id/container_bloc"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
     </android.support.design.widget.CoordinatorLayout>
 
