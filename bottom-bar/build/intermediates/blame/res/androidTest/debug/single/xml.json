@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "/Users/Pakgon/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/androidTest/debug/xml/dummy_tabs_five.xml",
+        "source": "/Users/Pakgon/StudioProjects/registerkey/bottom-bar/src/androidTest/res/xml/dummy_tabs_five.xml"
+    },
+    {
+        "merged": "/Users/Pakgon/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/androidTest/debug/xml/dummy_tabs_three.xml",
+        "source": "/Users/Pakgon/StudioProjects/registerkey/bottom-bar/src/androidTest/res/xml/dummy_tabs_three.xml"
+    }
+]
