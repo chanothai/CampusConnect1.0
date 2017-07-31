@@ -4,25 +4,30 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.company.zicure.registerkey.R;
+import com.company.zicure.registerkey.adapter.IDCardAdapter;
+import com.company.zicure.registerkey.customView.LabelView;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
-import gallery.zicure.company.com.modellibrary.models.bloc.ResponseBlocUser;
+import gallery.zicure.company.com.modellibrary.models.profile.ResponseIDCard;
 import gallery.zicure.company.com.modellibrary.utilize.ModelCart;
 import gallery.zicure.company.com.modellibrary.utilize.ResizeScreen;
+import gallery.zicure.company.com.modellibrary.models.profile.ResponseIDCard.ResultProfile.ProfileData;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -46,11 +51,12 @@ public class IDCardFragment extends Fragment implements View.OnClickListener{
     private BitMatrix bitMatrix = null;
     private BarcodeEncoder barcodeEncoder = null;
     private int width = 0, statusIMG = 0;
+    private ProfileData information = null;
 
     //MAKE : View
     private ImageView imgProfileCard = null, imgSwitch = null;
-    private TextView txtIDCard = null, txtMajor = null, txtStudy = null, txtFullName = null;
-
+    private LabelView screenNameTH = null, screenNameEN = null;
+    private RecyclerView listInformation = null;
 
     public IDCardFragment() {
         // Required empty public constructor
@@ -90,10 +96,9 @@ public class IDCardFragment extends Fragment implements View.OnClickListener{
         View root = inflater.inflate(R.layout.fragment_idcard, container, false);
         imgProfileCard = (ImageView) root.findViewById(R.id.img_id_card);
         imgSwitch = (ImageView) root.findViewById(R.id.icon_change_img);
-        txtIDCard = (TextView) root.findViewById(R.id.number_id_card);
-        txtMajor = (TextView) root.findViewById(R.id.major_label);
-        txtStudy = (TextView) root.findViewById(R.id.study_label);
-        txtFullName = (TextView) root.findViewById(R.id.name_id_card);
+        screenNameTH = (LabelView) root.findViewById(R.id.name_id_card);
+        screenNameEN = (LabelView) root.findViewById(R.id.name_en_id_card);
+        listInformation = (RecyclerView) root.findViewById(R.id.list_information);
 
         imgSwitch.setOnClickListener(this);
 
@@ -106,21 +111,22 @@ public class IDCardFragment extends Fragment implements View.OnClickListener{
         if (savedInstanceState == null){
             resizeScaleImage();
             setInformation();
+
+            listInformation.setLayoutManager(new LinearLayoutManager(getActivity()));
+            listInformation.setAdapter(new IDCardAdapter(information));
+            listInformation.setItemAnimator(new DefaultItemAnimator());
         }
     }
 
-    private ResponseBlocUser.ResultBlocUser.DataBloc.UserInfo getInformation(){
-        return ModelCart.getInstance().getUserBloc().getResult().getData().getUserInfo();
+    private ResponseIDCard.ResultProfile.ProfileData getInformation(){
+        return ModelCart.getInstance().getProfile();
     }
 
     private void setInformation(){
+        information = getInformation();
         changedImage();
-
-        txtFullName.setText(getInformation().getFirstNameTH() + " " + getInformation().getLastNameTH());
-        txtIDCard.setText("");
-        txtMajor.setText("คณะ : วิทยาศาสตร์");
-        txtStudy.setText("สาขา : วิทยาการคอมพิวเตอร์");
-
+        screenNameTH.setText(information.getFirstNameTH() + " " + information.getLastNameTH());
+        screenNameEN.setText(information.getFirstNameEN()+ " " + information.getLastNameEN());
     }
 
     private Bitmap generateQRCode(int width, int height){

@@ -9,7 +9,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/name_id_card">
+        android:layout_above="@+id/name_en_id_card"
+        android:layout_marginBottom="@dimen/padding_eight">
 
         <com.joooonho.SelectableRoundedImageView
             android:id="@+id/img_id_card"
@@ -27,8 +28,8 @@
             android:layout_height="48dp"
             android:layout_alignBottom="@+id/img_id_card"
             android:layout_alignEnd="@+id/img_id_card"
-            android:layout_marginBottom="8dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginBottom="@dimen/padding_sixteen"
+            android:layout_marginRight="@dimen/padding_sixteen"
             android:adjustViewBounds="true"
             android:cropToPadding="true"
             android:scaleType="centerCrop"
@@ -38,17 +39,27 @@
             app:sriv_oval="true" />
     </RelativeLayout>
 
-    <TextView
+    <com.company.zicure.registerkey.customView.LabelView
+        android:id="@+id/name_en_id_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Name_EN"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/size_text_medium"
+        android:padding="@dimen/padding_four"
+        android:textAlignment="center"
+        android:layout_above="@+id/name_id_card"/>
+
+    <com.company.zicure.registerkey.customView.LabelView
         android:id="@+id/name_id_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:fontFamily="sans-serif-condensed"
-        android:padding="4dp"
+        android:padding="@dimen/padding_four"
         android:text="Name"
         android:textAlignment="center"
         android:textColor="@android:color/black"
-        android:textSize="@dimen/size_text_large" />
+        android:textSize="@dimen/size_text_medium" />
 
 
 </RelativeLayout>

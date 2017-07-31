@@ -7,6 +7,7 @@ import gallery.zicure.company.com.modellibrary.models.DataModel;
 import gallery.zicure.company.com.modellibrary.models.bloc.ResponseBlocUser;
 import gallery.zicure.company.com.modellibrary.models.login.LoginRequest;
 import gallery.zicure.company.com.modellibrary.models.login.LoginResponse;
+import gallery.zicure.company.com.modellibrary.models.profile.ResponseIDCard;
 import gallery.zicure.company.com.modellibrary.models.register.RegisterRequest;
 import gallery.zicure.company.com.modellibrary.models.register.ResponseRegister;
 import gallery.zicure.company.com.modellibrary.models.register.VerifyRequest;
@@ -47,4 +48,7 @@ public interface LogApi {
 
     @GET("Api/userAccessControl.json")
     Call<ResponseBlocUser> requestUserBloc(@QueryMap Map<String, String> category);
+
+    @GET("Api/profileData.json")
+    Call<ResponseIDCard> requestProfile(@QueryMap Map<String, String> token);
 }

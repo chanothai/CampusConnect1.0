@@ -14,17 +14,13 @@ import android.widget.TextView;
 
 import com.company.zicure.registerkey.R;
 import com.company.zicure.registerkey.fragment.AppMenuFragment;
-import com.company.zicure.registerkey.fragment.IDCardFragment;
 
-import gallery.zicure.company.com.gallery.util.PermissionKeyNumber;
 import gallery.zicure.company.com.modellibrary.common.BaseActivity;
-import gallery.zicure.company.com.modellibrary.utilize.NextzyUtil;
 import gallery.zicure.company.com.modellibrary.utilize.ToolbarManager;
 import gallery.zicure.company.com.modellibrary.utilize.VariableConnect;
 
 public class BlocContentActivity extends BaseActivity {
     private FrameLayout frameLayout = null;
-    private AppBarLayout appBarLayout = null;
     private Toolbar toolbar = null;
     private TextView textTitle = null;
 
@@ -47,7 +43,6 @@ public class BlocContentActivity extends BaseActivity {
 
     private void bindView(){
         frameLayout = (FrameLayout) findViewById(R.id.container_bloc);
-        appBarLayout = (AppBarLayout) findViewById(R.id.appbar_layout);
         toolbar = (Toolbar) findViewById(R.id.toolbar_bloc);
         textTitle = (TextView) toolbar.findViewById(R.id.text_title);
     }
@@ -65,15 +60,7 @@ public class BlocContentActivity extends BaseActivity {
     private void checkIniFragment(){
         if (!urlBloc.isEmpty()){
             iniFragmentBloc();
-        }else{
-            iniFragmentIDCard();
         }
-    }
-
-    private void iniFragmentIDCard(){
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container_bloc, new IDCardFragment());
-        transaction.commit();
     }
 
     private void iniFragmentBloc(){
@@ -96,17 +83,17 @@ public class BlocContentActivity extends BaseActivity {
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (PermissionKeyNumber.getInstance().getPermissionCameraKey() == requestCode){
-            if (grantResults[0] != -1){
-                FragmentManager fm = getSupportFragmentManager();
-                AppMenuFragment fragment = (AppMenuFragment) fm.findFragmentByTag(VariableConnect.appMenuFragmentKey);
-                fragment.setWebView();
-            }
-        }
-    }
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+//        if (PermissionKeyNumber.getInstance().getPermissionCameraKey() == requestCode){
+//            if (grantResults[0] != -1){
+//                FragmentManager fm = getSupportFragmentManager();
+//                AppMenuFragment fragment = (AppMenuFragment) fm.findFragmentByTag(VariableConnect.appMenuFragmentKey);
+//                fragment.setWebView();
+//            }
+//        }
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

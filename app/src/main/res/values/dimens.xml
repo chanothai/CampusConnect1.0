@@ -52,4 +52,7 @@
 
     //new size image circle profile
     <dimen name="size_image_circle">100dp</dimen>
+
+    //height bloc
+    <dimen name="height_bloc">150dp</dimen>
 </resources>

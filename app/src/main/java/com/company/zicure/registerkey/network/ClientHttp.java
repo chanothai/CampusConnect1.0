@@ -14,6 +14,7 @@ import gallery.zicure.company.com.modellibrary.models.DataModel;
 import gallery.zicure.company.com.modellibrary.models.bloc.ResponseBlocUser;
 import gallery.zicure.company.com.modellibrary.models.login.LoginRequest;
 import gallery.zicure.company.com.modellibrary.models.login.LoginResponse;
+import gallery.zicure.company.com.modellibrary.models.profile.ResponseIDCard;
 import gallery.zicure.company.com.modellibrary.models.register.RegisterRequest;
 import gallery.zicure.company.com.modellibrary.models.register.ResponseRegister;
 import gallery.zicure.company.com.modellibrary.models.register.VerifyRequest;
@@ -229,12 +230,13 @@ public class ClientHttp {
         });
     }
 
-
-    public void approveDevice(DataModel dataModel){
-        Call<BaseResponse> approve = service.approveDevice(dataModel);
-        approve.enqueue(new Callback<BaseResponse>() {
+    public void requestProfile(String token) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("authToken", token);
+        Call<ResponseIDCard> profile = service.requestProfile(map);
+        profile.enqueue(new Callback<ResponseIDCard>() {
             @Override
-            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+            public void onResponse(Call<ResponseIDCard> call, Response<ResponseIDCard> response) {
                 try{
                     EventBusCart.getInstance().getEventBus().post(response.body());
                 }catch (NullPointerException e){
@@ -243,8 +245,8 @@ public class ClientHttp {
             }
 
             @Override
-            public void onFailure(Call<BaseResponse> call, Throwable t) {
-                t.printStackTrace();
+            public void onFailure(Call<ResponseIDCard> call, Throwable t) {
+
             }
         });
     }

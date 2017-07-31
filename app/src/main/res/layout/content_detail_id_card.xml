@@ -1,67 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.v7.widget.RecyclerView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+    android:id="@+id/list_information"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="4dp"
+    android:padding="@dimen/padding_large2"
     android:layout_weight="1.5">
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/number_id_card"
-                style="@style/TextPadding"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-condensed"
-                android:textAlignment="center"
-                android:textColor="@color/bb_tabletRightBorderDark"
-                android:textSize="@dimen/size_text_medium" />
-
-            <TextView
-                android:id="@+id/title_id_number_label"
-                style="@style/TextPadding"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-condensed"
-                android:text="@string/title_id_card_th"
-                android:textAlignment="center"
-                android:textColor="@color/bb_tabletRightBorderDark"
-                android:textSize="@dimen/size_text_small" />
-
-            <TextView
-                android:id="@+id/major_label"
-                style="@style/TextPadding"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-condensed"
-                android:text="major"
-                android:textColor="@color/bb_tabletRightBorderDark"
-                android:textSize="@dimen/size_text_small" />
-
-            <TextView
-                android:id="@+id/study_label"
-                style="@style/TextPadding"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-condensed"
-                android:text="study"
-                android:textColor="@color/bb_tabletRightBorderDark"
-                android:textSize="@dimen/size_text_small" />
-
-        </LinearLayout>
-    </LinearLayout>
-
-</LinearLayout>
+</android.support.v7.widget.RecyclerView>

@@ -54,10 +54,9 @@ import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+
 import gallery.zicure.company.com.gallery.util.PermissionKeyNumber;
 import gallery.zicure.company.com.modellibrary.common.BaseActivity;
-import gallery.zicure.company.com.modellibrary.models.AuthToken;
-import gallery.zicure.company.com.modellibrary.models.BaseResponse;
 import gallery.zicure.company.com.modellibrary.models.DataModel;
 import gallery.zicure.company.com.modellibrary.models.bloc.ResponseBlocUser;
 import gallery.zicure.company.com.modellibrary.models.drawer.SlideMenuDetail;

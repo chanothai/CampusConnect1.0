@@ -3,9 +3,8 @@ package gallery.zicure.company.com.modellibrary.utilize;
 import gallery.zicure.company.com.modellibrary.models.AuthToken;
 import gallery.zicure.company.com.modellibrary.models.DateModel;
 import gallery.zicure.company.com.modellibrary.models.KeyModel;
-import gallery.zicure.company.com.modellibrary.models.LocationModel;
-import gallery.zicure.company.com.modellibrary.models.ResponseUserCode;
 import gallery.zicure.company.com.modellibrary.models.bloc.ResponseBlocUser;
+import gallery.zicure.company.com.modellibrary.models.profile.ResponseIDCard;
 
 /**
  * Created by 4GRYZ52 on 10/25/2016.
@@ -17,16 +16,15 @@ public class ModelCart {
     private KeyModel keyModel = null;
     private AuthToken authToken = null;
     private ResponseBlocUser userInfo = null;
-    private ResponseUserCode deviceToken = null;
+    private ResponseIDCard.ResultProfile.ProfileData responseIDCard = null;
 
     private ModelCart() {
         listModel = new ListModel();
-        listModel.locationModel = new LocationModel();
         listModel.dateModel = new DateModel();
         keyModel = new KeyModel();
         authToken = new AuthToken();
         userInfo = new ResponseBlocUser();
-        deviceToken = new ResponseUserCode();
+        responseIDCard = new ResponseIDCard.ResultProfile.ProfileData();
     }
 
     public static ModelCart getInstance(){
@@ -53,8 +51,11 @@ public class ModelCart {
         return userInfo;
     }
 
-    public ResponseUserCode getDeviceToken(){
-        return deviceToken;
+    public ResponseIDCard.ResultProfile.ProfileData getProfile(){
+        return responseIDCard;
     }
 
+    public void setProfile(ResponseIDCard.ResultProfile.ProfileData profile) {
+        responseIDCard = profile;
+    }
 }

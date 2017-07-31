@@ -112,6 +112,6 @@
             android:layout_marginTop="@dimen/padding_large"
             android:text="@string/text_btn_confirm_th"
             android:textColor="@android:color/white"
-            android:background="@drawable/selector_btn_edit_user" />
+            android:background="@drawable/selector_btn_register" />
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

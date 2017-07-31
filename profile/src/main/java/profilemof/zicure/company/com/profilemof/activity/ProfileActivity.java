@@ -1,14 +1,10 @@
 package profilemof.zicure.company.com.profilemof.activity;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -21,14 +17,11 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.joooonho.SelectableRoundedImageView;
-import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.squareup.otto.Subscribe;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import gallery.zicure.company.com.gallery.dialog.DialogSelectGallery;
 import gallery.zicure.company.com.gallery.util.PermissionKeyNumber;
 import gallery.zicure.company.com.modellibrary.common.BaseActivity;
 import gallery.zicure.company.com.modellibrary.models.BaseResponse;
@@ -39,7 +32,6 @@ import gallery.zicure.company.com.modellibrary.utilize.ToolbarManager;
 import gallery.zicure.company.com.modellibrary.utilize.VariableConnect;
 import profilemof.zicure.company.com.profilemof.R;
 import profilemof.zicure.company.com.profilemof.adapter.ViewPagerAdapter;
-import profilemof.zicure.company.com.profilemof.fragment.ActivateFragment;
 import profilemof.zicure.company.com.profilemof.fragment.UserDetailFragment;
 import profilemof.zicure.company.com.profilemof.security.EncryptionAES;
 

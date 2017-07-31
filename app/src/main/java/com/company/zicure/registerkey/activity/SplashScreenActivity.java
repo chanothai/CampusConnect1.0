@@ -15,6 +15,7 @@ import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+
 import gallery.zicure.company.com.gallery.util.PermissionKeyNumber;
 import gallery.zicure.company.com.gallery.util.PermissionRequest;
 import gallery.zicure.company.com.modellibrary.common.BaseActivity;

@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.company.zicure.registerkey.R;
 import com.company.zicure.registerkey.activity.BlocContentActivity;
+import com.company.zicure.registerkey.activity.IDCardActivity;
 import com.company.zicure.registerkey.activity.LoginActivity;
 import com.company.zicure.registerkey.adapter.MainMenuAdapter;
 import com.company.zicure.registerkey.adapter.SlideMenuAdapter;
@@ -27,7 +28,6 @@ import gallery.zicure.company.com.modellibrary.models.bloc.ResponseBlocUser;
 import gallery.zicure.company.com.modellibrary.models.drawer.SlideMenuDetail;
 import gallery.zicure.company.com.modellibrary.utilize.ModelCart;
 import gallery.zicure.company.com.modellibrary.utilize.VariableConnect;
-import profilemof.zicure.company.com.profilemof.activity.ProfileActivity;
 
 /**
  * Created by 4GRYZ52 on 4/1/2017.
@@ -51,13 +51,7 @@ public class ContentAdapterCart {
                 holder.setItemOnClickListener(new ItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        if (getTitle(position).equalsIgnoreCase(baseActivity.getString(R.string.user_detail_th))){
-                            Bundle bundle = new Bundle();
-                            bundle.putInt(VariableConnect.pageKey, 0);
-                            baseActivity.openActivity(ProfileActivity.class, bundle);
-                            baseActivity.overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_scale_out);
-                        }
-                        else if (getTitle(position).equalsIgnoreCase(baseActivity.getString(R.string.menu_feed_th))){
+                        if (getTitle(position).equalsIgnoreCase(baseActivity.getString(R.string.menu_feed_th))){
                             baseActivity.showLoadingDialog();
                             ClientHttp.getInstance(baseActivity).requestUserBloc(ModelCart.getInstance().getKeyModel().getToken());
                         }
@@ -68,12 +62,6 @@ public class ContentAdapterCart {
                             editor.apply();
 
                             baseActivity.openActivity(LoginActivity.class, true);
-                        }else if (getTitle(position).equalsIgnoreCase(baseActivity.getString(R.string.id_card_th))){
-                            Bundle bundle = new Bundle();
-                            bundle.putString(VariableConnect.TITLE_CATEGORY, baseActivity.getString(R.string.id_card_th));
-                            bundle.putString(VariableConnect.PATH_BLOC, "");
-                            baseActivity.openActivity(BlocContentActivity.class, bundle, false);
-                            baseActivity.overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_scale_out);
                         }
                     }
                 });
@@ -102,12 +90,11 @@ public class ContentAdapterCart {
                         if (position == 1){
                             Bundle bundle = new Bundle();
                             bundle.putString(VariableConnect.TITLE_CATEGORY, atv.getString(R.string.id_card_th));
-                            bundle.putString(VariableConnect.PATH_BLOC, "");
-                            Intent intent = new Intent(atv, BlocContentActivity.class);
+                            Intent intent = new Intent(atv, IDCardActivity.class);
                             intent.putExtras(bundle);
 
                             atv.startActivity(intent);
-                            atv.overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_scale_out);
+                            atv.overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_scale_out);
                         }else{
                             Bundle bundle = new Bundle();
                             bundle.putString(VariableConnect.TITLE_CATEGORY, getData().get(position).getBlocNameTH());

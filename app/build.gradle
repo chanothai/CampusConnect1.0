@@ -32,8 +32,9 @@ dependencies {
     compile 'com.android.support:customtabs:' + rootProject.ext.supportLibraryVersion
     compile 'com.android.support:support-v4:' + rootProject.ext.supportLibraryVersion
 
-    compile project(path: ':profile')
+    compile project(path: ':gallery')
     compile project(path: ':modellibrary')
+
 
     compile 'com.roughike:bottom-bar:2.0.2'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
@@ -52,7 +53,7 @@ dependencies {
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.google.firebase:firebase-messaging:10.0.1'
     compile 'com.multidots:fingerprint-auth:1.0.1'
-
+    compile 'com.journeyapps:zxing-android-embedded:3.2.0@aar'
     testCompile 'junit:junit:4.12'
     apt 'org.parceler:parceler:1.1.6'
 }
