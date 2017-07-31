@@ -12,7 +12,6 @@
             <option value="$PROJECT_DIR$/bottom-bar" />
             <option value="$PROJECT_DIR$/gallery" />
             <option value="$PROJECT_DIR$/modellibrary" />
-            <option value="$PROJECT_DIR$/profile" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
