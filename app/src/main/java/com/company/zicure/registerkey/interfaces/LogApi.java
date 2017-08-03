@@ -5,9 +5,14 @@ import java.util.Map;
 import gallery.zicure.company.com.modellibrary.models.BaseResponse;
 import gallery.zicure.company.com.modellibrary.models.DataModel;
 import gallery.zicure.company.com.modellibrary.models.bloc.ResponseBlocUser;
+import gallery.zicure.company.com.modellibrary.models.contact.RequestAddContact;
+import gallery.zicure.company.com.modellibrary.models.contact.RequestAddContact.Contact;
+import gallery.zicure.company.com.modellibrary.models.contact.ResponseAddContact;
+import gallery.zicure.company.com.modellibrary.models.contact.ResponseContactList;
 import gallery.zicure.company.com.modellibrary.models.login.LoginRequest;
 import gallery.zicure.company.com.modellibrary.models.login.LoginResponse;
 import gallery.zicure.company.com.modellibrary.models.profile.ResponseIDCard;
+import gallery.zicure.company.com.modellibrary.models.quiz.ResponseQuiz;
 import gallery.zicure.company.com.modellibrary.models.register.RegisterRequest;
 import gallery.zicure.company.com.modellibrary.models.register.ResponseRegister;
 import gallery.zicure.company.com.modellibrary.models.register.VerifyRequest;
@@ -51,4 +56,13 @@ public interface LogApi {
 
     @GET("Api/profileData.json")
     Call<ResponseIDCard> requestProfile(@QueryMap Map<String, String> token);
+
+    @GET("Api/showContactList.json")
+    Call<ResponseContactList> requestContact(@QueryMap Map<String, String> token);
+
+    @GET("Api/checkTakeQuiz.json")
+    Call<ResponseQuiz> requestQuiz(@QueryMap Map<String, String> token);
+
+    @POST("Api/addContact.json")
+    Call<ResponseAddContact> requestAddContact(@Body RequestAddContact addContact);
 }

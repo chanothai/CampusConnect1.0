@@ -36,7 +36,7 @@ public class IDCardAdapter extends RecyclerView.Adapter<IDCardHolder> {
     public void onBindViewHolder(IDCardHolder holder, int position) {
         switch (position){
             case 0:
-                title = "เลขประจำตัว : " + information.getProfileID();
+                title = "เลขประจำตัว : " + information.getCardNo();
                 holder.information.setText(title);
                 break;
             case 1:

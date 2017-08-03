@@ -40,10 +40,12 @@ public class IDCardActivity extends BaseActivity {
         bindView();
         iniBundle();
 
-        token = ModelCart.getInstance().getKeyModel().getToken();
-        if (token != null){
-            showLoadingDialog();
-            ClientHttp.getInstance(this).requestProfile(token);
+        if (savedInstanceState == null){
+            token = ModelCart.getInstance().getKeyModel().getToken();
+            if (token != null){
+                showLoadingDialog();
+                ClientHttp.getInstance(this).requestProfile(token);
+            }
         }
     }
 
@@ -72,7 +74,7 @@ public class IDCardActivity extends BaseActivity {
     private void setToolbar(){
         if (Build.VERSION.SDK_INT >= 21) {
             ToolbarManager manager = new ToolbarManager(this);
-            manager.setToolbar(toolbar, textTitle, null, titleBloc);
+            manager.setToolbar(toolbar, textTitle, getDrawable(R.drawable.back_screen), titleBloc);
         }
     }
 

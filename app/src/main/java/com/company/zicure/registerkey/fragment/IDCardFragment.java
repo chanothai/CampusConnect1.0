@@ -134,7 +134,7 @@ public class IDCardFragment extends Fragment implements View.OnClickListener{
             multiFormatWriter = new MultiFormatWriter();
 
             try{
-                bitMatrix = multiFormatWriter.encode("1719900291478", BarcodeFormat.QR_CODE, width, height);
+                bitMatrix = multiFormatWriter.encode(information.getCardNo(), BarcodeFormat.QR_CODE, width, height);
                 barcodeEncoder = new BarcodeEncoder();
                 Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
 

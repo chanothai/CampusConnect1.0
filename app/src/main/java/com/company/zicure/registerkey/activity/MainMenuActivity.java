@@ -1,14 +1,12 @@
 package com.company.zicure.registerkey.activity;
 
-import android.content.ActivityNotFoundException;
-import android.content.Intent;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Build;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -35,22 +33,17 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.company.zicure.registerkey.R;
 import com.company.zicure.registerkey.adapter.SlideMenuAdapter;
 import com.company.zicure.registerkey.contents.ContentAdapterCart;
+import com.company.zicure.registerkey.customView.LabelView;
 import com.company.zicure.registerkey.fragment.AppMenuFragment;
 import com.company.zicure.registerkey.fragment.HomeFragment;
-import com.company.zicure.registerkey.fragment.ScanQRFragment;
 
 import com.company.zicure.registerkey.network.ClientHttp;
-import com.company.zicure.registerkey.security.EncryptionAES;
 import com.company.zicure.registerkey.view.viewgroup.FlyOutContainer;
 import com.google.gson.Gson;
 import com.joooonho.SelectableRoundedImageView;
 import com.squareup.otto.Subscribe;
 
-import org.json.JSONObject;
-
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -60,27 +53,27 @@ import gallery.zicure.company.com.modellibrary.common.BaseActivity;
 import gallery.zicure.company.com.modellibrary.models.DataModel;
 import gallery.zicure.company.com.modellibrary.models.bloc.ResponseBlocUser;
 import gallery.zicure.company.com.modellibrary.models.drawer.SlideMenuDetail;
+import gallery.zicure.company.com.modellibrary.models.quiz.ResponseQuiz;
 import gallery.zicure.company.com.modellibrary.utilize.EventBusCart;
 import gallery.zicure.company.com.modellibrary.utilize.ModelCart;
 import gallery.zicure.company.com.modellibrary.utilize.ResizeScreen;
 import gallery.zicure.company.com.modellibrary.utilize.ToolbarManager;
 import gallery.zicure.company.com.modellibrary.utilize.VariableConnect;
 
-public class MainMenuActivity extends BaseActivity implements  View.OnClickListener {
+public class MainMenuActivity extends BaseActivity {
 
+    /** Make: View **/
     //layout coordinator cover material layout
     @Bind(R.id.liner_content)
     RelativeLayout linearLayout;
     @Bind(R.id.layout_menu)
     RelativeLayout layoutMenu;
-    @Bind(R.id.rootLayout)
-    CoordinatorLayout coordinatorLayout;
 
     //toolbar
-    @Bind(R.id.appbar_layout)
-    AppBarLayout appBarLayout;
     @Bind(R.id.toolbar)
     Toolbar toolbarMenu;
+    @Bind(R.id.point)
+    LabelView point;
 
     //list view slide menu
     @Bind(R.id.list_slide_menu)
@@ -101,25 +94,16 @@ public class MainMenuActivity extends BaseActivity implements  View.OnClickListe
     @Bind(R.id.header_drawer)
     RelativeLayout headerDrawer;
 
+    /** Make: properties **/
     //view layout
     private FlyOutContainer root;
-
-    //fragment layout
-    private ScanQRFragment scanQRFragment = null;
-
-    private static final int PORT = 5055;
-    private static final String DEVICEID = "218989";
-
     private int widthScreenMenu;
-    private int haftScreen = 0;
+    int haftScreen = 0;
     private VelocityTracker velocityTracker = null; // get speed for touch
-
     private DataModel model = null;
-    private byte[] key = null;
+    byte[] key = null;
     private String currentToken = null;
-    private String currentUsername = null;
-    private String[] strArr = null;
-
+    String currentUsername = null;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,28 +111,25 @@ public class MainMenuActivity extends BaseActivity implements  View.OnClickListe
         setContentView(root);
         ButterKnife.bind(this);
         setToolbar();
-
         setOnTouchView();
-
-        if (savedInstanceState == null){
-            initParameter();
-        }
     }
 
     private void initParameter(){
         Bundle bundle = getIntent().getExtras();
-        strArr = bundle.getStringArray(getString(R.string.user_secret));
-        currentToken = strArr[0];
-        currentUsername = strArr[1];
-        key = Base64.decode(strArr[2], Base64.NO_WRAP);
+        String[] strArr = bundle.getStringArray(getString(R.string.user_secret));
+        if (strArr != null) {
+            currentToken = strArr[0];
+            currentUsername = strArr[1];
+            key = Base64.decode(strArr[2], Base64.NO_WRAP);
 
-        if (currentUsername != null && currentToken != null){
-            // set data for profile activity
-            ModelCart.getInstance().getKeyModel().setToken(currentToken);
-            ModelCart.getInstance().getKeyModel().setKey(key);
-            ModelCart.getInstance().getKeyModel().setUsername(currentUsername);
+            if (currentUsername != null && currentToken != null){
+                // set data for profile activity
+                ModelCart.getInstance().getKeyModel().setToken(currentToken);
+                ModelCart.getInstance().getKeyModel().setKey(key);
+                ModelCart.getInstance().getKeyModel().setUsername(currentUsername);
 
-            setModelUser();
+                setModelUser();
+            }
         }
     }
 
@@ -156,10 +137,7 @@ public class MainMenuActivity extends BaseActivity implements  View.OnClickListe
         if (Build.VERSION.SDK_INT >= 21){
             ToolbarManager manager = new ToolbarManager(this);
             manager.setToolbar(toolbarMenu,null, getDrawable(R.drawable.menu_toggle), null);
-
             setLayoutHeadDrawer();
-        }else{
-            appBarLayout.setVisibility(View.GONE);
         }
     }
 
@@ -208,6 +186,7 @@ public class MainMenuActivity extends BaseActivity implements  View.OnClickListe
     protected void onResume() {
         super.onResume();
         EventBusCart.getInstance().getEventBus().register(this);
+        initParameter();
     }
 
     @Override
@@ -231,10 +210,13 @@ public class MainMenuActivity extends BaseActivity implements  View.OnClickListe
         }
     }
 
+    /** onEvent **/
     @Subscribe
     public void onEventResponseUserBloc(ResponseBlocUser response){
         try{
             if (response.getResult().getSuccess().equalsIgnoreCase("OK")){
+                String resultPoint = Integer.toString(response.getResult().getData().getUserInfo().getPoint());
+                point.setText(resultPoint);
                 ModelCart.getInstance().getUserBloc().setResult(response.getResult());
                 callHomeFragment();
                 setSlideMenuAdapter();
@@ -242,13 +224,38 @@ public class MainMenuActivity extends BaseActivity implements  View.OnClickListe
                 if (FlyOutContainer.menuCurrentState == FlyOutContainer.MenuState.OPEN){
                     setToggle(0,0);
                 }
+
+                ClientHttp.getInstance(this).requestQuiz(currentToken);
+            }else{
+                dismissDialog();
+
+                SharedPreferences pref = getSharedPreferences(VariableConnect.keyFile, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = pref.edit();
+                editor.clear();
+                editor.apply();
+                openActivity(LoginActivity.class, true);
             }
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    @Subscribe
+    public void onEventResponseQuiz(ResponseQuiz response) {
+        if (response.getResult().getSuccess().equalsIgnoreCase("OK")){
+            if (response.getResult().getData().getPersonalQuiz().getUrl() != null){
+                Bundle bundle = new Bundle();
+                bundle.putString(VariableConnect.TITLE_CATEGORY, "แบบสอบถาม");
+                bundle.putString(VariableConnect.PATH_BLOC, response.getResult().getData().getPersonalQuiz().getUrl());
+                openActivity(BlocContentActivity.class, bundle);
+                overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
+            }
+        }
 
         dismissDialog();
     }
+
+    /************/
 
     private void setOnTouchView(){
         controlSlide.setOnTouchListener(new View.OnTouchListener() {
@@ -277,6 +284,7 @@ public class MainMenuActivity extends BaseActivity implements  View.OnClickListe
         }else{
             setToggle(margin, speedTouch);
         }
+
         layoutGhost.setEnabled(true);
     }
 
@@ -396,33 +404,34 @@ public class MainMenuActivity extends BaseActivity implements  View.OnClickListe
         return super.onOptionsItemSelected(item);
     }
 
-    private void intentToPayment(){
-        String authToken = null;
-        String strPackage = "com.company.zicure.payment";
-        try{
-            authToken = ModelCart.getInstance().getKeyModel().getAuthToken();
-            Intent intent = getPackageManager().getLaunchIntentForPackage(strPackage);
-            if (authToken != null){
-                intent.addCategory(Intent.CATEGORY_LAUNCHER);
-                intent.setType("text/plain");
-                intent.putExtra(Intent.EXTRA_TEXT, authToken);
-            }
-            startActivity(intent);
-            ModelCart.getInstance().getKeyModel().setAuthToken("");
-
-        }catch (NullPointerException e){
-            e.printStackTrace();
-            try{
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + strPackage)));
-            }catch (ActivityNotFoundException ef){
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + strPackage)));
-            }
-        }
-    }
+//    private void intentToPayment(){
+//        String authToken = null;
+//        String strPackage = "com.company.zicure.payment";
+//        try{
+//            authToken = ModelCart.getInstance().getKeyModel().getAuthToken();
+//            Intent intent = getPackageManager().getLaunchIntentForPackage(strPackage);
+//            if (authToken != null){
+//                intent.addCategory(Intent.CATEGORY_LAUNCHER);
+//                intent.setType("text/plain");
+//                intent.putExtra(Intent.EXTRA_TEXT, authToken);
+//            }
+//            startActivity(intent);
+//            ModelCart.getInstance().getKeyModel().setAuthToken("");
+//
+//        }catch (NullPointerException e){
+//            e.printStackTrace();
+//            try{
+//                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + strPackage)));
+//            }catch (ActivityNotFoundException ef){
+//                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + strPackage)));
+//            }
+//        }
+//    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
     }
 
     @Override
@@ -435,11 +444,6 @@ public class MainMenuActivity extends BaseActivity implements  View.OnClickListe
     @Override
     public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
         super.onSaveInstanceState(outState, outPersistentState);
-    }
-
-    @Override
-    public void onClick(View view) {
-
     }
 
     @Override

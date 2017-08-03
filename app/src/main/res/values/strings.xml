@@ -98,4 +98,8 @@
     //ID Card thai
     <string name="id_card_th">รหัสบัตร</string>
 
+    //Contact list
+    <string name="topic_contact_list">เพื่อน</string>
+    <string name="mark_version">Connect. @ 2017 version 1.0.1</string>
+
 </resources>

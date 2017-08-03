@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.company.zicure.registerkey.R;
 import com.company.zicure.registerkey.activity.BlocContentActivity;
+import com.company.zicure.registerkey.activity.ContactListActivity;
 import com.company.zicure.registerkey.activity.IDCardActivity;
 import com.company.zicure.registerkey.activity.LoginActivity;
 import com.company.zicure.registerkey.adapter.MainMenuAdapter;
@@ -95,7 +96,10 @@ public class ContentAdapterCart {
 
                             atv.startActivity(intent);
                             atv.overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_scale_out);
-                        }else{
+                        }else if (position == 2) {
+                            atv.startActivity(new Intent(atv, ContactListActivity.class));
+                            atv.overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_scale_out);
+                        } else{
                             Bundle bundle = new Bundle();
                             bundle.putString(VariableConnect.TITLE_CATEGORY, getData().get(position).getBlocNameTH());
                             bundle.putString(VariableConnect.PATH_BLOC, getData().get(position).getBlocURL());

@@ -12,9 +12,14 @@ import java.util.HashMap;
 import gallery.zicure.company.com.modellibrary.models.BaseResponse;
 import gallery.zicure.company.com.modellibrary.models.DataModel;
 import gallery.zicure.company.com.modellibrary.models.bloc.ResponseBlocUser;
+import gallery.zicure.company.com.modellibrary.models.contact.RequestAddContact;
+import gallery.zicure.company.com.modellibrary.models.contact.RequestAddContact.Contact;
+import gallery.zicure.company.com.modellibrary.models.contact.ResponseAddContact;
+import gallery.zicure.company.com.modellibrary.models.contact.ResponseContactList;
 import gallery.zicure.company.com.modellibrary.models.login.LoginRequest;
 import gallery.zicure.company.com.modellibrary.models.login.LoginResponse;
 import gallery.zicure.company.com.modellibrary.models.profile.ResponseIDCard;
+import gallery.zicure.company.com.modellibrary.models.quiz.ResponseQuiz;
 import gallery.zicure.company.com.modellibrary.models.register.RegisterRequest;
 import gallery.zicure.company.com.modellibrary.models.register.ResponseRegister;
 import gallery.zicure.company.com.modellibrary.models.register.VerifyRequest;
@@ -246,7 +251,68 @@ public class ClientHttp {
 
             @Override
             public void onFailure(Call<ResponseIDCard> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
 
+    public void requestContactList(String token) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("authToken", token);
+        Call<ResponseContactList> contactList = service.requestContact(map);
+        contactList.enqueue(new Callback<ResponseContactList>() {
+            @Override
+            public void onResponse(Call<ResponseContactList> call, Response<ResponseContactList> response) {
+                try{
+                    EventBusCart.getInstance().getEventBus().post(response.body());
+                }catch(NullPointerException e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseContactList> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    public void requestQuiz(String token) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("authToken", token);
+        Call<ResponseQuiz> quiz = service.requestQuiz(map);
+        quiz.enqueue(new Callback<ResponseQuiz>() {
+            @Override
+            public void onResponse(Call<ResponseQuiz> call, Response<ResponseQuiz> response) {
+                try{
+                    EventBusCart.getInstance().getEventBus().post(response.body());
+                }catch (NullPointerException e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseQuiz> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    public void requestAddContact(RequestAddContact contact) {
+        Call<ResponseAddContact> addContact = service.requestAddContact(contact);
+        addContact.enqueue(new Callback<ResponseAddContact>() {
+            @Override
+            public void onResponse(Call<ResponseAddContact> call, Response<ResponseAddContact> response) {
+                try{
+                    EventBusCart.getInstance().getEventBus().post(response.body());
+                }catch (NullPointerException e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseAddContact> call, Throwable t) {
+                t.printStackTrace();
             }
         });
     }

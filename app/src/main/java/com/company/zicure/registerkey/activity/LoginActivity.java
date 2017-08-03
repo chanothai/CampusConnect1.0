@@ -70,9 +70,9 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener, E
             sharedPref = getSharedPreferences(VariableConnect.keyFile, Context.MODE_PRIVATE);
             keyByte = Base64.decode(VariableConnect.staticKey.getBytes(), Base64.NO_WRAP);
 
-            FingerprintHandler handler = new FingerprintHandler(this);
-            mFingerPrintAuthHelper = handler.initFingerprint();
-            mFingerPrintAuthHelper.startAuth();
+//            FingerprintHandler handler = new FingerprintHandler(this);
+//            mFingerPrintAuthHelper = handler.initFingerprint();
+//            mFingerPrintAuthHelper.startAuth();
         }
     }
 
@@ -86,12 +86,6 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener, E
         strPass = editPass.getText().toString().trim();
 
         if (!strUser.isEmpty() && !strPass.isEmpty()){
-//            DataModel dataModel = setLoginModel(strUser, strPass);
-//            String str = new GsonBuilder().disableHtmlEscaping().create().toJson(dataModel);
-//            Log.d("LoginRequest",  str);
-//            showLoadingDialog();
-//            ClientHttp.getInstance(this).loginSecure(dataModel);
-
             LoginRequest loginRequest = new LoginRequest();
             LoginRequest.User result = new LoginRequest.User();
             result.setUsername(strUser);
@@ -103,28 +97,28 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener, E
         }
     }
 
-    private DataModel setLoginModel(String strUser, String strPass){
-        LoginRequest loginRequest = new LoginRequest();
-        LoginRequest.User result = new LoginRequest.User();
-
-        this.strUser = strUser;
-        result.setUsername(strUser);
-        result.setPassword(strPass);
-        loginRequest.setUser(result);
-
-        String str = new Gson().toJson(loginRequest);
-        Log.d("LoginRequest",  str);
-
-        Gson gson = new GsonBuilder().disableHtmlEscaping().create();
-        String resultEncrypt = null;
-        resultEncrypt = EncryptionAES.newInstance(keyByte).encrypt(gson.toJson(loginRequest));
-        Log.d("LoginModel", resultEncrypt);
-
-        final DataModel dataModel = new DataModel();
-        dataModel.setData(resultEncrypt);
-
-        return dataModel;
-    }
+//    private DataModel setLoginModel(String strUser, String strPass){
+//        LoginRequest loginRequest = new LoginRequest();
+//        LoginRequest.User result = new LoginRequest.User();
+//
+//        this.strUser = strUser;
+//        result.setUsername(strUser);
+//        result.setPassword(strPass);
+//        loginRequest.setUser(result);
+//
+//        String str = new Gson().toJson(loginRequest);
+//        Log.d("LoginRequest",  str);
+//
+//        Gson gson = new GsonBuilder().disableHtmlEscaping().create();
+//        String resultEncrypt = null;
+//        resultEncrypt = EncryptionAES.newInstance(keyByte).encrypt(gson.toJson(loginRequest));
+//        Log.d("LoginModel", resultEncrypt);
+//
+//        final DataModel dataModel = new DataModel();
+//        dataModel.setData(resultEncrypt);
+//
+//        return dataModel;
+//    }
 
     //Subscribe
     @Subscribe
@@ -141,6 +135,8 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener, E
 
             openActivity(CheckLoginActivity.class, bundle, true);
             overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
+        }else{
+            Toast.makeText(this, response.getResult().getError(), Toast.LENGTH_SHORT).show();
         }
 
         dismissDialog();
@@ -245,7 +241,7 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener, E
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mFingerPrintAuthHelper.stopAuth();
+//        mFingerPrintAuthHelper.stopAuth();
         EventBusCart.getInstance().getEventBus().unregister(this);
     }
 

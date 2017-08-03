@@ -21,6 +21,14 @@
             android:scaleType="fitXY"
             android:padding="@dimen/padding_eight"
             android:src="@drawable/logo_connect" />
+
+        <com.company.zicure.registerkey.customView.LabelView
+            android:id="@+id/point"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/size_text_medium"
+            android:layout_gravity="end"
+            android:textColor="@android:color/darker_gray" />
     </android.support.v7.widget.Toolbar>
 
 </android.support.design.widget.AppBarLayout>

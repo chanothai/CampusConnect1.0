@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <tabs>
 
-    <tab
-        id="@+id/tab_home"
-        icon="@drawable/ic_action_home"
-        title="Home"/>
+    <!--<tab-->
+        <!--id="@+id/tab_home"-->
+        <!--icon="@drawable/ic_action_home"-->
+        <!--title="Home"/>-->
 
-    <tab
-        id="@+id/tab_scan"
-        icon="@drawable/ic_image_crop_free"
-        title="Scan"/>
+    <!--<tab-->
+        <!--id="@+id/tab_scan"-->
+        <!--icon="@drawable/ic_image_crop_free"-->
+        <!--title="Scan"/>-->
 
-    <tab
-        id="@+id/tab_card"
-        icon="@drawable/ic_person"
-        title="ID CARD"/>
+    <!--<tab-->
+        <!--id="@+id/tab_card"-->
+        <!--icon="@drawable/ic_person"-->
+        <!--title="ID CARD"/>-->
 
 </tabs>

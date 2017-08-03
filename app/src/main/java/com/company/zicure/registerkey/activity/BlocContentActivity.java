@@ -11,11 +11,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.company.zicure.registerkey.R;
+import com.company.zicure.registerkey.dialog.AwesomeDialogFragment;
+import com.company.zicure.registerkey.fragment.AddFriendFragment;
 import com.company.zicure.registerkey.fragment.AppMenuFragment;
+import com.squareup.otto.Subscribe;
 
 import gallery.zicure.company.com.modellibrary.common.BaseActivity;
+import gallery.zicure.company.com.modellibrary.models.contact.ResponseAddContact;
+import gallery.zicure.company.com.modellibrary.utilize.EventBusCart;
 import gallery.zicure.company.com.modellibrary.utilize.ToolbarManager;
 import gallery.zicure.company.com.modellibrary.utilize.VariableConnect;
 
@@ -32,6 +38,7 @@ public class BlocContentActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bloc_content);
+        EventBusCart.getInstance().getEventBus().register(this);
         bindView();
         iniBundle();
         setToolbar();
@@ -60,6 +67,8 @@ public class BlocContentActivity extends BaseActivity {
     private void checkIniFragment(){
         if (!urlBloc.isEmpty()){
             iniFragmentBloc();
+        }else{
+            initFragmentAddFriend();
         }
     }
 
@@ -69,42 +78,31 @@ public class BlocContentActivity extends BaseActivity {
         transaction.commit();
     }
 
+    private void initFragmentAddFriend(){
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container_bloc, AddFriendFragment.newInstance("",""), "AddFriendFragment");
+        transaction.commit();
+    }
+
     private void setToolbar(){
         if (Build.VERSION.SDK_INT >= 21) {
             ToolbarManager manager = new ToolbarManager(this);
-            manager.setToolbar(toolbar, textTitle, null, titleBloc);
+            manager.setToolbar(toolbar, textTitle, getDrawable(R.drawable.back_screen), titleBloc);
 
             if (urlBloc.isEmpty()){
                 CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) frameLayout.getLayoutParams();
                 params.setBehavior(new AppBarLayout.ScrollingViewBehavior());
                 frameLayout.requestLayout();
             }
-
         }
     }
-
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        if (PermissionKeyNumber.getInstance().getPermissionCameraKey() == requestCode){
-//            if (grantResults[0] != -1){
-//                FragmentManager fm = getSupportFragmentManager();
-//                AppMenuFragment fragment = (AppMenuFragment) fm.findFragmentByTag(VariableConnect.appMenuFragmentKey);
-//                fragment.setWebView();
-//            }
-//        }
-//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home:{
                 finish();
-                if (!urlBloc.equalsIgnoreCase("")){
-                    overridePendingTransition(R.anim.anim_scale_in, R.anim.anim_slide_out_right);
-                }else{
-                    overridePendingTransition(R.anim.anim_scale_in, R.anim.anim_slide_out_left);
-                }
+                overridePendingTransition(R.anim.anim_scale_in, R.anim.anim_slide_out_right);
                 break;
             }
 
@@ -142,5 +140,27 @@ public class BlocContentActivity extends BaseActivity {
         super.onDestroy();
         appMenuFragment = (AppMenuFragment.newInstance(urlBloc));
         appMenuFragment.clearCache();
+        EventBusCart.getInstance().getEventBus().unregister(this);
+    }
+
+    /** onEvent **/
+    @Subscribe
+    public void onEventResponseAddContact(ResponseAddContact response) {
+        if (response.getResult().getSuccess().equalsIgnoreCase("OK")){
+            Toast.makeText(this, response.getResult().getMessage(), Toast.LENGTH_SHORT).show();
+            finish();
+            overridePendingTransition(R.anim.anim_scale_in, R.anim.anim_slide_out_right);
+        }else{
+            Toast.makeText(this, response.getResult().getError(), Toast.LENGTH_SHORT).show();
+            resumeCamera();
+        }
+
+        dismissDialog();
+    }
+
+    private void resumeCamera() {
+        FragmentManager fm = getSupportFragmentManager();
+        AddFriendFragment fragment = (AddFriendFragment) fm.findFragmentByTag("AddFriendFragment");
+        fragment.resumeCamera();
     }
 }

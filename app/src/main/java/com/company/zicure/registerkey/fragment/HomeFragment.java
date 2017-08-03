@@ -123,7 +123,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener ,View
         }
     }
 
-
     @Override
     public void onDestroy() {
         super.onDestroy();
