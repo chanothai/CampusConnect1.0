@@ -1,1 +1,1 @@
-include ':app', ':bottom-bar', ':gallery', ':modellibrary'
+include ':app', ':gallery', ':modellibrary'

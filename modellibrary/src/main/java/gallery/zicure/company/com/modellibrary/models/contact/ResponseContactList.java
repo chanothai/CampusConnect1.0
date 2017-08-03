@@ -22,7 +22,7 @@ public class ResponseContactList {
     public static class ResultContactList {
         @SerializedName("Success") private String success;
         @SerializedName("Error") private String error;
-        @SerializedName("Data") private List<UserPersonal> data;
+        @SerializedName("Data") private List<ContactListData> data;
 
         public String getSuccess() {
             return success;
@@ -40,95 +40,107 @@ public class ResponseContactList {
             this.error = error;
         }
 
-        public List<UserPersonal> getData() {
+        public List<ContactListData> getData() {
             return data;
         }
 
-        public void setData(List<UserPersonal> data) {
+        public void setData(List<ContactListData> data) {
             this.data = data;
         }
 
-        public static class UserPersonal {
-            @SerializedName("user_id") private int id;
-            @SerializedName("firstname_th") private String firstNameTH;
-            @SerializedName("lastname_th") private String lastNameTH;
-            @SerializedName("firstname_en") private String firstNameEN;
-            @SerializedName("lastname_en") private String lastNameEN;
-            @SerializedName("moblie_no") private String mobileNo;
-            @SerializedName("phone_no") private String phoneNo;
-            @SerializedName("img_part") private String imgPath;
-            @SerializedName("dept_name_th") private String department;
+        public static class ContactListData {
+            @SerializedName("UserPersonal") private UserPersonal userPersonal;
 
-            public int getId() {
-                return id;
+            public UserPersonal getUserPersonal() {
+                return userPersonal;
             }
 
-            public void setId(int id) {
-                this.id = id;
+            public void setUserPersonal(UserPersonal userPersonal) {
+                this.userPersonal = userPersonal;
             }
 
-            public String getFirstNameTH() {
-                return firstNameTH;
-            }
+            public static class UserPersonal {
+                @SerializedName("user_id") private int id;
+                @SerializedName("firstname_th") private String firstNameTH;
+                @SerializedName("lastname_th") private String lastNameTH;
+                @SerializedName("firstname_en") private String firstNameEN;
+                @SerializedName("lastname_en") private String lastNameEN;
+                @SerializedName("moblie_no") private String mobileNo;
+                @SerializedName("phone_no") private String phoneNo;
+                @SerializedName("img_part") private String imgPath;
+                @SerializedName("dept_name_th") private String department;
 
-            public void setFirstNameTH(String firstNameTH) {
-                this.firstNameTH = firstNameTH;
-            }
+                public int getId() {
+                    return id;
+                }
 
-            public String getLastNameTH() {
-                return lastNameTH;
-            }
+                public void setId(int id) {
+                    this.id = id;
+                }
 
-            public void setLastNameTH(String lastNameTH) {
-                this.lastNameTH = lastNameTH;
-            }
+                public String getFirstNameTH() {
+                    return firstNameTH;
+                }
 
-            public String getLastNameEN() {
-                return lastNameEN;
-            }
+                public void setFirstNameTH(String firstNameTH) {
+                    this.firstNameTH = firstNameTH;
+                }
 
-            public void setLastNameEN(String lastNameEN) {
-                this.lastNameEN = lastNameEN;
-            }
+                public String getLastNameTH() {
+                    return lastNameTH;
+                }
 
-            public String getFirstNameEN() {
-                return firstNameEN;
-            }
+                public void setLastNameTH(String lastNameTH) {
+                    this.lastNameTH = lastNameTH;
+                }
 
-            public void setFirstNameEN(String firstNameEN) {
-                this.firstNameEN = firstNameEN;
-            }
+                public String getLastNameEN() {
+                    return lastNameEN;
+                }
 
-            public String getMobileNo() {
-                return mobileNo;
-            }
+                public void setLastNameEN(String lastNameEN) {
+                    this.lastNameEN = lastNameEN;
+                }
 
-            public void setMobileNo(String mobileNo) {
-                this.mobileNo = mobileNo;
-            }
+                public String getFirstNameEN() {
+                    return firstNameEN;
+                }
 
-            public String getPhoneNo() {
-                return phoneNo;
-            }
+                public void setFirstNameEN(String firstNameEN) {
+                    this.firstNameEN = firstNameEN;
+                }
 
-            public void setPhoneNo(String phoneNo) {
-                this.phoneNo = phoneNo;
-            }
+                public String getMobileNo() {
+                    return mobileNo;
+                }
 
-            public String getImgPath() {
-                return imgPath;
-            }
+                public void setMobileNo(String mobileNo) {
+                    this.mobileNo = mobileNo;
+                }
 
-            public void setImgPath(String imgPath) {
-                this.imgPath = imgPath;
-            }
+                public String getPhoneNo() {
+                    return phoneNo;
+                }
 
-            public String getDepartment() {
-                return department;
-            }
+                public void setPhoneNo(String phoneNo) {
+                    this.phoneNo = phoneNo;
+                }
 
-            public void setDepartment(String department) {
-                this.department = department;
+                public String getImgPath() {
+                    return imgPath;
+                }
+
+                public void setImgPath(String imgPath) {
+                    this.imgPath = imgPath;
+                }
+
+                public String getDepartment() {
+                    return department;
+                }
+
+                public void setDepartment(String department) {
+                    this.department = department;
+                }
             }
         }
     }

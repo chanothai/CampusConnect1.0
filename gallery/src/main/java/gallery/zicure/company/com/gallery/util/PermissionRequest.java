@@ -32,4 +32,11 @@ public class PermissionRequest {
         return true;
     }
 
+    public boolean requestCallPhone() {
+        if (!manager.checkPermission(Manifest.permission.CALL_PHONE, 113)){
+            return false;
+        }
+
+        return true;
+    }
 }

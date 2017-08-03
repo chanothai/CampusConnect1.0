@@ -29,12 +29,14 @@ public class AwesomeDialogFragment extends DialogFragment {
     private static final String KEY_POSITIVE = "key_positive";
     private static final String KEY_NEGATIVE  = "key_negative";
     private static final String KEY_HASPIN = "key_has_pin";
+    private static final String KEY_ISINCORRECTPIN = "key_is_incorrect_pin";
 
     private int title;
-    private int message;
+    private String message;
     private int positive;
     private int negative;
     private boolean hasPIN;
+    private boolean isIncorrectPin;
 
     //View
     private LabelView titleDialog = null;
@@ -43,14 +45,15 @@ public class AwesomeDialogFragment extends DialogFragment {
     private ButtonDialogView btnDialogNegative = null;
     private EditTextView editPin = null;
 
-    public static AwesomeDialogFragment newInstance(@StringRes int title, @StringRes int message, @StringRes int positive, @StringRes int negative, boolean hasPIN) {
+    public static AwesomeDialogFragment newInstance(@StringRes int title, String message, @StringRes int positive, @StringRes int negative, boolean hasPIN, boolean isIncorrectPin) {
         AwesomeDialogFragment fragment = new AwesomeDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(KEY_TITLE, title);
-        bundle.putInt(KEY_MESSAGE, message);
+        bundle.putString(KEY_MESSAGE, message);
         bundle.putInt(KEY_POSITIVE, positive);
         bundle.putInt(KEY_NEGATIVE, negative);
         bundle.putBoolean(KEY_HASPIN, hasPIN);
+        bundle.putBoolean(KEY_ISINCORRECTPIN, isIncorrectPin);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -156,18 +159,20 @@ public class AwesomeDialogFragment extends DialogFragment {
 
     private void restoreInstanceState(Bundle bundle){
         title = bundle.getInt(KEY_TITLE);
-        message = bundle.getInt(KEY_MESSAGE);
+        message = bundle.getString(KEY_MESSAGE);
         positive = bundle.getInt(KEY_POSITIVE);
         negative = bundle.getInt(KEY_NEGATIVE);
         hasPIN = bundle.getBoolean(KEY_HASPIN);
+        isIncorrectPin = bundle.getBoolean(KEY_ISINCORRECTPIN);
     }
 
     private void restoreArguments(Bundle bundle) {
         title = bundle.getInt(KEY_TITLE);
-        message = bundle.getInt(KEY_MESSAGE);
+        message = bundle.getString(KEY_MESSAGE);
         positive = bundle.getInt(KEY_POSITIVE);
         negative = bundle.getInt(KEY_NEGATIVE);
         hasPIN = bundle.getBoolean(KEY_HASPIN);
+        isIncorrectPin = bundle.getBoolean(KEY_ISINCORRECTPIN);
     }
 
     public interface OnDialogListener {
@@ -177,10 +182,11 @@ public class AwesomeDialogFragment extends DialogFragment {
 
     public static class Builder {
         private int title;
-        private int message;
+        private String message;
         private int positive;
         private int negative;
         private boolean hasPIN;
+        private boolean isIncorrectPin;
 
         public Builder() {
 
@@ -191,7 +197,7 @@ public class AwesomeDialogFragment extends DialogFragment {
             return this;
         }
 
-        public Builder setMessage(@StringRes int message) {
+        public Builder setMessage(String message) {
             this.message = message;
             return this;
         }
@@ -211,8 +217,13 @@ public class AwesomeDialogFragment extends DialogFragment {
             return this;
         }
 
+        public Builder setIncorrectPIN(boolean isIncorrectPin){
+            this.isIncorrectPin = isIncorrectPin;
+            return this;
+        }
+
         public AwesomeDialogFragment build() {
-            return AwesomeDialogFragment.newInstance(title, message, positive, negative, hasPIN);
+            return AwesomeDialogFragment.newInstance(title, message, positive, negative, hasPIN, isIncorrectPin);
         }
     }
 }

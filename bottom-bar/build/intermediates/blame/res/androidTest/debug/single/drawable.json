@@ -52,6 +52,10 @@
         "source": "/Users/Pakgon/.android/build-cache/3713fdb2971c65e928d2a13a2274cc2f343afc4e/output/res/drawable/navigation_empty_icon.xml"
     },
     {
+        "merged": "/Users/Pakgon/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/androidTest/debug/drawable/design_bottom_navigation_item_background.xml",
+        "source": "/Users/Pakgon/.android/build-cache/3713fdb2971c65e928d2a13a2274cc2f343afc4e/output/res/drawable/design_bottom_navigation_item_background.xml"
+    },
+    {
         "merged": "/Users/Pakgon/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/androidTest/debug/drawable/abc_ic_voice_search_api_material.xml",
         "source": "/Users/Pakgon/.android/build-cache/41c71a0fc2745c2c9a12254d8747c0deef2bc1aa/output/res/drawable/abc_ic_voice_search_api_material.xml"
     },
@@ -108,12 +112,12 @@
         "source": "/Users/Pakgon/.android/build-cache/41c71a0fc2745c2c9a12254d8747c0deef2bc1aa/output/res/drawable/abc_item_background_holo_dark.xml"
     },
     {
-        "merged": "/Users/Pakgon/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/androidTest/debug/drawable/design_snackbar_background.xml",
-        "source": "/Users/Pakgon/.android/build-cache/3713fdb2971c65e928d2a13a2274cc2f343afc4e/output/res/drawable/design_snackbar_background.xml"
-    },
-    {
         "merged": "/Users/Pakgon/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/androidTest/debug/drawable/abc_seekbar_track_material.xml",
         "source": "/Users/Pakgon/.android/build-cache/41c71a0fc2745c2c9a12254d8747c0deef2bc1aa/output/res/drawable/abc_seekbar_track_material.xml"
+    },
+    {
+        "merged": "/Users/Pakgon/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/androidTest/debug/drawable/design_snackbar_background.xml",
+        "source": "/Users/Pakgon/.android/build-cache/3713fdb2971c65e928d2a13a2274cc2f343afc4e/output/res/drawable/design_snackbar_background.xml"
     },
     {
         "merged": "/Users/Pakgon/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/androidTest/debug/drawable/abc_list_selector_holo_light.xml",
@@ -126,6 +130,10 @@
     {
         "merged": "/Users/Pakgon/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/androidTest/debug/drawable/abc_spinner_textfield_background_material.xml",
         "source": "/Users/Pakgon/.android/build-cache/41c71a0fc2745c2c9a12254d8747c0deef2bc1aa/output/res/drawable/abc_spinner_textfield_background_material.xml"
+    },
+    {
+        "merged": "/Users/Pakgon/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/androidTest/debug/drawable/abc_edit_text_material.xml",
+        "source": "/Users/Pakgon/.android/build-cache/41c71a0fc2745c2c9a12254d8747c0deef2bc1aa/output/res/drawable/abc_edit_text_material.xml"
     },
     {
         "merged": "/Users/Pakgon/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/androidTest/debug/drawable/abc_list_selector_holo_dark.xml",
@@ -148,12 +156,20 @@
         "source": "/Users/Pakgon/.android/build-cache/41c71a0fc2745c2c9a12254d8747c0deef2bc1aa/output/res/drawable/abc_list_selector_background_transition_holo_light.xml"
     },
     {
+        "merged": "/Users/Pakgon/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/androidTest/debug/drawable/design_password_eye.xml",
+        "source": "/Users/Pakgon/.android/build-cache/3713fdb2971c65e928d2a13a2274cc2f343afc4e/output/res/drawable/design_password_eye.xml"
+    },
+    {
         "merged": "/Users/Pakgon/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/androidTest/debug/drawable/abc_ic_ab_back_material.xml",
         "source": "/Users/Pakgon/.android/build-cache/41c71a0fc2745c2c9a12254d8747c0deef2bc1aa/output/res/drawable/abc_ic_ab_back_material.xml"
     },
     {
         "merged": "/Users/Pakgon/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/androidTest/debug/drawable/abc_ratingbar_material.xml",
         "source": "/Users/Pakgon/.android/build-cache/41c71a0fc2745c2c9a12254d8747c0deef2bc1aa/output/res/drawable/abc_ratingbar_material.xml"
+    },
+    {
+        "merged": "/Users/Pakgon/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/androidTest/debug/drawable/abc_btn_colored_material.xml",
+        "source": "/Users/Pakgon/.android/build-cache/41c71a0fc2745c2c9a12254d8747c0deef2bc1aa/output/res/drawable/abc_btn_colored_material.xml"
     },
     {
         "merged": "/Users/Pakgon/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/androidTest/debug/drawable/abc_textfield_search_material.xml",

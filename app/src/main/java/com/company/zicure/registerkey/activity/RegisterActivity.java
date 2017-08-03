@@ -99,32 +99,20 @@ public class RegisterActivity extends BaseActivity implements EditText.OnEditorA
         confirmPass = editConfirmPass.getText().toString().trim();
         email = editEmail.getText().toString().trim();
 
-        if (confirmPass.equalsIgnoreCase(pass) && !confirmPass.isEmpty() && !pass.isEmpty()){
-            if (strIdCard.length() == 13 && strPhone.length() == 10 && !email.isEmpty()){
-//                DataModel dataModel = createModel();
-//
-//                showLoadingDialog();
-//                ClientHttp.getInstance(context).registerSecure(dataModel);
+        RegisterRequest request = new RegisterRequest();
+        RegisterRequest.User user = new RegisterRequest.User();
+        user.setCitizenId(strIdCard);
+        user.setPhone(strPhone);
+        user.setPassword(pass);
+        user.setRePassword(confirmPass);
+        user.setEmail(email);
+        request.setUser(user);
 
-                RegisterRequest request = new RegisterRequest();
-                RegisterRequest.User user = new RegisterRequest.User();
-                user.setCitizenId(strIdCard);
-                user.setPhone(strPhone);
-                user.setPassword(pass);
-                user.setRePassword(confirmPass);
-                user.setEmail(email);
-                request.setUser(user);
+        String str = new Gson().toJson(request);
+        Log.d("RegisterRequest", str);
 
-                String str = new Gson().toJson(request);
-                Log.d("RegisterRequest", str);
-
-                showLoadingDialog();
-                ClientHttp.getInstance(context).register(request);
-            }
-        }else{
-            editConfirmPass.requestFocus();
-            Toast.makeText(getApplicationContext(), R.string.message_check_password_th, Toast.LENGTH_SHORT).show();
-        }
+        showLoadingDialog();
+        ClientHttp.getInstance(context).register(request);
     }
 
     private DataModel createModel(){
@@ -166,31 +154,25 @@ public class RegisterActivity extends BaseActivity implements EditText.OnEditorA
     public void onEventResponseRegister(ResponseRegister response) {
         if (response.getResult().getSuccess().equalsIgnoreCase("OK")) {
             isSuccess = true;
-            showAlertDialog(isSuccess);
+            showAlertDialog(isSuccess, response.getResult().getSuccess(),false);
         }else{
             isSuccess = false;
-            showAlertDialog(isSuccess);
+            showAlertDialog(isSuccess, response.getResult().getError(),true);
         }
 
         dismissDialog();
     }
 
-    private void showAlertDialog(boolean isSuccess) {
+    private void showAlertDialog(boolean isSuccess, String message, boolean isIncorrectPIN) {
         String tag = "RegisterError";
         AwesomeDialogFragment.Builder builder = new AwesomeDialogFragment.Builder();
-        if (isSuccess){
-            builder.setTitle(R.string.dialog_title_pin_th)
-                    .setMessage(R.string.dialog_message_pin_th)
-                    .setPositive(R.string.dialog_pin_button_positive_th)
-                    .setNegative(R.string.dialog_button_negative_th)
-                    .setPIN(isSuccess);
-        }else{
-            builder.setTitle(R.string.dialog_title_th)
-                    .setMessage(R.string.dialog_message_fail_th)
-                    .setPositive(R.string.dialog_button_positive_th)
-                    .setNegative(R.string.dialog_button_negative_th)
-                    .setPIN(isSuccess);
-        }
+
+        builder.setTitle(R.string.dialog_title_pin_th)
+                .setMessage(message)
+                .setPositive(R.string.dialog_pin_button_positive_th)
+                .setNegative(R.string.dialog_button_negative_th)
+                .setPIN(isSuccess)
+                .setIncorrectPIN(isIncorrectPIN);
 
         AwesomeDialogFragment fragment = builder.build();
         fragment.show(getSupportFragmentManager(), tag);
@@ -244,6 +226,8 @@ public class RegisterActivity extends BaseActivity implements EditText.OnEditorA
     public void onEventVerifyUser(VerifyResponse response) {
         if (response.getResult().getSuccess().equalsIgnoreCase("OK")){
             finish();
+        }else{
+            showAlertDialog(true, response.getResult().getError(), true);
         }
 
         dismissDialog();
@@ -268,8 +252,6 @@ public class RegisterActivity extends BaseActivity implements EditText.OnEditorA
     public void onPositiveButtonClick(String pinCode) {
         if (isSuccess) {
             if (pinCode != null){
-                Toast.makeText(getApplicationContext(), pinCode, Toast.LENGTH_SHORT).show();
-
                 VerifyRequest request = new VerifyRequest();
                 VerifyRequest.VerifyUser verifyUser = new VerifyRequest.VerifyUser();
                 verifyUser.setPinCode(pinCode);

@@ -33,6 +33,7 @@ import java.io.File;
 import java.io.IOException;
 
 import gallery.zicure.company.com.gallery.util.PermissionRequest;
+import gallery.zicure.company.com.modellibrary.common.BaseActivity;
 import gallery.zicure.company.com.modellibrary.utilize.JavaScriptInterface;
 import gallery.zicure.company.com.modellibrary.utilize.VariableConnect;
 
@@ -102,25 +103,14 @@ public class AppMenuFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState == null){
-            SharedPreferences pref = getActivity().getSharedPreferences(VariableConnect.keyFile, Context.MODE_PRIVATE);
-            token = pref.getString(getString(R.string.token_login), null);
-
-            requestCamera();
-        }
-    }
-
-    private void requestCamera(){
-        PermissionRequest permissionRequest = new PermissionRequest(getActivity());
-        if (!permissionRequest.requestCamera()){
             setWebView();
         }
     }
 
     public void setWebView(){
-        ((BlocContentActivity)getActivity()).showLoadingDialog();
+        ((BaseActivity)getActivity()).showLoadingDialog();
 
         webView.setWebViewClient(new AppBrowser());
-        webView.setWebChromeClient(new AppBrowserChrome());
         webView.setVerticalScrollBarEnabled(true);
         webView.setClickable(true);
         webView.requestFocus(View.FOCUS_DOWN);
@@ -130,17 +120,7 @@ public class AppMenuFragment extends Fragment {
         // improve webView performance
         webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
         webSettings.setJavaScriptEnabled(true);
-        webSettings.setDomStorageEnabled(true);
-        webSettings.setAllowFileAccess(true);
 
-//        String cookies = CookieManager.getInstance().getCookie(url);
-//        if (cookies!= null){
-//            Log.d("tag_cookies", cookies);
-//            webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);
-//            webSettings.setAppCacheEnabled(true);
-//        }
-
-        webView.addJavascriptInterface(new JavaScriptInterface(), "Token");
         webView.loadUrl(url);
     }
     
@@ -153,22 +133,6 @@ public class AppMenuFragment extends Fragment {
         }
     }
 
-    public void clearCookies(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-            CookieManager.getInstance().removeAllCookies(null);
-            CookieManager.getInstance().flush();
-        }else{
-            CookieSyncManager cookieSyncManager = CookieSyncManager.createInstance(getActivity());
-            cookieSyncManager.startSync();
-            CookieManager cookieManager = CookieManager.getInstance();
-            cookieManager.removeAllCookie();
-            cookieManager.removeSessionCookie();
-            cookieSyncManager.stopSync();
-            cookieSyncManager.sync();
-        }
-    }
-
-
     public class AppBrowser extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
@@ -178,65 +142,8 @@ public class AppMenuFragment extends Fragment {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            //filter url to same url between url blog and url of webview loadding
-            try{
-                StringBuilder builder = new StringBuilder();
-                builder.append("(function() {");
-                builder.append("var inputs = document.getElementById('UserToken');");
-                builder.append("inputs.value = '"+token+"';");
-                builder.append("document.forms[0].submit();");
-                builder.append("})();");
 
-                String result = "javascript:" + builder.toString();
-                Log.d("Script", result);
-                view.loadUrl(result);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-
-            ((BlocContentActivity)getActivity()).dismissDialog();
-        }
-    }
-
-    public class AppBrowserChrome extends WebChromeClient {
-
-        @Override
-        public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
-            mUploadMesssage = filePathCallback;
-
-            File imageStoragePath = new File(
-                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                    "Connect"
-            );
-            if (!imageStoragePath.exists()) {
-                imageStoragePath.mkdirs();
-            }
-
-            try {
-                File file = File.createTempFile(String.valueOf(System.currentTimeMillis()), ".jpg", imageStoragePath);
-                mCapturedImageURI = Uri.fromFile(file);
-
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, mCapturedImageURI);
-                }
-
-                Intent contentSelectionIntent = new Intent(Intent.ACTION_GET_CONTENT);
-                contentSelectionIntent.addCategory(Intent.CATEGORY_OPENABLE);
-                contentSelectionIntent.setType("image/*");
-
-                Intent chooserIntent = new Intent(Intent.ACTION_CHOOSER);
-                chooserIntent.putExtra(Intent.EXTRA_INTENT, contentSelectionIntent);
-                chooserIntent.putExtra(Intent.EXTRA_TITLE, "Image Chooser");
-                chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] { takePictureIntent });
-
-                startActivityForResult(chooserIntent, 2500);
-                return true;
-
-            } catch (IOException ex) {
-                ex.printStackTrace();
-                return false;
-            }
+            ((BaseActivity)getActivity()).dismissDialog();
         }
     }
 
@@ -253,24 +160,6 @@ public class AppMenuFragment extends Fragment {
             webView.restoreState(savedInstanceState);
         }catch (NullPointerException e){
             e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 2500){
-            Log.d("TestWebView", "here1");
-            if (null == this.mUploadMesssage) {
-                return;
-            }
-            if (resultCode == getActivity().RESULT_OK){
-                mUploadMesssage.onReceiveValue(new Uri[] {mCapturedImageURI});
-            }else{
-                if (mUploadMesssage != null){
-                    mUploadMesssage.onReceiveValue(null);
-                    mUploadMesssage = null;
-                }
-            }
         }
     }
 }

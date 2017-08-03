@@ -22,6 +22,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/list_slide_menu" />
+
+        <com.company.zicure.registerkey.customView.LabelView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/size_text_small"
+            android:layout_alignParentBottom="true"
+            android:padding="@dimen/padding_medium"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:text="@string/mark_version"/>
     </RelativeLayout>
 
     <FrameLayout
@@ -29,7 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="true"
-        android:background="@android:color/black"
+        android:background="@android:color/transparent"
         android:alpha="1"/>
 
 </RelativeLayout>

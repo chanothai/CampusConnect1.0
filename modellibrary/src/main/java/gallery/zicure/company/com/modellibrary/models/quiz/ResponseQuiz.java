@@ -20,7 +20,7 @@ public class ResponseQuiz {
     public static class ResultQuiz {
         @SerializedName("Success") private String success;
         @SerializedName("Error") private String error;
-        @SerializedName("Data") private PersonalQuiz quiz;
+        @SerializedName("Data") private DataQuiz data;
 
         public String getSuccess() {
             return success;
@@ -38,23 +38,35 @@ public class ResponseQuiz {
             this.error = error;
         }
 
-        public PersonalQuiz getQuiz() {
-            return quiz;
+        public DataQuiz getData() {
+            return data;
         }
 
-        public void setQuiz(PersonalQuiz quiz) {
-            this.quiz = quiz;
+        public void setData(DataQuiz data) {
+            this.data = data;
         }
 
-        public static class PersonalQuiz {
-            @SerializedName("url") private String url;
+        public static class DataQuiz {
+            @SerializedName("PersonalQuiz") private PersonalQuiz personalQuiz;
 
-            public String getUrl() {
-                return url;
+            public PersonalQuiz getPersonalQuiz() {
+                return personalQuiz;
             }
 
-            public void setUrl(String url) {
-                this.url = url;
+            public void setPersonalQuiz(PersonalQuiz personalQuiz) {
+                this.personalQuiz = personalQuiz;
+            }
+
+            public static class PersonalQuiz {
+                @SerializedName("url") private String url;
+
+                public String getUrl() {
+                    return url;
+                }
+
+                public void setUrl(String url) {
+                    this.url = url;
+                }
             }
         }
     }

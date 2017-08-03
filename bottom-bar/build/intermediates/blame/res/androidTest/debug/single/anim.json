@@ -36,6 +36,10 @@
         "source": "/Users/Pakgon/.android/build-cache/3713fdb2971c65e928d2a13a2274cc2f343afc4e/output/res/anim/design_snackbar_in.xml"
     },
     {
+        "merged": "/Users/Pakgon/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/androidTest/debug/anim/design_bottom_sheet_slide_in.xml",
+        "source": "/Users/Pakgon/.android/build-cache/3713fdb2971c65e928d2a13a2274cc2f343afc4e/output/res/anim/design_bottom_sheet_slide_in.xml"
+    },
+    {
         "merged": "/Users/Pakgon/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/androidTest/debug/anim/abc_popup_enter.xml",
         "source": "/Users/Pakgon/.android/build-cache/41c71a0fc2745c2c9a12254d8747c0deef2bc1aa/output/res/anim/abc_popup_enter.xml"
     },
@@ -54,5 +58,9 @@
     {
         "merged": "/Users/Pakgon/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/androidTest/debug/anim/abc_fade_out.xml",
         "source": "/Users/Pakgon/.android/build-cache/41c71a0fc2745c2c9a12254d8747c0deef2bc1aa/output/res/anim/abc_fade_out.xml"
+    },
+    {
+        "merged": "/Users/Pakgon/StudioProjects/registerkey/bottom-bar/build/intermediates/res/merged/androidTest/debug/anim/design_bottom_sheet_slide_out.xml",
+        "source": "/Users/Pakgon/.android/build-cache/3713fdb2971c65e928d2a13a2274cc2f343afc4e/output/res/anim/design_bottom_sheet_slide_out.xml"
     }
 ]
