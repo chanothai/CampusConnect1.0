@@ -6,7 +6,7 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
-        applicationId "com.company.zicure.registerkey"
+        applicationId "com.company.zicure.campusconnect"
         //Brings vector to use for image in app
         vectorDrawables.useSupportLibrary(true)
         minSdkVersion rootProject.ext.minSdkVersion
@@ -32,9 +32,7 @@ dependencies {
     compile 'com.android.support:customtabs:' + rootProject.ext.supportLibraryVersion
     compile 'com.android.support:support-v4:' + rootProject.ext.supportLibraryVersion
 
-    compile project(path: ':gallery')
     compile project(path: ':modellibrary')
-
 
     compile 'com.roughike:bottom-bar:2.0.2'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'

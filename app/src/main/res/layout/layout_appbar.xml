@@ -22,7 +22,7 @@
             android:padding="@dimen/padding_eight"
             android:src="@drawable/logo_connect" />
 
-        <com.company.zicure.registerkey.customView.LabelView
+        <com.company.zicure.campusconnect.customView.LabelView
             android:id="@+id/point"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

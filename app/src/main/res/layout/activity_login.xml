@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="24dp"
-    tools:context="com.company.zicure.registerkey.activity.LoginActivity"
+    tools:context="com.company.zicure.campusconnect.activity.LoginActivity"
     android:background="@android:color/white">
 
     <RelativeLayout
@@ -30,12 +30,12 @@
                 android:paddingEnd="@dimen/padding_extra_large"
                 android:paddingStart="@dimen/padding_extra_large">
 
-                <com.company.zicure.registerkey.customView.TextInputView
+                <com.company.zicure.campusconnect.customView.TextInputView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="@dimen/padding_top_five">
 
-                    <com.company.zicure.registerkey.customView.EditTextView
+                    <com.company.zicure.campusconnect.customView.EditTextView
                         android:id="@+id/username"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -46,14 +46,14 @@
                         android:padding="@dimen/padding_large"
                         android:imeOptions="actionNext"/>
 
-                </com.company.zicure.registerkey.customView.TextInputView>
+                </com.company.zicure.campusconnect.customView.TextInputView>
 
-                <com.company.zicure.registerkey.customView.TextInputView
+                <com.company.zicure.campusconnect.customView.TextInputView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="@dimen/padding_top_five">
 
-                    <com.company.zicure.registerkey.customView.EditTextView
+                    <com.company.zicure.campusconnect.customView.EditTextView
                         android:id="@+id/password"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -63,9 +63,9 @@
                         android:maxLines="1"
                         android:padding="@dimen/padding_large"
                         android:imeOptions="actionDone"/>
-                </com.company.zicure.registerkey.customView.TextInputView>
+                </com.company.zicure.campusconnect.customView.TextInputView>
 
-                <com.company.zicure.registerkey.customView.ButtonView
+                <com.company.zicure.campusconnect.customView.ButtonView
                     android:id="@+id/btnConnect"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/btn_height"
@@ -75,7 +75,7 @@
                     android:text="@string/text_btn_login_th"
                     android:textStyle="bold" />
                 
-                <com.company.zicure.registerkey.customView.LabelView
+                <com.company.zicure.campusconnect.customView.LabelView
                     android:id="@+id/label_forgot_password"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -96,7 +96,7 @@
             android:orientation="horizontal"
             android:background="@color/background_tab_bottom">
 
-            <com.company.zicure.registerkey.customView.LabelView
+            <com.company.zicure.campusconnect.customView.LabelView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -106,7 +106,7 @@
                 android:paddingStart="@dimen/padding_four"
                 android:paddingEnd="@dimen/padding_four"/>
 
-            <com.company.zicure.registerkey.customView.LabelView
+            <com.company.zicure.campusconnect.customView.LabelView
                 android:id="@+id/txt_link"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

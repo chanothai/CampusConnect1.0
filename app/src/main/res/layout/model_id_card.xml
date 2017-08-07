@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.company.zicure.registerkey.customView.LabelView
+    <com.company.zicure.campusconnect.customView.LabelView
         android:id="@+id/label_information"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

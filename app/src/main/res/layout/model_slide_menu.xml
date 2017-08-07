@@ -17,7 +17,7 @@
             android:cropToPadding="true"
             android:layout_centerVertical="true"/>
 
-        <com.company.zicure.registerkey.customView.LabelView
+        <com.company.zicure.campusconnect.customView.LabelView
             android:id="@+id/sub_title"
             android:layout_width="match_parent"
             android:layout_height="56dp"

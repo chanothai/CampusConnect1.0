@@ -12,7 +12,7 @@
         android:orientation="vertical"
         android:padding="24dp">
 
-        <com.company.zicure.registerkey.customView.LabelView
+        <com.company.zicure.campusconnect.customView.LabelView
             android:id="@+id/title_dialog"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -22,7 +22,7 @@
             android:textColor="@android:color/black"
             android:textSize="@dimen/size_text_medium" />
 
-        <com.company.zicure.registerkey.customView.LabelView
+        <com.company.zicure.campusconnect.customView.LabelView
             android:id="@+id/txt_message_dialog"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
             android:textColor="@android:color/darker_gray"
             android:textSize="@dimen/size_text_small" />
 
-        <com.company.zicure.registerkey.customView.EditTextView
+        <com.company.zicure.campusconnect.customView.EditTextView
             android:id="@+id/edit_pin_dialog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
         android:padding="8dp"
         android:background="@android:color/white">
 
-        <com.company.zicure.registerkey.customView.ButtonDialogView
+        <com.company.zicure.campusconnect.customView.ButtonDialogView
             android:id="@+id/btn_dialog_positive"
             android:layout_width="wrap_content"
             android:layout_height="36dp"
@@ -67,7 +67,7 @@
             android:layout_marginStart="@dimen/padding_four"
             android:textColor="@color/colorBlueStrongNormal" />
 
-        <com.company.zicure.registerkey.customView.ButtonDialogView
+        <com.company.zicure.campusconnect.customView.ButtonDialogView
             android:id="@+id/btn_dialog_negative"
             android:layout_width="wrap_content"
             android:layout_height="36dp"

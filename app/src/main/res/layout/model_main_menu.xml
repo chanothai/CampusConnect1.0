@@ -31,7 +31,7 @@
                 android:layout_weight="1"
                 android:scaleType="centerInside" />
 
-            <com.company.zicure.registerkey.customView.LabelView
+            <com.company.zicure.campusconnect.customView.LabelView
                 android:id="@+id/topic_menu"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

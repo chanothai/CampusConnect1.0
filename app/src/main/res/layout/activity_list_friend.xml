@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.company.zicure.registerkey.activity.ContactListActivity">
+    tools:context="com.company.zicure.campusconnect.activity.ContactListActivity">
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="0dp"
@@ -30,7 +30,7 @@
             android:background="@android:color/white"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" >
 
-            <com.company.zicure.registerkey.customView.LabelView
+            <com.company.zicure.campusconnect.customView.LabelView
                 android:id="@+id/topic_contact_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

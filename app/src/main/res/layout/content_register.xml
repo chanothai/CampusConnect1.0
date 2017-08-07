@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/padding_top_five">
 
-            <com.company.zicure.registerkey.customView.EditTextView
+            <com.company.zicure.campusconnect.customView.EditTextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/identity_card"
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/padding_top_five">
 
-            <com.company.zicure.registerkey.customView.EditTextView
+            <com.company.zicure.campusconnect.customView.EditTextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/phone_number"
@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/padding_top_five">
 
-            <com.company.zicure.registerkey.customView.EditTextView
+            <com.company.zicure.campusconnect.customView.EditTextView
                 android:id="@+id/edit_email"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -67,12 +67,12 @@
 
         </android.support.design.widget.TextInputLayout>
 
-        <com.company.zicure.registerkey.customView.TextInputView
+        <com.company.zicure.campusconnect.customView.TextInputView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/padding_top_five">
 
-            <com.company.zicure.registerkey.customView.EditTextView
+            <com.company.zicure.campusconnect.customView.EditTextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/edit_password"
@@ -82,14 +82,14 @@
                 android:imeOptions="actionNext"
                 android:hint="@string/hint_password_th" />
 
-        </com.company.zicure.registerkey.customView.TextInputView>
+        </com.company.zicure.campusconnect.customView.TextInputView>
 
-        <com.company.zicure.registerkey.customView.TextInputView
+        <com.company.zicure.campusconnect.customView.TextInputView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/padding_top_five">
 
-            <com.company.zicure.registerkey.customView.EditTextView
+            <com.company.zicure.campusconnect.customView.EditTextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/edit_confirm_password"
@@ -99,9 +99,9 @@
                 android:imeOptions="actionDone"
                 android:hint="@string/confirm_password" />
 
-        </com.company.zicure.registerkey.customView.TextInputView>
+        </com.company.zicure.campusconnect.customView.TextInputView>
 
-        <com.company.zicure.registerkey.customView.ButtonView
+        <com.company.zicure.campusconnect.customView.ButtonView
             android:id="@+id/btn_register"
             android:layout_width="match_parent"
             android:layout_height="@dimen/btn_height"

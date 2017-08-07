@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:layout_marginTop="24dp"
-    tools:context="com.company.zicure.registerkey.activity.RegisterActivity">
+    tools:context="com.company.zicure.campusconnect.activity.RegisterActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,7 +15,7 @@
         android:padding="@dimen/padding_extra_large"
         android:orientation="vertical">
 
-        <com.company.zicure.registerkey.customView.LabelView
+        <com.company.zicure.campusconnect.customView.LabelView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/size_text_extra_large"

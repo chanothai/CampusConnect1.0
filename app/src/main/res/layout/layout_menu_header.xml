@@ -29,7 +29,7 @@
             android:layout_below="@+id/img_profile"
             android:gravity="center_vertical">
 
-            <com.company.zicure.registerkey.customView.LabelView
+            <com.company.zicure.campusconnect.customView.LabelView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/profile_name"

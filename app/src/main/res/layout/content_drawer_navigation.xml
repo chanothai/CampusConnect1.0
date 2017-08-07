@@ -23,7 +23,7 @@
             android:layout_height="match_parent"
             android:id="@+id/list_slide_menu" />
 
-        <com.company.zicure.registerkey.customView.LabelView
+        <com.company.zicure.campusconnect.customView.LabelView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="@dimen/size_text_small"

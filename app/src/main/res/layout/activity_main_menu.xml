@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.company.zicure.registerkey.view.viewgroup.FlyOutContainer
+<com.company.zicure.campusconnect.view.viewgroup.FlyOutContainer
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/black"
-    tools:context="com.company.zicure.registerkey.activity.MainMenuActivity">
+    tools:context="com.company.zicure.campusconnect.activity.MainMenuActivity">
 
     <include
         layout="@layout/content_drawer_navigation"/>
@@ -27,4 +27,4 @@
             android:layout_height="match_parent"
             android:layout_alignStart="@id/shadow"/>
     </RelativeLayout>
-</com.company.zicure.registerkey.view.viewgroup.FlyOutContainer>
+</com.company.zicure.campusconnect.view.viewgroup.FlyOutContainer>
