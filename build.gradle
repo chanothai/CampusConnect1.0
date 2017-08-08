@@ -37,8 +37,6 @@ ext {
 
     junitVersion = "4.12"
 
-    versionGooglePlayService = "9.4.0"
-
     versionName = "1.0.1"
-    versionCode = 3
+    versionCode = 2
 }

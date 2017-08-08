@@ -8,12 +8,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.ValueCallback;
+import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 
 import com.company.zicure.campusconnect.R;
+import com.company.zicure.campusconnect.activity.BlocContentActivity;
 
 import gallery.zicure.company.com.modellibrary.common.BaseActivity;
 
@@ -30,14 +34,15 @@ public class AppMenuFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String url;
     private String mParam2;
-
     private String token;
 
-    //VIew
+    /** Make: View **/
     public static WebView webView = null;
-    private NestedScrollView scrollView = null;
     private WebSettings webSettings = null;
+    private ProgressBar progressBarLoading = null;
+    private FrameLayout layoutProgress = null;
 
+    /** Make: Properties **/
     public ValueCallback<Uri[]> mUploadMesssage = null;
     public Uri mCapturedImageURI = null;
 
@@ -74,27 +79,34 @@ public class AppMenuFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_app_menu, container, false);
-        webView = (WebView) root.findViewById(R.id.appView);
 
+        bindView(root);
         return root;
+    }
+
+    private void bindView(View root) {
+        webView = (WebView) root.findViewById(R.id.appView);
+        progressBarLoading = (ProgressBar) root.findViewById(R.id.progress_bar_webview);
+        layoutProgress = (FrameLayout) root.findViewById(R.id.framelayout_loading);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState == null){
+
+        progressBarLoading.setProgress(0);
+        progressBarLoading.setMax(100);
+        if (savedInstanceState == null) {
             setWebView();
         }
     }
 
     public void setWebView(){
-        ((BaseActivity)getActivity()).showLoadingDialog();
-
         webView.setWebViewClient(new AppBrowser());
+        webView.setWebChromeClient(new ChromeClient());
         webView.setVerticalScrollBarEnabled(true);
         webView.setClickable(true);
         webView.requestFocus(View.FOCUS_DOWN);
-
         webSettings = webView.getSettings();
 
         // improve webView performance
@@ -103,27 +115,17 @@ public class AppMenuFragment extends Fragment {
 
         webView.loadUrl(url);
     }
-    
-    public void clearCache(){
-        try{
-            webView.clearCache(true);
-            webView.clearHistory();
-        }catch (NullPointerException e){
-            e.printStackTrace();
-        }
+
+    public WebView getWebView(){
+        return webView;
     }
 
     public class AppBrowser extends WebViewClient {
         @Override
-        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-            return super.shouldOverrideUrlLoading(view, request);
-        }
-
-        @Override
-        public void onPageFinished(WebView view, String url) {
-            super.onPageFinished(view, url);
-
-            ((BaseActivity)getActivity()).dismissDialog();
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            view.loadUrl(url);
+            layoutProgress.setVisibility(View.VISIBLE);
+            return true;
         }
     }
 
@@ -140,6 +142,20 @@ public class AppMenuFragment extends Fragment {
             webView.restoreState(savedInstanceState);
         }catch (NullPointerException e){
             e.printStackTrace();
+        }
+    }
+
+    public class ChromeClient extends WebChromeClient {
+        @Override
+        public void onProgressChanged(WebView view, int newProgress) {
+            layoutProgress.setVisibility(View.VISIBLE);
+            progressBarLoading.setProgress(newProgress);
+
+            if (newProgress == 100){
+                layoutProgress.setVisibility(View.GONE);
+            }
+
+            super.onProgressChanged(view, newProgress);
         }
     }
 }

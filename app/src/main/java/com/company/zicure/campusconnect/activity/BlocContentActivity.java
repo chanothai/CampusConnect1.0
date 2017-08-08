@@ -7,7 +7,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,10 +26,13 @@ import gallery.zicure.company.com.modellibrary.utilize.ToolbarManager;
 import gallery.zicure.company.com.modellibrary.utilize.VariableConnect;
 
 public class BlocContentActivity extends BaseActivity {
+    /** Make: View **/
     private FrameLayout frameLayout = null;
     private Toolbar toolbar = null;
     private TextView textTitle = null;
+    private WebView webView = null;
 
+    /** Make: Properties **/
     private String titleBloc = null;
     private String urlBloc = null;
 
@@ -62,6 +67,19 @@ public class BlocContentActivity extends BaseActivity {
         }
     }
 
+    private void setToolbar(){
+        if (Build.VERSION.SDK_INT >= 21) {
+            ToolbarManager manager = new ToolbarManager(this);
+            manager.setToolbar(toolbar, textTitle, getDrawable(R.drawable.back_screen), titleBloc);
+
+            if (urlBloc.isEmpty()){
+                CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) frameLayout.getLayoutParams();
+                params.setBehavior(new AppBarLayout.ScrollingViewBehavior());
+                frameLayout.requestLayout();
+            }
+        }
+    }
+
     private void checkIniFragment(){
         if (!urlBloc.isEmpty()){
             iniFragmentBloc();
@@ -82,25 +100,19 @@ public class BlocContentActivity extends BaseActivity {
         transaction.commit();
     }
 
-    private void setToolbar(){
-        if (Build.VERSION.SDK_INT >= 21) {
-            ToolbarManager manager = new ToolbarManager(this);
-            manager.setToolbar(toolbar, textTitle, getDrawable(R.drawable.back_screen), titleBloc);
-
-            if (urlBloc.isEmpty()){
-                CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) frameLayout.getLayoutParams();
-                params.setBehavior(new AppBarLayout.ScrollingViewBehavior());
-                frameLayout.requestLayout();
-            }
-        }
-    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home:{
-                finish();
-                overridePendingTransition(R.anim.anim_scale_in, R.anim.anim_slide_out_right);
+                webView = getFragmentAppMenu().getWebView();
+                if (webView != null){
+                    if (webView.canGoBack()){
+                        webView.goBack();
+                    }else{
+                        finish();
+                        overridePendingTransition(R.anim.anim_scale_in, R.anim.anim_slide_out_right);
+                    }
+                }
                 break;
             }
 
@@ -129,16 +141,36 @@ public class BlocContentActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        finish();
-        overridePendingTransition(R.anim.anim_scale_in, R.anim.anim_slide_out_right);
+
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        appMenuFragment = (AppMenuFragment.newInstance(urlBloc));
-        appMenuFragment.clearCache();
         EventBusCart.getInstance().getEventBus().unregister(this);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+
+            webView = getFragmentAppMenu().getWebView();
+            if (webView != null){
+                if (webView.canGoBack()){
+                    webView.goBack();
+                }else{
+                    finish();
+                    overridePendingTransition(R.anim.anim_scale_in, R.anim.anim_slide_out_right);
+                }
+            }
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    private AppMenuFragment getFragmentAppMenu(){
+        FragmentManager fm = getSupportFragmentManager();
+        AppMenuFragment fragment = (AppMenuFragment) fm.findFragmentByTag(VariableConnect.appMenuFragmentKey);
+        return fragment;
     }
 
     /** onEvent **/

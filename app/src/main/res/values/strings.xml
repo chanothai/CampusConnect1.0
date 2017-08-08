@@ -1,27 +1,13 @@
 <resources>
-    <string name="app_name">Connect</string>
+    <string name="app_name">CampusConnect</string>
     <string name="username">USERNAME</string>
-    <string name="device_type">DEVICE TYPE</string>
-    <string name="device_id">DEVICE ID</string>
     <string name="register">REGISTER</string>
     <string name="store_login">com.zicure.login</string>
     <string name="priKey">private_key</string>
     <string name="pubKey">public_key</string>
-    <string name="hint_password_th">รหัสผ่าน</string>
     <string name="pubServ_key">pubServ_key</string>
     <string name="forgot_password_link">ForgotPassword?</string>
-    <string name="news">News</string>
-    <string name="map">Map</string>
-    <string name="emergency">Emergency</string>
-    <string name="tracking">Tracking</string>
     <string name="action_setings">Setting</string>
-    <string name="url_map_service">hungary.ar-bro.net</string>
-
-    <!--APuT9Gt43aGNLUwn+ewtjzV+1cXjdLcSe/TYXf7n8Vs=-->
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="campus_logo">Connect</string>
 
     <!--Slide menu-->
     <string name="menu_calendar">Calendar</string>
@@ -74,6 +60,7 @@
     <string name="text_btn_login_th">เข้าสู่ระบบ</string>
     <string name="text_forgot_password_th">ลืมรหัสผ่าน?</string>
     <string name="text_id_card_th">หมายเลขบัตรประชาชน</string>
+    <string name="text_password_th">รหัสผ่าน</string>
 
     //Register Thai
     <string name="text_title_register">ลงทะเบียน</string>
