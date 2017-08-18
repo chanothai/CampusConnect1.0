@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_vertical"
-    android:padding="@dimen/padding_very_large"
-    android:layout_weight="1.1">
+    android:padding="@dimen/padding_very_large">
 
     <ImageView
         android:layout_width="match_parent"

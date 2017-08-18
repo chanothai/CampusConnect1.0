@@ -120,12 +120,22 @@ public class AppMenuFragment extends Fragment {
         return webView;
     }
 
+    public void clearCache(){
+        webView.clearCache(true);
+    }
+
     public class AppBrowser extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             view.loadUrl(url);
             layoutProgress.setVisibility(View.VISIBLE);
             return true;
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+            webView.clearCache(true);
         }
     }
 

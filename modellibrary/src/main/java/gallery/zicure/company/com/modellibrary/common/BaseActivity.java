@@ -42,6 +42,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void showLoadingDialog(){
+        dismissDialog();
         loadingDialogFragment = new LoadingDialogFragment.Builder().build();
         createFragmentDialog(loadingDialogFragment);
     }

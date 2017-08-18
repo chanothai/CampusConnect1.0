@@ -1,8 +1,11 @@
 package com.company.zicure.campusconnect.activity;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Build;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
@@ -110,6 +113,7 @@ public class MainMenuActivity extends BaseActivity {
         ButterKnife.bind(this);
         setToolbar();
         setOnTouchView();
+
     }
 
     private void initParameter(){
@@ -226,7 +230,6 @@ public class MainMenuActivity extends BaseActivity {
                 ClientHttp.getInstance(this).requestQuiz(currentToken);
             }else{
                 dismissDialog();
-
                 SharedPreferences pref = getSharedPreferences(VariableConnect.keyFile, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = pref.edit();
                 editor.clear();
@@ -367,10 +370,12 @@ public class MainMenuActivity extends BaseActivity {
         Log.d("SlideMenu",new Gson().toJson(arrMenu));
         String[] arrTitle = {
                 getString(R.string.menu_feed_th),
-                getString(R.string.logout_menu_th),};
+                getString(R.string.payment_th),
+                getString(R.string.logout_menu_th)};
 
         int[] arrImg = {
                 R.drawable.ic_news_feed,
+                R.drawable.point,
                 R.drawable.exit};
 
         for (int i = 0; i < arrTitle.length; i++){
@@ -402,34 +407,9 @@ public class MainMenuActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-//    private void intentToPayment(){
-//        String authToken = null;
-//        String strPackage = "com.company.zicure.payment";
-//        try{
-//            authToken = ModelCart.getInstance().getKeyModel().getAuthToken();
-//            Intent intent = getPackageManager().getLaunchIntentForPackage(strPackage);
-//            if (authToken != null){
-//                intent.addCategory(Intent.CATEGORY_LAUNCHER);
-//                intent.setType("text/plain");
-//                intent.putExtra(Intent.EXTRA_TEXT, authToken);
-//            }
-//            startActivity(intent);
-//            ModelCart.getInstance().getKeyModel().setAuthToken("");
-//
-//        }catch (NullPointerException e){
-//            e.printStackTrace();
-//            try{
-//                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + strPackage)));
-//            }catch (ActivityNotFoundException ef){
-//                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + strPackage)));
-//            }
-//        }
-//    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
     }
 
     @Override

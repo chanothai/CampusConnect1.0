@@ -3,17 +3,23 @@ package com.company.zicure.campusconnect.activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.util.Base64;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.company.zicure.campusconnect.R;
 import com.company.zicure.campusconnect.dialog.AwesomeDialogFragment;
+import com.company.zicure.campusconnect.dialog.DatePickerFragment;
 import com.company.zicure.campusconnect.network.ClientHttp;
 import com.company.zicure.campusconnect.security.EncryptionAES;
 
@@ -23,24 +29,35 @@ import com.squareup.otto.Subscribe;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import gallery.zicure.company.com.modellibrary.common.BaseActivity;
 import gallery.zicure.company.com.modellibrary.models.BaseResponse;
 import gallery.zicure.company.com.modellibrary.models.DataModel;
+import gallery.zicure.company.com.modellibrary.models.DateModel;
 import gallery.zicure.company.com.modellibrary.models.register.RegisterRequest;
 import gallery.zicure.company.com.modellibrary.models.register.ResponseRegister;
+import gallery.zicure.company.com.modellibrary.models.register.ResponseUniversities;
 import gallery.zicure.company.com.modellibrary.models.register.VerifyRequest;
 import gallery.zicure.company.com.modellibrary.models.register.VerifyResponse;
 import gallery.zicure.company.com.modellibrary.utilize.EventBusCart;
 import gallery.zicure.company.com.modellibrary.utilize.ModelCart;
 import gallery.zicure.company.com.modellibrary.utilize.VariableConnect;
 
-public class RegisterActivity extends BaseActivity implements EditText.OnEditorActionListener, AwesomeDialogFragment.OnDialogListener{
+public class RegisterActivity extends BaseActivity implements View.OnFocusChangeListener, EditText.OnEditorActionListener, AwesomeDialogFragment.OnDialogListener, AdapterView.OnItemSelectedListener{
 
+    @Bind(R.id.spinner_org)
+    Spinner spUniversity;
     @Bind(R.id.identity_card)
     EditText idCard;
+    @Bind(R.id.birth_date)
+    EditText birthDate;
+    @Bind(R.id.student_id)
+    EditText studentID;
     @Bind(R.id.btn_register)
     Button btnRegister;
     @Bind(R.id.phone_number)
@@ -68,8 +85,11 @@ public class RegisterActivity extends BaseActivity implements EditText.OnEditorA
         idCard.requestFocus();
         idCard.setOnEditorActionListener(this);
 
+        birthDate.setOnFocusChangeListener(this);
+
         if (savedInstanceState == null){
             setKey();
+            loadUniversity();
         }
     }
 
@@ -78,6 +98,12 @@ public class RegisterActivity extends BaseActivity implements EditText.OnEditorA
         ModelCart.getInstance().getKeyModel().setKey(keyByte);
     }
 
+    private void loadUniversity(){
+        ClientHttp.getInstance(this).requestORG();
+    }
+
+
+    /******** OnClick **************/
     @OnClick(R.id.btn_register)
     public void setBtnRegister() {
         checkInput();
@@ -104,6 +130,17 @@ public class RegisterActivity extends BaseActivity implements EditText.OnEditorA
 
         showLoadingDialog();
         ClientHttp.getInstance(context).register(request);
+    }
+
+    @OnClick(R.id.birth_date)
+    public void onClick(){
+        showAlertDateDialog();
+    }
+
+    private void showAlertDateDialog(){
+        DialogFragment dialogFragment = new DatePickerFragment();
+        dialogFragment.setCancelable(false);
+        dialogFragment.show(getSupportFragmentManager(), "datePicker");
     }
 
     private DataModel createModel(){
@@ -140,7 +177,22 @@ public class RegisterActivity extends BaseActivity implements EditText.OnEditorA
         editor.apply();
     }
 
-    //Subscribe
+    /************** Subscribe **************/
+    @Subscribe
+    public void onEventResponseUniversity(ResponseUniversities response) {
+        if (response.getResult().getSuccess().equalsIgnoreCase("OK")){
+            List<String> universities = new ArrayList<>();
+
+            for (int i = 0; i < response.getResult().getData().getOrgLists().size(); i++){
+                universities.add(i, response.getResult().getData().getOrgLists().get(i).getName());
+            }
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, universities);
+            spUniversity.setAdapter(adapter);
+            spUniversity.setOnItemSelectedListener(this);
+        }
+    }
+
     @Subscribe
     public void onEventResponseRegister(ResponseRegister response) {
         if (response.getResult().getSuccess().equalsIgnoreCase("OK")) {
@@ -224,6 +276,33 @@ public class RegisterActivity extends BaseActivity implements EditText.OnEditorA
         dismissDialog();
     }
 
+    @Subscribe
+    public void onEventDateTime(DateModel date){
+        String strDay = "", strMonth = "";
+        if (date.getMonth() < 10){
+            strMonth = "0" + date.getMonth();
+            strDay = getCurrentDay(date);
+            birthDate.setText(date.getYear() +"-"+strMonth+"-"+strDay);
+            birthDate.setSelection(birthDate.getText().length());
+        }else{
+            strMonth = String.valueOf(date.getMonth());
+            strDay = getCurrentDay(date);
+            birthDate.setText(date.getYear() +"-"+strMonth+"-"+strDay);
+            birthDate.setSelection(birthDate.getText().length());
+        }
+    }
+
+    private String getCurrentDay(DateModel date){
+        String strDay = "";
+        if (date.getDay() < 10){
+            strDay = "0" + date.getDay();
+        }else{
+            strDay = String.valueOf(date.getDay());
+        }
+
+        return strDay;
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -261,5 +340,26 @@ public class RegisterActivity extends BaseActivity implements EditText.OnEditorA
     @Override
     public void onNegativeButtonClick() {
         finish();
+    }
+
+    @Override
+    public void onFocusChange(View view, boolean hasFocus) {
+        if (hasFocus){
+            switch (view.getId()){
+                case R.id.birth_date:
+                    showAlertDateDialog();
+                    break;
+            }
+        }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }

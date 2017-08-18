@@ -14,6 +14,7 @@ import gallery.zicure.company.com.modellibrary.models.profile.ResponseIDCard;
 import gallery.zicure.company.com.modellibrary.models.quiz.ResponseQuiz;
 import gallery.zicure.company.com.modellibrary.models.register.RegisterRequest;
 import gallery.zicure.company.com.modellibrary.models.register.ResponseRegister;
+import gallery.zicure.company.com.modellibrary.models.register.ResponseUniversities;
 import gallery.zicure.company.com.modellibrary.models.register.VerifyRequest;
 import gallery.zicure.company.com.modellibrary.models.register.VerifyResponse;
 import retrofit2.Call;
@@ -34,6 +35,9 @@ public interface LogApi {
 
     @POST("Api/login.json")
     Call<LoginResponse> callLogin(@Body LoginRequest loginRequest);
+
+    @GET("Api/callOrgsList.json")
+    Call<ResponseUniversities> callORG();
 
     @POST("Api/secure/registerUser.json")
     Call<BaseResponse> callRegisterSecure(@Body DataModel dataModel);

@@ -19,7 +19,11 @@
             android:orientation="vertical"
             android:padding="@dimen/padding_eight">
 
-            <include layout="@layout/content_header_layout" />
+            <include
+                layout="@layout/content_header_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1.1"/>
 
             <LinearLayout
                 android:id="@+id/form_login"
@@ -39,9 +43,8 @@
                         android:id="@+id/username"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:hint="@string/text_id_card_th"
-                        android:inputType="number"
-                        android:maxLength="13"
+                        android:hint="@string/text_username_th"
+                        android:inputType="text"
                         android:textSize="@dimen/size_text_medium"
                         android:maxLines="1"
                         android:padding="@dimen/padding_large"
@@ -85,7 +88,7 @@
                     android:paddingTop="@dimen/margin_padding_normal"
                     android:paddingBottom="@dimen/margin_padding_normal"
                     android:textSize="@dimen/size_text_small"
-                    android:text="@string/text_forgot_password_th"
+                    android:text=""
                     android:layout_gravity="end"/>
             </LinearLayout>
         </LinearLayout>

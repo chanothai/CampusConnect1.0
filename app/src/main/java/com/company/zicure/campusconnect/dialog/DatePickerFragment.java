@@ -1,8 +1,11 @@
 package com.company.zicure.campusconnect.dialog;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.widget.DatePicker;
@@ -40,8 +43,9 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
             day = getDate().getDay();
         }
 
-        pickDialog = new DatePickerDialog(getActivity(), AlertDialog.THEME_HOLO_LIGHT, this, year, month, day);
+        pickDialog = new DatePickerDialog(getActivity(), android.R.style.Theme_Holo_Light_Dialog, this, year, month, day);
         pickDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+        pickDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         return pickDialog;
     }
@@ -49,12 +53,12 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     private DateModel getDate(){
         return ModelCart.getInstance().getModel().dateModel;
     }
+
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
         getDate().setDay(day);
         getDate().setMonth(month + 1);
         getDate().setYear(year);
         EventBusCart.getInstance().getEventBus().post(getDate());
-
     }
 }

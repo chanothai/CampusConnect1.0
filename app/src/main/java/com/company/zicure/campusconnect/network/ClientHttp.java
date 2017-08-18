@@ -21,6 +21,7 @@ import gallery.zicure.company.com.modellibrary.models.profile.ResponseIDCard;
 import gallery.zicure.company.com.modellibrary.models.quiz.ResponseQuiz;
 import gallery.zicure.company.com.modellibrary.models.register.RegisterRequest;
 import gallery.zicure.company.com.modellibrary.models.register.ResponseRegister;
+import gallery.zicure.company.com.modellibrary.models.register.ResponseUniversities;
 import gallery.zicure.company.com.modellibrary.models.register.VerifyRequest;
 import gallery.zicure.company.com.modellibrary.models.register.VerifyResponse;
 import gallery.zicure.company.com.modellibrary.utilize.EventBusCart;
@@ -46,7 +47,7 @@ public class ClientHttp {
 
     public ClientHttp(Context context){
         this.context = context;
-        String urlIdentityServer = "http://connect01.pakgon.com/";
+        String urlIdentityServer = "http://connect03.pakgon.com/";
         retrofit = RetrofitAPI.newInstance(urlIdentityServer).getRetrofit();
         service = retrofit.create(LogApi.class);
         gson = new GsonBuilder().disableHtmlEscaping().create();
@@ -58,6 +59,31 @@ public class ClientHttp {
         }
         return me;
     }
+
+
+    public LogApi getService(){
+        return service;
+    }
+
+    public void requestORG(){
+        Call<ResponseUniversities> callORG = service.callORG();
+        callORG.enqueue(new Callback<ResponseUniversities>() {
+            @Override
+            public void onResponse(Call<ResponseUniversities> call, Response<ResponseUniversities> response) {
+                try{
+                    EventBusCart.getInstance().getEventBus().post(response.body());
+                }catch (NullPointerException e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseUniversities> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
 
     public void registerSecure(DataModel user){
         Call<BaseResponse> callRegis = service.callRegisterSecure(user);

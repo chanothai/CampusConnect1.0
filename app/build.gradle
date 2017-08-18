@@ -14,6 +14,18 @@ android {
         versionCode rootProject.ext.versionCode
         versionName rootProject.ext.versionName
     }
+
+    productFlavors {
+        connectcampus{
+            applicationId = "com.company.zicure.campusconnect"
+        }
+
+        smartcity{
+            applicationId = "com.company.zicure.smartcity"
+        }
+    }
+
+
     buildTypes {
         release {
             minifyEnabled false

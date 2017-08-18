@@ -1,9 +1,11 @@
 package com.company.zicure.campusconnect.contents;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
@@ -64,11 +66,39 @@ public class ContentAdapterCart {
 
                             baseActivity.openActivity(LoginActivity.class, true);
                         }
+                        else if (getTitle(position).equalsIgnoreCase(baseActivity.getString(R.string.payment_th))) {
+                            intentToPayment();
+                        }
                     }
                 });
             }
         };
         return slideMenuAdapter;
+    }
+
+    private void intentToPayment(){
+        String authToken = null;
+        String strPackage = "com.company.zicure.payment";
+        try{
+            authToken = ModelCart.getInstance().getKeyModel().getAuthToken();
+            Intent intent = baseActivity.getPackageManager().getLaunchIntentForPackage(strPackage);
+            if (authToken != null){
+                intent.addCategory(Intent.CATEGORY_LAUNCHER);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_TEXT, authToken);
+            }
+
+            baseActivity.startActivity(intent);
+            ModelCart.getInstance().getKeyModel().setAuthToken("");
+
+        }catch (NullPointerException e){
+            e.printStackTrace();
+            try{
+                baseActivity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + strPackage)));
+            }catch (ActivityNotFoundException ef){
+                baseActivity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + strPackage)));
+            }
+        }
     }
 
     public MainMenuAdapter setMainMenuAdapter(Activity activity, final List<ResponseBlocUser.ResultBlocUser.DataBloc.UserAccessControl.BlocUser> arrBloc) {

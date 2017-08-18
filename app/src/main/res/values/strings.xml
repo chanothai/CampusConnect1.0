@@ -49,7 +49,7 @@
     <string name="setting_menu_th">การตั้งค่า</string>
     <string name="logout_menu_th">ออกจากระบบ</string>
     <string name="user_detail_th">ข้อมูลส่วนตัว</string>
-    <string name="activate_user_th">เปิดใช้งานแอพพลิเคชั่น</string>
+    <string name="payment_th">ระบบจ่ายเงิน</string>
     <string name="title_id_card_th">เลขบัตรประจำตัวประชาชน</string>
     <string name="email_th">อีเมล์</string>
 
@@ -64,7 +64,8 @@
 
     //Register Thai
     <string name="text_title_register">ลงทะเบียน</string>
-    <string name="identity_card_th">หมายเลขบัตรประชาชน</string>
+    <string name="text_username_th">ชื่อผู้ใช้งาน</string>
+    <string name="text_student_id_th">รหัสนักศึกษา</string>
     <string name="birth_date_th">ปี-เดือน-วัน</string>
     <string name="phone_number_th">หมายเลขโทรศัพท์</string>
     <string name="text_btn_confirm_th">ยืนยัน</string>
