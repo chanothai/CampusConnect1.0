@@ -48,35 +48,85 @@ public class ResponseUniversities {
             this.data = data;
         }
 
+
         public class DataOrg {
-            @SerializedName("orgs_list") private List<ORGList> orgLists;
+            @SerializedName("UserType") private List<UserType> userTypes;
+            @SerializedName("Org_name") private List<OrgName> orgNames;
 
-            public List<ORGList> getOrgLists() {
-                return orgLists;
+            public List<UserType> getUserTypes() {
+                return userTypes;
             }
 
-            public void setOrgLists(List<ORGList> orgLists) {
-                this.orgLists = orgLists;
+            public void setUserTypes(List<UserType> userTypes) {
+                this.userTypes = userTypes;
             }
 
-            public class ORGList {
-                @SerializedName("org_id") private int id;
-                @SerializedName("org_name") private String name;
+            public List<OrgName> getOrgNames() {
+                return orgNames;
+            }
 
-                public int getId() {
-                    return id;
+            public void setOrgNames(List<OrgName> orgNames) {
+                this.orgNames = orgNames;
+            }
+
+
+            public class UserType {
+                @SerializedName("user_type_id") private int userTypeId;
+                @SerializedName("user_type_name_th") private String userTypeNameTH;
+                @SerializedName("user_type_name_en") private String userTypeNameEN;
+
+                public int getUserTypeId() {
+                    return userTypeId;
                 }
 
-                public void setId(int id) {
-                    this.id = id;
+                public void setUserTypeId(int userTypeId) {
+                    this.userTypeId = userTypeId;
                 }
 
-                public String getName() {
-                    return name;
+                public String getUserTypeNameTH() {
+                    return userTypeNameTH;
                 }
 
-                public void setName(String name) {
-                    this.name = name;
+                public void setUserTypeNameTH(String userTypeNameTH) {
+                    this.userTypeNameTH = userTypeNameTH;
+                }
+
+                public String getUserTypeNameEN() {
+                    return userTypeNameEN;
+                }
+
+                public void setUserTypeNameEN(String userTypeNameEN) {
+                    this.userTypeNameEN = userTypeNameEN;
+                }
+            }
+
+            public class OrgName {
+                @SerializedName("org_id") private int orgId;
+                @SerializedName("org_name_th") private String orgNameTH;
+                @SerializedName("org_name_en") private String orgNameEN;
+
+                public int getOrgId() {
+                    return orgId;
+                }
+
+                public void setOrgId(int orgId) {
+                    this.orgId = orgId;
+                }
+
+                public String getOrgNameTH() {
+                    return orgNameTH;
+                }
+
+                public void setOrgNameTH(String orgNameTH) {
+                    this.orgNameTH = orgNameTH;
+                }
+
+                public String getOrgNameEN() {
+                    return orgNameEN;
+                }
+
+                public void setOrgNameEN(String orgNameEN) {
+                    this.orgNameEN = orgNameEN;
                 }
             }
         }

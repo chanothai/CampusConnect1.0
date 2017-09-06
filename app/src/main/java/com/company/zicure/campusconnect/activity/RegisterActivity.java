@@ -1,8 +1,10 @@
 package com.company.zicure.campusconnect.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.UiThread;
 import android.support.v4.app.DialogFragment;
 import android.util.Base64;
 import android.util.Log;
@@ -12,7 +14,10 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,7 +29,6 @@ import com.company.zicure.campusconnect.network.ClientHttp;
 import com.company.zicure.campusconnect.security.EncryptionAES;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.squareup.otto.Subscribe;
 
 import org.json.JSONObject;
@@ -37,7 +41,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import gallery.zicure.company.com.modellibrary.common.BaseActivity;
 import gallery.zicure.company.com.modellibrary.models.BaseResponse;
-import gallery.zicure.company.com.modellibrary.models.DataModel;
 import gallery.zicure.company.com.modellibrary.models.DateModel;
 import gallery.zicure.company.com.modellibrary.models.register.RegisterRequest;
 import gallery.zicure.company.com.modellibrary.models.register.ResponseRegister;
@@ -48,10 +51,21 @@ import gallery.zicure.company.com.modellibrary.utilize.EventBusCart;
 import gallery.zicure.company.com.modellibrary.utilize.ModelCart;
 import gallery.zicure.company.com.modellibrary.utilize.VariableConnect;
 
-public class RegisterActivity extends BaseActivity implements View.OnFocusChangeListener, EditText.OnEditorActionListener, AwesomeDialogFragment.OnDialogListener, AdapterView.OnItemSelectedListener{
+public class RegisterActivity extends BaseActivity implements CompoundButton.OnCheckedChangeListener,View.OnFocusChangeListener, EditText.OnEditorActionListener, AwesomeDialogFragment.OnDialogListener, AdapterView.OnItemSelectedListener{
 
+    /** Make: View **/
+    @Bind(R.id.spinner_user_type)
+    Spinner spUserType;
     @Bind(R.id.spinner_org)
     Spinner spUniversity;
+    @Bind(R.id.citizen_id)
+    EditText citizenId;
+    @Bind(R.id.layout_screenName)
+    LinearLayout layoutScreenName;
+    @Bind(R.id.first_name)
+    EditText firstName;
+    @Bind(R.id.last_name)
+    EditText lastName;
     @Bind(R.id.identity_card)
     EditText idCard;
     @Bind(R.id.birth_date)
@@ -68,24 +82,27 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
     EditText editConfirmPass;
     @Bind(R.id.edit_email)
     EditText editEmail;
+    @Bind(R.id.check_condition)
+    CheckBox checkCondition;
 
-    private String strIdCard, strPhone, pass, confirmPass, email;
+    /** Make: Properties **/
+    private int userTypeId, orgId;
+    private List<String> userTypes = null;
+    private boolean isCheckCondition = false;
+    private String resultDate = null;
     //Context
     private Context context = this;
     private boolean isSuccess = false;
+    private List<ResponseUniversities.ResultOrg.DataOrg.OrgName> listORG = null;
+    private List<ResponseUniversities.ResultOrg.DataOrg.UserType> listUserType = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         ButterKnife.bind(this);
         EventBusCart.getInstance().getEventBus().register(this);
-
-        phoneNumber.setOnEditorActionListener(this);
-
-        idCard.requestFocus();
-        idCard.setOnEditorActionListener(this);
-
-        birthDate.setOnFocusChangeListener(this);
+        bindView();
 
         if (savedInstanceState == null){
             setKey();
@@ -93,6 +110,12 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
         }
     }
 
+    private void bindView(){
+        citizenId.requestFocus();
+        birthDate.setOnFocusChangeListener(this);
+        birthDate.setOnEditorActionListener(this);
+        checkCondition.setOnCheckedChangeListener(this);
+    }
     private void setKey(){
         byte[] keyByte = Base64.decode(VariableConnect.staticKey.getBytes(), Base64.NO_WRAP);
         ModelCart.getInstance().getKeyModel().setKey(keyByte);
@@ -110,23 +133,22 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
     }
 
     private void checkInput(){
-        strIdCard = idCard.getText().toString().trim();
-        strPhone = phoneNumber.getText().toString().trim();
-        pass = editPass.getText().toString().trim();
-        confirmPass = editConfirmPass.getText().toString().trim();
-        email = editEmail.getText().toString().trim();
-
         RegisterRequest request = new RegisterRequest();
         RegisterRequest.User user = new RegisterRequest.User();
-        user.setCitizenId(strIdCard);
-        user.setPhone(strPhone);
-        user.setPassword(pass);
-        user.setRePassword(confirmPass);
-        user.setEmail(email);
+        user.setUserTypeId(Integer.toString(userTypeId));
+        user.setCitizenId(citizenId.getText().toString().trim());
+        user.setFirstName(firstName.getText().toString().trim());
+        user.setLastName(lastName.getText().toString().trim());
+        user.setBirthDate(birthDate.getText().toString().trim());
+        user.setStdNo(studentID.getText().toString().trim());
+        user.setOrgID(Integer.toString(orgId));
+        user.setUsername(idCard.getText().toString().trim());
+        user.setPhone(phoneNumber.getText().toString().trim());
+        user.setPassword(editPass.getText().toString().trim());
+        user.setRePassword(editConfirmPass.getText().toString().trim());
+        user.setEmail(editEmail.getText().toString().trim());
+        user.setAgree(isCheckCondition);
         request.setUser(user);
-
-        String str = new Gson().toJson(request);
-        Log.d("RegisterRequest", str);
 
         showLoadingDialog();
         ClientHttp.getInstance(context).register(request);
@@ -143,33 +165,6 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
         dialogFragment.show(getSupportFragmentManager(), "datePicker");
     }
 
-    private DataModel createModel(){
-        RegisterRequest request = new RegisterRequest();
-        RegisterRequest.User user = new RegisterRequest.User();
-        user.setCitizenId(strIdCard);
-        user.setPhone(strPhone);
-        user.setPassword(pass);
-        user.setRePassword(confirmPass);
-        user.setEmail(email);
-
-        request.setUser(user);
-
-        String str = new Gson().toJson(request);
-        Log.d("RegisterRequest", str);
-
-        Gson gson = new GsonBuilder().disableHtmlEscaping().create();
-        String resultEncrypt = EncryptionAES.newInstance(ModelCart.getInstance().getKeyModel().getKey()).encrypt(gson.toJson(request));
-        Log.d("User", resultEncrypt);
-
-        DataModel dataModel = new DataModel();
-        dataModel.setData(resultEncrypt);
-
-        str = new Gson().toJson(dataModel);
-        Log.d("RegisterRequest", str);
-
-        return dataModel;
-    }
-
     private void store(String strPhone){
         SharedPreferences sharedPref = getSharedPreferences(VariableConnect.keyFile, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
@@ -179,15 +174,26 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
 
     /************** Subscribe **************/
     @Subscribe
-    public void onEventResponseUniversity(ResponseUniversities response) {
+    public void onEventResponseUserType(ResponseUniversities response) {
         if (response.getResult().getSuccess().equalsIgnoreCase("OK")){
-            List<String> universities = new ArrayList<>();
+            listORG = response.getResult().getData().getOrgNames();
+            listUserType = response.getResult().getData().getUserTypes();
 
-            for (int i = 0; i < response.getResult().getData().getOrgLists().size(); i++){
-                universities.add(i, response.getResult().getData().getOrgLists().get(i).getName());
+            userTypes = new ArrayList<>();
+            for (int i = 0; i < response.getResult().getData().getUserTypes().size(); i++){
+                userTypes.add(i, response.getResult().getData().getUserTypes().get(i).getUserTypeNameTH());
             }
 
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, universities);
+            ArrayAdapter<String> adapterUserType = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, userTypes);
+            spUserType.setAdapter(adapterUserType);
+            spUserType.setOnItemSelectedListener(this);
+
+            List<String> listOrg = new ArrayList<>();
+            for (int j = 0; j < response.getResult().getData().getOrgNames().size(); j++){
+                listOrg.add(j, response.getResult().getData().getOrgNames().get(j).getOrgNameTH());
+            }
+
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listOrg);
             spUniversity.setAdapter(adapter);
             spUniversity.setOnItemSelectedListener(this);
         }
@@ -197,7 +203,7 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
     public void onEventResponseRegister(ResponseRegister response) {
         if (response.getResult().getSuccess().equalsIgnoreCase("OK")) {
             isSuccess = true;
-            showAlertDialog(isSuccess, response.getResult().getSuccess(),false);
+            showAlertDialog(isSuccess, "กรอกPIN CODE ที่ได้จากอีเมล์ของคุณ",false);
         }else{
             isSuccess = false;
             showAlertDialog(isSuccess, response.getResult().getError(),true);
@@ -252,9 +258,9 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
             String success = jsonObject.getString("Success");
             if (!success.isEmpty()){
                 Toast.makeText(this, success, Toast.LENGTH_SHORT).show();
-                store(strPhone);
+                store(phoneNumber.getText().toString().trim());
                 Bundle bundle = new Bundle();
-                bundle.putString("username", strPhone);
+                bundle.putString("username", phoneNumber.getText().toString().trim());
                 openActivity(LoginActivity.class,bundle, true);
             }else{
                 String error = jsonObject.getString("Error");
@@ -282,11 +288,13 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
         if (date.getMonth() < 10){
             strMonth = "0" + date.getMonth();
             strDay = getCurrentDay(date);
-            birthDate.setText(date.getYear() +"-"+strMonth+"-"+strDay);
+            resultDate = date.getYear() +"-"+strMonth+"-"+strDay;
+            birthDate.setText(resultDate);
             birthDate.setSelection(birthDate.getText().length());
         }else{
             strMonth = String.valueOf(date.getMonth());
             strDay = getCurrentDay(date);
+            resultDate = date.getYear() +"-"+strMonth+"-"+strDay;
             birthDate.setText(date.getYear() +"-"+strMonth+"-"+strDay);
             birthDate.setSelection(birthDate.getText().length());
         }
@@ -311,8 +319,8 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
 
     @Override
     public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-        if (actionId == EditorInfo.IME_ACTION_DONE){
-            checkInput();
+        if (actionId == 0){
+            birthDate.setText(resultDate);
         }
 
         return false;
@@ -325,7 +333,7 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
                 VerifyRequest request = new VerifyRequest();
                 VerifyRequest.VerifyUser verifyUser = new VerifyRequest.VerifyUser();
                 verifyUser.setPinCode(pinCode);
-                verifyUser.setUsername(strIdCard);
+                verifyUser.setUsername(idCard.getText().toString().trim());
                 request.setUser(verifyUser);
 
                 showLoadingDialog();
@@ -353,13 +361,39 @@ public class RegisterActivity extends BaseActivity implements View.OnFocusChange
         }
     }
 
+    /** Spinner selected **/
     @Override
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        Toast.makeText(context, "", Toast.LENGTH_SHORT).show();
+    public void onItemSelected(AdapterView<?> parent, View view, final int position, long id) {
+        switch (parent.getId()){
+            case R.id.spinner_user_type:
+                userTypeId = listUserType.get(position).getUserTypeId();
+                if (listUserType.get(position).getUserTypeId() == 5){
+                    layoutScreenName.setVisibility(View.VISIBLE);
+                    layoutScreenName.setVisibility(View.VISIBLE);
+                }else{
+                    layoutScreenName.setVisibility(View.GONE);
+                    layoutScreenName.setVisibility(View.GONE);
+                }
+                break;
+            case R.id.spinner_org:
+                orgId = listORG.get(position).getOrgId();
+                break;
+        }
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    /** Checkbox was check **/
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (isChecked){
+            isCheckCondition = true;
+            openActivity(ConditionActivity.class, false);
+        }else{
+            isCheckCondition = false;
+        }
     }
 }

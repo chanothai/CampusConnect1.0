@@ -43,7 +43,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
             day = getDate().getDay();
         }
 
-        pickDialog = new DatePickerDialog(getActivity(), android.R.style.Theme_Holo_Light_Dialog, this, year, month, day);
+        pickDialog = new DatePickerDialog(getActivity(), android.R.style.Theme_Holo_Light_Dialog_MinWidth, this, year, month, day);
         pickDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
         pickDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 

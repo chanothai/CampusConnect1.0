@@ -24,6 +24,8 @@ import gallery.zicure.company.com.modellibrary.models.register.ResponseRegister;
 import gallery.zicure.company.com.modellibrary.models.register.ResponseUniversities;
 import gallery.zicure.company.com.modellibrary.models.register.VerifyRequest;
 import gallery.zicure.company.com.modellibrary.models.register.VerifyResponse;
+import gallery.zicure.company.com.modellibrary.models.updatepassword.RequestForgotPassword;
+import gallery.zicure.company.com.modellibrary.models.updatepassword.ResponseForgotPassword;
 import gallery.zicure.company.com.modellibrary.utilize.EventBusCart;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -179,6 +181,25 @@ public class ClientHttp {
         });
     }
 
+    public void forgotPassword(RequestForgotPassword request) {
+        Call<ResponseForgotPassword> callUpdate = service.requestForgotPassword(request);
+        callUpdate.enqueue(new Callback<ResponseForgotPassword>() {
+            @Override
+            public void onResponse(Call<ResponseForgotPassword> call, Response<ResponseForgotPassword> response) {
+                try{
+                    EventBusCart.getInstance().getEventBus().post(response.body());
+                }catch (NullPointerException e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseForgotPassword> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
     public void checkVersionApp(){
         Call<BaseResponse> validateVersion = service.checkVersion();
         validateVersion.enqueue(new Callback<BaseResponse>() {
@@ -297,27 +318,6 @@ public class ClientHttp {
 
             @Override
             public void onFailure(Call<ResponseContactList> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
-    }
-
-    public void requestQuiz(String token) {
-        HashMap<String, String> map = new HashMap<>();
-        map.put("authToken", token);
-        Call<ResponseQuiz> quiz = service.requestQuiz(map);
-        quiz.enqueue(new Callback<ResponseQuiz>() {
-            @Override
-            public void onResponse(Call<ResponseQuiz> call, Response<ResponseQuiz> response) {
-                try{
-                    EventBusCart.getInstance().getEventBus().post(response.body());
-                }catch (NullPointerException e){
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseQuiz> call, Throwable t) {
                 t.printStackTrace();
             }
         });

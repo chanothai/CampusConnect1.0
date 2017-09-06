@@ -19,6 +19,7 @@ public class LoginRequest {
     }
 
     public static class User {
+        @SerializedName("org_id") private String orgID;
         @SerializedName("username")
         private String username;
         @SerializedName("password")
@@ -38,6 +39,14 @@ public class LoginRequest {
 
         public void setPassword(String password) {
             this.password = password;
+        }
+
+        public String getOrgID() {
+            return orgID;
+        }
+
+        public void setOrgID(String orgID) {
+            this.orgID = orgID;
         }
     }
 }

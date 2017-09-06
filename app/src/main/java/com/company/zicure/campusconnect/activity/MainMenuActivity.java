@@ -227,7 +227,6 @@ public class MainMenuActivity extends BaseActivity {
                     setToggle(0,0);
                 }
 
-                ClientHttp.getInstance(this).requestQuiz(currentToken);
             }else{
                 dismissDialog();
                 SharedPreferences pref = getSharedPreferences(VariableConnect.keyFile, Context.MODE_PRIVATE);
@@ -238,19 +237,6 @@ public class MainMenuActivity extends BaseActivity {
             }
         }catch (Exception e){
             e.printStackTrace();
-        }
-    }
-
-    @Subscribe
-    public void onEventResponseQuiz(ResponseQuiz response) {
-        if (response.getResult().getSuccess().equalsIgnoreCase("OK")){
-            if (response.getResult().getData().getPersonalQuiz().getUrl() != null){
-                Bundle bundle = new Bundle();
-                bundle.putString(VariableConnect.TITLE_CATEGORY, "แบบสอบถาม");
-                bundle.putString(VariableConnect.PATH_BLOC, response.getResult().getData().getPersonalQuiz().getUrl());
-                openActivity(BlocContentActivity.class, bundle);
-                overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
-            }
         }
 
         dismissDialog();

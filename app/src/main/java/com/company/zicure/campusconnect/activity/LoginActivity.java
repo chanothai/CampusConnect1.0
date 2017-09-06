@@ -12,8 +12,11 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +30,9 @@ import com.squareup.otto.Subscribe;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -34,11 +40,13 @@ import gallery.zicure.company.com.modellibrary.common.BaseActivity;
 import gallery.zicure.company.com.modellibrary.models.BaseResponse;
 import gallery.zicure.company.com.modellibrary.models.login.LoginRequest;
 import gallery.zicure.company.com.modellibrary.models.login.LoginResponse;
+import gallery.zicure.company.com.modellibrary.models.register.ResponseUniversities;
 import gallery.zicure.company.com.modellibrary.utilize.EventBusCart;
 import gallery.zicure.company.com.modellibrary.utilize.ModelCart;
 import gallery.zicure.company.com.modellibrary.utilize.VariableConnect;
 
 public class LoginActivity extends BaseActivity implements View.OnKeyListener, EditText.OnEditorActionListener{
+    /** Make: View **/
     @Bind(R.id.username)
     EditText editUser;
     @Bind(R.id.password)
@@ -46,9 +54,15 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener, E
     @Bind(R.id.btnConnect)
     Button btnLogin;
     @Bind(R.id.txt_link)
-
-
     TextView txtLink;
+    @Bind(R.id.label_forgot_password)
+    TextView forgotPass;
+
+    /** Make: Properties **/
+    private int orgID;
+    private List<String> universities = null;
+    private List<ResponseUniversities.ResultOrg.DataOrg> listORG = null;
+
     private String strUser = "", strPass = "";
     private byte[] keyByte = null;
     private FingerPrintAuthHelper mFingerPrintAuthHelper = null;
@@ -73,6 +87,7 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener, E
         }
     }
 
+    /** OnClick **/
     @OnClick(R.id.btnConnect)
     public void setBtnLogin(){
         checkInput();
@@ -85,6 +100,7 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener, E
         if (!strUser.isEmpty() && !strPass.isEmpty()){
             LoginRequest loginRequest = new LoginRequest();
             LoginRequest.User result = new LoginRequest.User();
+            result.setOrgID(Integer.toString(orgID));
             result.setUsername(strUser);
             result.setPassword(strPass);
             loginRequest.setUser(result);
@@ -117,7 +133,6 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener, E
 //        return dataModel;
 //    }
 
-    //Subscribe
     @Subscribe
     public void onEventLogin(LoginResponse response) {
         String str = new Gson().toJson(response);
@@ -216,6 +231,17 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener, E
 
         txtLink.setText(spannableString);
         txtLink.setMovementMethod(new LinkMovementMethod());
+
+        String startTxt = getString(R.string.text_forgot_password_th);
+        String endTxt = getString(R.string.text_forgot_password_th);
+        int start2 = startTxt.indexOf(endTxt);
+        int end2 = start + endTxt.length();
+
+        SpannableString spannableString1 = new SpannableString(startTxt);
+        spannableString1.setSpan(new CallLink(), start2, end2, 0);
+
+        forgotPass.setText(spannableString1);
+        forgotPass.setMovementMethod(new LinkMovementMethod());
     }
 
     @Override
@@ -254,6 +280,8 @@ public class LoginActivity extends BaseActivity implements View.OnKeyListener, E
 
             if (checkLink.equalsIgnoreCase(getString(R.string.text_link_th))){
                 openActivity(RegisterActivity.class, false);
+            }else if (checkLink.equalsIgnoreCase(getString(R.string.text_forgot_password_th))){
+                openActivity(ForgotPasswordActivity.class, false);
             }
         }
     }

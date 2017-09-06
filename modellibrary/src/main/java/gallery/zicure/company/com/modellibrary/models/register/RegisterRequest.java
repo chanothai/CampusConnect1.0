@@ -19,23 +19,20 @@ public class RegisterRequest {
     }
 
     public static class User{
-        @SerializedName("username")
-        private String citizenId;
-        @SerializedName("phone_no")
-        private String phone;
+        @SerializedName("user_type_id") private String userTypeId;
+        @SerializedName("citizen_id") private String citizenId;
+        @SerializedName("firstname") private String firstName;
+        @SerializedName("lastname") private String lastName;
+        @SerializedName("org_id") private String orgID;
+        @SerializedName("person_no") private String stdNo;
+        @SerializedName("birth_date") private String birthDate;
+        @SerializedName("username") private String username;
+        @SerializedName("phone_no") private String phone;
         private String password;
-        @SerializedName("re_password")
-        private String rePassword;
-        @SerializedName("email")
-        private String email;
+        @SerializedName("re_password") private String rePassword;
+        @SerializedName("email") private String email;
+        @SerializedName("is_agree") private boolean isAgree;
 
-        public String getCitizenId() {
-            return citizenId;
-        }
-
-        public void setCitizenId(String citizenId) {
-            this.citizenId = citizenId;
-        }
 
         public String getPhone() {
             return phone;
@@ -67,6 +64,78 @@ public class RegisterRequest {
 
         public void setEmail(String email) {
             this.email = email;
+        }
+
+        public String getOrgID() {
+            return orgID;
+        }
+
+        public void setOrgID(String orgID) {
+            this.orgID = orgID;
+        }
+
+        public String getStdNo() {
+            return stdNo;
+        }
+
+        public void setStdNo(String stdNo) {
+            this.stdNo = stdNo;
+        }
+
+        public String getBirthDate() {
+            return birthDate;
+        }
+
+        public void setBirthDate(String birthDate) {
+            this.birthDate = birthDate;
+        }
+
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String username) {
+            this.username = username;
+        }
+
+        public boolean isAgree() {
+            return isAgree;
+        }
+
+        public void setAgree(boolean agree) {
+            isAgree = agree;
+        }
+
+        public String getUserTypeId() {
+            return userTypeId;
+        }
+
+        public void setUserTypeId(String userTypeId) {
+            this.userTypeId = userTypeId;
+        }
+
+        public String getCitizenId() {
+            return citizenId;
+        }
+
+        public void setCitizenId(String citizenId) {
+            this.citizenId = citizenId;
+        }
+
+        public String getFirstName() {
+            return firstName;
+        }
+
+        public void setFirstName(String firstName) {
+            this.firstName = firstName;
+        }
+
+        public String getLastName() {
+            return lastName;
+        }
+
+        public void setLastName(String lastName) {
+            this.lastName = lastName;
         }
     }
 }

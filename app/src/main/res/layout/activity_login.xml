@@ -23,7 +23,7 @@
                 layout="@layout/content_header_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1.1"/>
+                android:layout_weight="1.2"/>
 
             <LinearLayout
                 android:id="@+id/form_login"
@@ -47,7 +47,7 @@
                         android:inputType="text"
                         android:textSize="@dimen/size_text_medium"
                         android:maxLines="1"
-                        android:padding="@dimen/padding_large"
+                        android:padding="@dimen/padding_medium"
                         android:imeOptions="actionNext"/>
 
                 </com.company.zicure.campusconnect.customView.TextInputView>
@@ -65,7 +65,7 @@
                         android:inputType="textPassword"
                         android:textSize="@dimen/size_text_medium"
                         android:maxLines="1"
-                        android:padding="@dimen/padding_large"
+                        android:padding="@dimen/padding_medium"
                         android:imeOptions="actionDone"/>
                 </com.company.zicure.campusconnect.customView.TextInputView>
 
@@ -75,7 +75,7 @@
                     android:layout_height="@dimen/btn_height"
                     android:layout_marginEnd="@dimen/padding_large"
                     android:layout_marginStart="@dimen/padding_large"
-                    android:layout_marginTop="@dimen/padding_large"
+                    android:layout_marginTop="@dimen/padding_small"
                     android:text="@string/text_btn_login_th"
                     android:textStyle="bold" />
                 
@@ -88,7 +88,7 @@
                     android:paddingTop="@dimen/margin_padding_normal"
                     android:paddingBottom="@dimen/margin_padding_normal"
                     android:textSize="@dimen/size_text_small"
-                    android:text=""
+                    android:text="@string/text_forgot_password_th"
                     android:layout_gravity="end"/>
             </LinearLayout>
         </LinearLayout>

@@ -17,6 +17,8 @@ import gallery.zicure.company.com.modellibrary.models.register.ResponseRegister;
 import gallery.zicure.company.com.modellibrary.models.register.ResponseUniversities;
 import gallery.zicure.company.com.modellibrary.models.register.VerifyRequest;
 import gallery.zicure.company.com.modellibrary.models.register.VerifyResponse;
+import gallery.zicure.company.com.modellibrary.models.updatepassword.RequestForgotPassword;
+import gallery.zicure.company.com.modellibrary.models.updatepassword.ResponseForgotPassword;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -36,7 +38,7 @@ public interface LogApi {
     @POST("Api/login.json")
     Call<LoginResponse> callLogin(@Body LoginRequest loginRequest);
 
-    @GET("Api/callOrgsList.json")
+    @GET("Api/getUserType.json")
     Call<ResponseUniversities> callORG();
 
     @POST("Api/secure/registerUser.json")
@@ -68,4 +70,7 @@ public interface LogApi {
 
     @POST("Api/addContact.json")
     Call<ResponseAddContact> requestAddContact(@Body RequestAddContact addContact);
+
+    @POST("Api/checkUser.json")
+    Call<ResponseForgotPassword> requestForgotPassword(@Body RequestForgotPassword updatePassword);
 }

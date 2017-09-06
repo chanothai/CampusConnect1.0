@@ -16,11 +16,11 @@ android {
     }
 
     productFlavors {
-        connectcampus{
+        connectcampus {
             applicationId = "com.company.zicure.campusconnect"
         }
 
-        smartcity{
+        smartcity {
             applicationId = "com.company.zicure.smartcity"
         }
     }
@@ -45,6 +45,7 @@ dependencies {
     compile 'com.android.support:support-v4:' + rootProject.ext.supportLibraryVersion
 
     compile project(path: ':modellibrary')
+
 
     compile 'com.roughike:bottom-bar:2.0.2'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'

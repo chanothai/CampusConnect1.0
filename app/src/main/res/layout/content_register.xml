@@ -14,12 +14,103 @@
         android:paddingEnd="@dimen/padding_extra_large"
         android:background="?android:attr/selectableItemBackground">
 
-
-        <Spinner
-            android:id="@+id/spinner_org"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/padding_medium"/>
+            android:orientation="vertical">
+
+            <com.company.zicure.campusconnect.customView.LabelView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_small"
+                android:text="@string/txt_spinner_type_user_th"
+                android:textSize="@dimen/size_text_small"/>
+            <Spinner
+                android:id="@+id/spinner_user_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-8dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <com.company.zicure.campusconnect.customView.LabelView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_small"
+                android:text="@string/txt_spinner_org_th"
+                android:textSize="@dimen/size_text_small"/>
+
+            <Spinner
+                android:id="@+id/spinner_org"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-8dp"/>
+        </LinearLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/padding_top_five">
+
+            <com.company.zicure.campusconnect.customView.EditTextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/citizen_id"
+                android:inputType="number"
+                android:maxLines="1"
+                android:maxLength="13"
+                android:imeOptions="actionNext"
+                android:padding="@dimen/padding_medium"
+                android:hint="@string/text_id_card_th" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_screenName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/padding_top_five">
+
+                <com.company.zicure.campusconnect.customView.EditTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/first_name"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:imeOptions="actionNext"
+                    android:padding="@dimen/padding_medium"
+                    android:hint="@string/txt_first_name_th" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/padding_top_five"
+                >
+
+                <com.company.zicure.campusconnect.customView.EditTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/last_name"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:imeOptions="actionNext"
+                    android:padding="@dimen/padding_medium"
+                    android:hint="@string/txt_last_name_th" />
+
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
         
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -34,7 +125,7 @@
                 android:maxLines="1"
                 android:maxLength="10"
                 android:imeOptions="actionNext"
-                android:padding="@dimen/padding_large"
+                android:padding="@dimen/padding_medium"
                 android:hint="@string/text_student_id_th" />
 
         </android.support.design.widget.TextInputLayout>
@@ -51,7 +142,7 @@
                 android:inputType="text"
                 android:maxLines="1"
                 android:imeOptions="actionNext"
-                android:padding="@dimen/padding_large"
+                android:padding="@dimen/padding_medium"
                 android:hint="@string/text_username_th" />
 
         </android.support.design.widget.TextInputLayout>
@@ -62,14 +153,13 @@
             android:paddingTop="@dimen/padding_top_five">
 
             <com.company.zicure.campusconnect.customView.EditTextView
+                android:id="@+id/birth_date"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/birth_date"
-                android:maxLines="1"
-                android:padding="@dimen/padding_large"
-                android:imeOptions="actionNext"
                 android:hint="@string/birth_date_th"
-                />
+                android:imeOptions="actionNext"
+                android:maxLines="1"
+                android:padding="@dimen/padding_medium" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -83,7 +173,7 @@
                 android:id="@+id/phone_number"
                 android:inputType="number"
                 android:maxLines="1"
-                android:padding="@dimen/padding_large"
+                android:padding="@dimen/padding_medium"
                 android:imeOptions="actionNext"
                 android:maxLength="10"
                 android:hint="@string/phone_number_th" />
@@ -103,7 +193,7 @@
                 android:imeOptions="actionNext"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
-                android:padding="@dimen/padding_large" />
+                android:padding="@dimen/padding_medium" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -118,7 +208,7 @@
                 android:id="@+id/edit_password"
                 android:inputType="textPassword"
                 android:maxLines="1"
-                android:padding="@dimen/padding_large"
+                android:padding="@dimen/padding_medium"
                 android:imeOptions="actionNext"
                 android:hint="@string/text_password_th" />
 
@@ -137,9 +227,22 @@
                 android:imeOptions="actionDone"
                 android:inputType="textPassword"
                 android:maxLines="1"
-                android:padding="@dimen/padding_large" />
+                android:padding="@dimen/padding_medium" />
 
         </com.company.zicure.campusconnect.customView.TextInputView>
+
+
+        <CheckBox
+            android:id="@+id/check_condition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@drawable/alert_icon"
+            android:drawablePadding="@dimen/padding_small"
+            android:fontFamily="supermarket"
+            android:paddingEnd="@dimen/padding_medium"
+            android:text="ยอมรับข้อตกลง"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="@dimen/size_text_small" />
 
         <com.company.zicure.campusconnect.customView.ButtonView
             android:id="@+id/btn_register"

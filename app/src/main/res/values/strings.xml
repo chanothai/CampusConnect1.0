@@ -6,7 +6,6 @@
     <string name="priKey">private_key</string>
     <string name="pubKey">public_key</string>
     <string name="pubServ_key">pubServ_key</string>
-    <string name="forgot_password_link">ForgotPassword?</string>
     <string name="action_setings">Setting</string>
 
     <!--Slide menu-->
@@ -18,10 +17,6 @@
     <string name="url_calendar">http://bloc.pakgon.com/Events/calendar</string>
     <string name="url_news">http://bloc.pakgon.com/news/feednews</string>
     <string name="url_subject">http://bloc.pakgon.com/News/subject</string>
-
-    //Validate
-    <string name="confirm_th">Confirm</string>
-    <string name="cancel_th">Cancel</string>
 
     //Form Header Account
     <string name="connect_account">Connect Account</string>
@@ -66,9 +61,13 @@
     <string name="text_title_register">ลงทะเบียน</string>
     <string name="text_username_th">ชื่อผู้ใช้งาน</string>
     <string name="text_student_id_th">รหัสนักศึกษา</string>
-    <string name="birth_date_th">ปี-เดือน-วัน</string>
+    <string name="birth_date_th">วันเกิด</string>
     <string name="phone_number_th">หมายเลขโทรศัพท์</string>
     <string name="text_btn_confirm_th">ยืนยัน</string>
+    <string name="txt_spinner_org_th">เลือกมหาลัย</string>
+    <string name="txt_spinner_type_user_th">เลือกประเภทผู้ใช้</string>
+    <string name="txt_first_name_th">ชื่อ</string>
+    <string name="txt_last_name_th">นามสกุล</string>
 
     <string name="dialog_title_th">ต้องการลงทะเบียนใหม่อีกครั้ง?</string>
     <string name="dialog_title_pin_th">ต้องการยืนยันตัวตน?</string>
@@ -83,11 +82,24 @@
     <string name="birth_date">Birth Date</string>
     <string name="phone_number">Phone Number</string>
 
+    //Forgot Password
+    <string name="title_update_password_th">แก้ไขรหัสผ่าน</string>
+    <string name="title_dialog_update_password_th">ต้องการแก้ไขรหัสผ่าน?</string>
+    <string name="dialog_update_button_positive">แก้ไข</string>
+
     //ID Card thai
     <string name="id_card_th">รหัสบัตร</string>
 
     //Contact list
     <string name="topic_contact_list">เพื่อน</string>
     <string name="mark_version">Connect. @ 2017 version 1.0.1</string>
+
+    //Normal
+    <string name="confirm_th">ยอมรับ</string>
+    <string name="cancel_th">ยกเลิก</string>
+    <string name="condition_th">Terms of Use</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
