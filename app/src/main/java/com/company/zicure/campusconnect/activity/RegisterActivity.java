@@ -58,6 +58,8 @@ public class RegisterActivity extends BaseActivity implements CompoundButton.OnC
     Spinner spUserType;
     @Bind(R.id.spinner_org)
     Spinner spUniversity;
+    @Bind(R.id.layout_university)
+    LinearLayout layoutUniversity;
     @Bind(R.id.citizen_id)
     EditText citizenId;
     @Bind(R.id.layout_screenName)
@@ -370,9 +372,11 @@ public class RegisterActivity extends BaseActivity implements CompoundButton.OnC
                 if (listUserType.get(position).getUserTypeId() == 5){
                     layoutScreenName.setVisibility(View.VISIBLE);
                     layoutScreenName.setVisibility(View.VISIBLE);
+                    layoutUniversity.setVisibility(View.GONE);
                 }else{
                     layoutScreenName.setVisibility(View.GONE);
                     layoutScreenName.setVisibility(View.GONE);
+                    layoutUniversity.setVisibility(View.VISIBLE);
                 }
                 break;
             case R.id.spinner_org:

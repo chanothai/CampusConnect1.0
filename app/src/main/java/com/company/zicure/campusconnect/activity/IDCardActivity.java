@@ -79,7 +79,7 @@ public class IDCardActivity extends BaseActivity {
     @Subscribe
     public void onEventResponseIDCard(ResponseIDCard response){
         if (response.getResult().getSuccess().equalsIgnoreCase("OK")){
-            ModelCart.getInstance().setProfile(response.getResult().getData().get(0));
+            ModelCart.getInstance().setProfile(response.getResult().getData());
             iniFragmentIDCard();
         }
 

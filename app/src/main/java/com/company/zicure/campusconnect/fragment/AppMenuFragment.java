@@ -110,7 +110,6 @@ public class AppMenuFragment extends Fragment {
         webSettings = webView.getSettings();
 
         // improve webView performance
-        webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
         webSettings.setJavaScriptEnabled(true);
 
         webView.loadUrl(url);
@@ -118,10 +117,6 @@ public class AppMenuFragment extends Fragment {
 
     public WebView getWebView(){
         return webView;
-    }
-
-    public void clearCache(){
-        webView.clearCache(true);
     }
 
     public class AppBrowser extends WebViewClient {
@@ -135,23 +130,7 @@ public class AppMenuFragment extends Fragment {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
-            webView.clearCache(true);
-        }
-    }
 
-    public void saveInstanceState(Bundle outState) {
-        try {
-            webView.saveState(outState);
-        }catch (NullPointerException e){
-            e.printStackTrace();
-        }
-    }
-
-    public void restoreInstanceState(Bundle savedInstanceState) {
-        try{
-            webView.restoreState(savedInstanceState);
-        }catch (NullPointerException e){
-            e.printStackTrace();
         }
     }
 

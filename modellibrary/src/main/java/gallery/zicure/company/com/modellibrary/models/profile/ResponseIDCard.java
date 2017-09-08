@@ -22,7 +22,7 @@ public class ResponseIDCard {
     public static class ResultProfile {
         @SerializedName("Success") private String success;
         @SerializedName("Error") private String error;
-        @SerializedName("ProfileData") private List<ProfileData> data;
+        @SerializedName("ProfileData") private ProfileData data;
 
         public String getSuccess() {
             return success;
@@ -40,13 +40,14 @@ public class ResponseIDCard {
             this.error = error;
         }
 
-        public List<ProfileData> getData() {
+        public ProfileData getData() {
             return data;
         }
 
-        public void setData(List<ProfileData> data) {
+        public void setData(ProfileData data) {
             this.data = data;
         }
+
 
         public static class ProfileData {
             @SerializedName("profile_id") private int profileID;
@@ -58,10 +59,16 @@ public class ResponseIDCard {
             @SerializedName("moblie_no") private String mobile;
             @SerializedName("phone_no") private String phone;
             @SerializedName("email") private String email;
+            @SerializedName("year_level") private String yearLavel;
             @SerializedName("section") private String section;
             @SerializedName("department") private String department;
             @SerializedName("organization") private String organization;
+            @SerializedName("study_start") private String studyStart;
             @SerializedName("img_path") private String imgPath;
+            @SerializedName("username") private String username;
+            @SerializedName("position_org") private String positionOrg;
+            @SerializedName("position_edu") private String positionEdu;
+            @SerializedName("citizen_id") private String citizenId;
 
             public int getProfileID() {
                 return profileID;
@@ -165,6 +172,54 @@ public class ResponseIDCard {
 
             public void setImgPath(String imgPath) {
                 this.imgPath = imgPath;
+            }
+
+            public String getUsername() {
+                return username;
+            }
+
+            public void setUsername(String username) {
+                this.username = username;
+            }
+
+            public String getPositionOrg() {
+                return positionOrg;
+            }
+
+            public void setPositionOrg(String positionOrg) {
+                this.positionOrg = positionOrg;
+            }
+
+            public String getPositionEdu() {
+                return positionEdu;
+            }
+
+            public void setPositionEdu(String positionEdu) {
+                this.positionEdu = positionEdu;
+            }
+
+            public String getCitizenId() {
+                return citizenId;
+            }
+
+            public void setCitizenId(String citizenId) {
+                this.citizenId = citizenId;
+            }
+
+            public String getYearLavel() {
+                return yearLavel;
+            }
+
+            public void setYearLavel(String yearLavel) {
+                this.yearLavel = yearLavel;
+            }
+
+            public String getStudyStart() {
+                return studyStart;
+            }
+
+            public void setStudyStart(String studyStart) {
+                this.studyStart = studyStart;
             }
         }
     }

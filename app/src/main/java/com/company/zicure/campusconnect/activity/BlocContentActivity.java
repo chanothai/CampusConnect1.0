@@ -104,18 +104,18 @@ public class BlocContentActivity extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case android.R.id.home:{
-//                webView = getFragmentAppMenu().getWebView();
-//                if (webView != null){
-//                    if (webView.canGoBack()){
-//                        webView.goBack();
-//                    }else{
-//                        finish();
-//                        overridePendingTransition(R.anim.anim_scale_in, R.anim.anim_slide_out_right);
-//                    }
-//                }
-
-                finish();
-                overridePendingTransition(R.anim.anim_scale_in, R.anim.anim_slide_out_right);
+                try{
+                    webView = getFragmentAppMenu().getWebView();
+                    if (webView != null && webView.canGoBack()){
+                        webView.goBack();
+                    }else{
+                        finish();
+                        overridePendingTransition(R.anim.anim_scale_in, R.anim.anim_slide_out_right);
+                    }
+                }catch(NullPointerException e){
+                    finish();
+                    overridePendingTransition(R.anim.anim_scale_in, R.anim.anim_slide_out_right);
+                }
                 break;
             }
 
@@ -130,20 +130,11 @@ public class BlocContentActivity extends BaseActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        appMenuFragment = (AppMenuFragment.newInstance(urlBloc));
-        appMenuFragment.saveInstanceState(outState);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        appMenuFragment = (AppMenuFragment.newInstance(urlBloc));
-        appMenuFragment.restoreInstanceState(savedInstanceState);
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
 
     }
 
@@ -156,16 +147,15 @@ public class BlocContentActivity extends BaseActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if(keyCode == KeyEvent.KEYCODE_BACK){
-
-//            webView = getFragmentAppMenu().getWebView();
-//            if (webView != null){
-//                if (webView.canGoBack()){
-//                    webView.goBack();
-//                }else{
-//                    finish();
-//                    overridePendingTransition(R.anim.anim_scale_in, R.anim.anim_slide_out_right);
-//                }
-//            }
+            webView = getFragmentAppMenu().getWebView();
+            if (webView != null){
+                if (webView.canGoBack()){
+                    webView.goBack();
+                }else{
+                    finish();
+                    overridePendingTransition(R.anim.anim_scale_in, R.anim.anim_slide_out_right);
+                }
+            }
 
             finish();
             overridePendingTransition(R.anim.anim_scale_in, R.anim.anim_slide_out_right);

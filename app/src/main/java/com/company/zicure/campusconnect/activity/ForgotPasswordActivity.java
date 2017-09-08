@@ -1,10 +1,12 @@
 package com.company.zicure.campusconnect.activity;
 
 import android.os.Build;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.company.zicure.campusconnect.R;
 import com.company.zicure.campusconnect.dialog.AwesomeDialogFragment;
@@ -16,17 +18,17 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import gallery.zicure.company.com.modellibrary.common.BaseActivity;
 import gallery.zicure.company.com.modellibrary.models.updatepassword.ResponseForgotPassword;
+import gallery.zicure.company.com.modellibrary.models.updatepassword.ResponseUpdatePassword;
 import gallery.zicure.company.com.modellibrary.utilize.EventBusCart;
 import gallery.zicure.company.com.modellibrary.utilize.ToolbarManager;
 
-public class ForgotPasswordActivity extends BaseActivity implements AwesomeDialogFragment.OnDialogListener {
+public class ForgotPasswordActivity extends BaseActivity {
 
     /** Make: View **/
     @Bind(R.id.toolbar)
     Toolbar toolbar;
 
     /** Make: Properties **/
-    private ResponseForgotPassword.ResultUpdate resultUpdate = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,13 +50,17 @@ public class ForgotPasswordActivity extends BaseActivity implements AwesomeDialo
 
     private void initForgotPassFragment(){
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, new ForgotPassFragment());
+        transaction.replace(R.id.container, new ForgotPassFragment(), "ForgotPasswordFragment");
         transaction.commit();
     }
 
     private void initUpdatePasswordFragment(){
+        FragmentManager manager = getSupportFragmentManager();
+        ForgotPassFragment fragment = (ForgotPassFragment) manager.findFragmentByTag("ForgotPasswordFragment");
+        String username = fragment.getUsername();
+
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, new UpdatePasswordFragment());
+        transaction.replace(R.id.container, UpdatePasswordFragment.newInstance(username, ""));
         transaction.commit();
     }
 
@@ -62,33 +68,6 @@ public class ForgotPasswordActivity extends BaseActivity implements AwesomeDialo
     protected void onDestroy() {
         super.onDestroy();
         EventBusCart.getInstance().getEventBus().unregister(this);
-    }
-
-    @Subscribe
-    public void onEventResponseUpdatePassword(ResponseForgotPassword response) {
-        resultUpdate = response.getResultUpdate();
-        if (response.getResultUpdate().getSuccess().equalsIgnoreCase("OK")){
-            showAlertDialog(false, "ข้อมูลถูกต้อง",true);
-        }else{
-            showAlertDialog(false, response.getResultUpdate().getError(), true);
-        }
-
-        dismissDialog();
-    }
-
-    private void showAlertDialog(boolean isSuccess, String message, boolean isIncorrectPIN) {
-        String tag = "RegisterError";
-        AwesomeDialogFragment.Builder builder = new AwesomeDialogFragment.Builder();
-
-        builder.setTitle(R.string.title_dialog_update_password_th)
-                .setMessage(message)
-                .setPositive(R.string.dialog_update_button_positive)
-                .setNegative(R.string.dialog_button_negative_th)
-                .setPIN(isSuccess)
-                .setIncorrectPIN(isIncorrectPIN);
-
-        AwesomeDialogFragment fragment = builder.build();
-        fragment.show(getSupportFragmentManager(), tag);
     }
 
     @Override
@@ -113,15 +92,27 @@ public class ForgotPasswordActivity extends BaseActivity implements AwesomeDialo
         overridePendingTransition(R.anim.anim_scale_in, R.anim.anim_slide_out_right);
     }
 
-    @Override
-    public void onPositiveButtonClick(String pinCode) {
-        if (!resultUpdate.getSuccess().isEmpty()){
+    /** Subscribe **/
+    @Subscribe
+    public void onEventResponseUpdatePassword(ResponseForgotPassword response) {
+        if (response.getResultUpdate().getSuccess().equalsIgnoreCase("OK")){
             initUpdatePasswordFragment();
+        }else{
+            Toast.makeText(this, response.getResultUpdate().getError(), Toast.LENGTH_SHORT).show();
         }
+
+        dismissDialog();
     }
 
-    @Override
-    public void onNegativeButtonClick() {
+    @Subscribe
+    public void onEventResponseUpdatePassword(ResponseUpdatePassword response) {
+        if (response.getResult().getSuccess().equalsIgnoreCase("OK")) {
+            Toast.makeText(this, response.getResult().getSuccess(), Toast.LENGTH_SHORT).show();
+            finish();
+        }else{
+            Toast.makeText(this, response.getResult().getError(), Toast.LENGTH_SHORT).show();
+        }
 
+        dismissDialog();
     }
 }

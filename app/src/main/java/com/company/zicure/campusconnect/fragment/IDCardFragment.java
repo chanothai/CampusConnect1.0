@@ -9,11 +9,13 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -136,7 +138,7 @@ public class IDCardFragment extends Fragment implements View.OnClickListener{
             multiFormatWriter = new MultiFormatWriter();
 
             try{
-                bitMatrix = multiFormatWriter.encode(information.getCardNo(), BarcodeFormat.QR_CODE, width, height);
+                bitMatrix = multiFormatWriter.encode(information.getUsername(), BarcodeFormat.QR_CODE, width, height);
                 barcodeEncoder = new BarcodeEncoder();
                 Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
 

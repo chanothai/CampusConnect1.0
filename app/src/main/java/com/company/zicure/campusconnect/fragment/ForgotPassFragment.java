@@ -83,6 +83,10 @@ public class ForgotPassFragment extends Fragment implements View.OnClickListener
         btnUpdate.setOnClickListener(this);
     }
 
+    public String getUsername(){
+        return usernameEdit.getText().toString().trim();
+    }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);

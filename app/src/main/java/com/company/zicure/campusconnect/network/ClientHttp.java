@@ -13,8 +13,10 @@ import gallery.zicure.company.com.modellibrary.models.BaseResponse;
 import gallery.zicure.company.com.modellibrary.models.DataModel;
 import gallery.zicure.company.com.modellibrary.models.bloc.ResponseBlocUser;
 import gallery.zicure.company.com.modellibrary.models.contact.RequestAddContact;
+import gallery.zicure.company.com.modellibrary.models.contact.RequestDeleteProfile;
 import gallery.zicure.company.com.modellibrary.models.contact.ResponseAddContact;
 import gallery.zicure.company.com.modellibrary.models.contact.ResponseContactList;
+import gallery.zicure.company.com.modellibrary.models.contact.ResponseDeleteProfile;
 import gallery.zicure.company.com.modellibrary.models.login.LoginRequest;
 import gallery.zicure.company.com.modellibrary.models.login.LoginResponse;
 import gallery.zicure.company.com.modellibrary.models.profile.ResponseIDCard;
@@ -25,7 +27,9 @@ import gallery.zicure.company.com.modellibrary.models.register.ResponseUniversit
 import gallery.zicure.company.com.modellibrary.models.register.VerifyRequest;
 import gallery.zicure.company.com.modellibrary.models.register.VerifyResponse;
 import gallery.zicure.company.com.modellibrary.models.updatepassword.RequestForgotPassword;
+import gallery.zicure.company.com.modellibrary.models.updatepassword.RequestUpdatePassword;
 import gallery.zicure.company.com.modellibrary.models.updatepassword.ResponseForgotPassword;
+import gallery.zicure.company.com.modellibrary.models.updatepassword.ResponseUpdatePassword;
 import gallery.zicure.company.com.modellibrary.utilize.EventBusCart;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -200,6 +204,25 @@ public class ClientHttp {
         });
     }
 
+    public void updatePassword(RequestUpdatePassword request){
+        Call<ResponseUpdatePassword> callUpdate = service.requestUpdatePassword(request);
+        callUpdate.enqueue(new Callback<ResponseUpdatePassword>() {
+            @Override
+            public void onResponse(Call<ResponseUpdatePassword> call, Response<ResponseUpdatePassword> response) {
+                try{
+                    EventBusCart.getInstance().getEventBus().post(response.body());
+                }catch (NullPointerException e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseUpdatePassword> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
     public void checkVersionApp(){
         Call<BaseResponse> validateVersion = service.checkVersion();
         validateVersion.enqueue(new Callback<BaseResponse>() {
@@ -337,6 +360,25 @@ public class ClientHttp {
 
             @Override
             public void onFailure(Call<ResponseAddContact> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    public void requestDeleteContact(RequestDeleteProfile request){
+        Call<ResponseDeleteProfile> deleteContact = service.callDeleteProfile(request);
+        deleteContact.enqueue(new Callback<ResponseDeleteProfile>() {
+            @Override
+            public void onResponse(Call<ResponseDeleteProfile> call, Response<ResponseDeleteProfile> response) {
+                try{
+                    EventBusCart.getInstance().getEventBus().post(response.body());
+                }catch (NullPointerException e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseDeleteProfile> call, Throwable t) {
                 t.printStackTrace();
             }
         });

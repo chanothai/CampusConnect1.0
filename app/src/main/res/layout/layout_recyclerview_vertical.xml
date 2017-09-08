@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/padding_small"
-    android:nestedScrollingEnabled="false"
+    android:nestedScrollingEnabled="true"
     android:id="@+id/recycler_menu">
 
 </android.support.v7.widget.RecyclerView>

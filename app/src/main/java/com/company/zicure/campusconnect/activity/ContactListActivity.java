@@ -1,8 +1,15 @@
 package com.company.zicure.campusconnect.activity;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.RectF;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -12,23 +19,34 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import com.company.zicure.campusconnect.R;
 import com.company.zicure.campusconnect.adapter.ListFriendAdapter;
+import com.company.zicure.campusconnect.adapter.SwipeController;
+import com.company.zicure.campusconnect.adapter.SwipeControllerActions;
 import com.company.zicure.campusconnect.network.ClientHttp;
 import com.company.zicure.campusconnect.utility.PermissionRequest;
 import com.squareup.otto.Subscribe;
 
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import gallery.zicure.company.com.modellibrary.common.BaseActivity;
+import gallery.zicure.company.com.modellibrary.models.contact.RequestDeleteProfile;
 import gallery.zicure.company.com.modellibrary.models.contact.ResponseContactList;
+import gallery.zicure.company.com.modellibrary.models.contact.ResponseDeleteProfile;
 import gallery.zicure.company.com.modellibrary.utilize.EventBusCart;
 import gallery.zicure.company.com.modellibrary.utilize.ModelCart;
 import gallery.zicure.company.com.modellibrary.utilize.ToolbarManager;
 import gallery.zicure.company.com.modellibrary.utilize.VariableConnect;
+
+import static android.support.v7.widget.helper.ItemTouchHelper.RIGHT;
 
 public class ContactListActivity extends BaseActivity implements ListFriendAdapter.CallPhoneListener {
 
@@ -41,6 +59,10 @@ public class ContactListActivity extends BaseActivity implements ListFriendAdapt
     /** Make: properties **/
     private String token = null;
     private String mobileNo = null;
+    private ListFriendAdapter adapter = null;
+    public int positionContact = 0;
+    private List<ResponseContactList.ResultContactList.ContactListData> contactListData = null;
+    private Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +80,7 @@ public class ContactListActivity extends BaseActivity implements ListFriendAdapt
         if (token != null) {
             showLoadingDialog();
             ClientHttp.getInstance(this).requestContactList(token);
+            initSwipe();
         }
     }
 
@@ -138,13 +161,28 @@ public class ContactListActivity extends BaseActivity implements ListFriendAdapt
     @Subscribe
     public void onEventResponseContactList(ResponseContactList response){
         if (response.getResult().getSuccess().equalsIgnoreCase("OK")) {
-            ListFriendAdapter adapter = new ListFriendAdapter(this, response.getResult().getData(), this);
+            contactListData = response.getResult().getData();
+            adapter = new ListFriendAdapter(this, contactListData, this);
             contactList.setAdapter(adapter);
             contactList.setItemAnimator(new DefaultItemAnimator());
         }
 
         dismissDialog();
     }
+
+    @Subscribe
+    public void onEventResponseDeleteContact(ResponseDeleteProfile response) {
+        if (response.getResult().getSuccess().equalsIgnoreCase("OK")) {
+            if (adapter != null) {
+                adapter.contactList.remove(positionContact);
+                adapter.notifyItemRemoved(positionContact);
+                adapter.notifyItemRangeChanged(positionContact, adapter.getItemCount());
+            }
+        }
+
+        dismissDialog();
+    }
+    /****/
 
     @Override
     public void getMobileNo(String mobile) {
@@ -153,5 +191,33 @@ public class ContactListActivity extends BaseActivity implements ListFriendAdapt
         if (!new PermissionRequest(this).requestCallPhone()){
             checkPermissionCallPhone();
         }
+    }
+
+    private void initSwipe(){
+        final SwipeController swipeController = new SwipeController(new SwipeControllerActions() {
+            @Override
+            public void onRightClicked(int position) {
+                positionContact = position;
+
+                RequestDeleteProfile request = new RequestDeleteProfile();
+                RequestDeleteProfile.ContactDelete contact = new RequestDeleteProfile().new ContactDelete();
+                contact.setContactID(Integer.toString(contactListData.get(position).getUserPersonal().getId()));
+                contact.setToken(token);
+                request.setContact(contact);
+
+                showLoadingDialog();
+                ClientHttp.getInstance(context).requestDeleteContact(request);
+            }
+        });
+
+        ItemTouchHelper helper = new ItemTouchHelper(swipeController);
+        helper.attachToRecyclerView(contactList);
+
+        contactList.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
+                swipeController.onDraw(c);
+            }
+        });
     }
 }

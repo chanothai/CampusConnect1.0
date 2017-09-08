@@ -4,10 +4,87 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.company.zicure.campusconnect.customView.LabelView
-        android:id="@+id/label_information"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/size_text_small"
-        />
+        android:orientation="vertical">
+
+        <com.company.zicure.campusconnect.customView.LabelView
+            android:id="@+id/citizen_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/size_text_small"
+            />
+
+        <com.company.zicure.campusconnect.customView.LabelView
+            android:id="@+id/person_card_no"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/size_text_small"
+            />
+
+        <com.company.zicure.campusconnect.customView.LabelView
+            android:id="@+id/organization"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/size_text_small"
+            />
+
+        <com.company.zicure.campusconnect.customView.LabelView
+            android:id="@+id/position_edu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/size_text_small"
+            />
+
+        <com.company.zicure.campusconnect.customView.LabelView
+            android:id="@+id/position_org"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/size_text_small"
+            />
+
+        <com.company.zicure.campusconnect.customView.LabelView
+            android:id="@+id/department"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/size_text_small"
+            />
+
+        <com.company.zicure.campusconnect.customView.LabelView
+            android:id="@+id/section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/size_text_small"
+            />
+
+        <com.company.zicure.campusconnect.customView.LabelView
+            android:id="@+id/year_level"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/size_text_small"
+            />
+
+        <com.company.zicure.campusconnect.customView.LabelView
+            android:id="@+id/study_start"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/size_text_small"
+            />
+
+        <com.company.zicure.campusconnect.customView.LabelView
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/size_text_small"
+            />
+
+        <com.company.zicure.campusconnect.customView.LabelView
+            android:id="@+id/moblie_no"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/size_text_small"
+            />
+
+    </LinearLayout>
 </RelativeLayout>
