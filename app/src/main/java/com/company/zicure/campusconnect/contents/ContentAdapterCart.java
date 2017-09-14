@@ -80,7 +80,7 @@ public class ContentAdapterCart {
         String authToken = null;
         String strPackage = "com.company.zicure.payment";
         try{
-            authToken = ModelCart.getInstance().getKeyModel().getAuthToken();
+            authToken = ModelCart.getInstance().getKeyModel().getToken();
             Intent intent = baseActivity.getPackageManager().getLaunchIntentForPackage(strPackage);
             if (authToken != null){
                 intent.addCategory(Intent.CATEGORY_LAUNCHER);
@@ -101,7 +101,7 @@ public class ContentAdapterCart {
         }
     }
 
-    public MainMenuAdapter setMainMenuAdapter(Activity activity, final List<ResponseBlocUser.ResultBlocUser.DataBloc.UserAccessControl.BlocUser> arrBloc) {
+    public MainMenuAdapter setMainMenuAdapter(Activity activity, final List<ResponseBlocUser.ResultBlocUser.DataBloc.UserAccessControl.BlocUser> arrBloc, final int category) {
         atv = activity;
         //set adapter
          MainMenuAdapter mainMenuAdapter = new MainMenuAdapter(activity,arrBloc) {
@@ -118,18 +118,28 @@ public class ContentAdapterCart {
                 holder.setItemOnClickListener(new ItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        if (position == 1){
-                            Bundle bundle = new Bundle();
-                            bundle.putString(VariableConnect.TITLE_CATEGORY, atv.getString(R.string.id_card_th));
-                            Intent intent = new Intent(atv, IDCardActivity.class);
-                            intent.putExtras(bundle);
+                        if (category == 0) {
+                            if (position == 1){
+                                Bundle bundle = new Bundle();
+                                bundle.putString(VariableConnect.TITLE_CATEGORY, atv.getString(R.string.title_activity_id_card_th));
+                                Intent intent = new Intent(atv, IDCardActivity.class);
+                                intent.putExtras(bundle);
 
-                            atv.startActivity(intent);
-                            atv.overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_scale_out);
-                        }else if (position == 2) {
-                            atv.startActivity(new Intent(atv, ContactListActivity.class));
-                            atv.overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_scale_out);
-                        } else{
+                                atv.startActivity(intent);
+                                atv.overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_scale_out);
+                            }else if (position == 2) {
+                                atv.startActivity(new Intent(atv, ContactListActivity.class));
+                                atv.overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_scale_out);
+                            } else{
+                                Bundle bundle = new Bundle();
+                                bundle.putString(VariableConnect.TITLE_CATEGORY, getData().get(position).getBlocNameTH());
+                                bundle.putString(VariableConnect.PATH_BLOC, getData().get(position).getBlocURL());
+                                Intent intent = new Intent(atv, BlocContentActivity.class);
+                                intent.putExtras(bundle);
+                                atv.startActivity(intent);
+                                atv.overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_scale_out);
+                            }
+                        }else{
                             Bundle bundle = new Bundle();
                             bundle.putString(VariableConnect.TITLE_CATEGORY, getData().get(position).getBlocNameTH());
                             bundle.putString(VariableConnect.PATH_BLOC, getData().get(position).getBlocURL());

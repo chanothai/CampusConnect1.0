@@ -55,9 +55,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener ,View
      * @return A new instance of fragment HomeFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static HomeFragment newInstance() {
+    public static HomeFragment newInstance(int pager) {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -115,13 +116,15 @@ public class HomeFragment extends Fragment implements View.OnClickListener ,View
     public void setAdapterView(int pager){
         if (getCategoryData().size() > 0){
             //set adapter
-            MainMenuAdapter mainMenuAdapter = new ContentAdapterCart().setMainMenuAdapter(getActivity(), getCategoryData().get(pager).getBlocs());
+            MainMenuAdapter mainMenuAdapter = new ContentAdapterCart().setMainMenuAdapter(getActivity(), getCategoryData().get(pager).getBlocs(), pager);
 
             recyclerViewMenu.setLayoutManager(new GridLayoutManager(getActivity(), 2));
             recyclerViewMenu.setAdapter(mainMenuAdapter);
             recyclerViewMenu.setItemAnimator(new DefaultItemAnimator());
         }
     }
+
+
 
     @Override
     public void onDestroy() {

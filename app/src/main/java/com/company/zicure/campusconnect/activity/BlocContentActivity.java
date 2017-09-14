@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
@@ -118,6 +119,9 @@ public class BlocContentActivity extends BaseActivity {
                 }
                 break;
             }
+            case R.id.action_home_screen :
+                finish();
+                break;
 
             default: {
                 break;
@@ -128,14 +132,9 @@ public class BlocContentActivity extends BaseActivity {
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_bloc_content, menu);
+        return true;
     }
 
     @Override

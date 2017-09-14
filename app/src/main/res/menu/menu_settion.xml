@@ -11,5 +11,6 @@
         android:id="@+id/action_payment"
         android:orderInCategory="200"
         android:icon="@drawable/point"
-        app:showAsAction="always"/>
+        app:showAsAction="always"
+        android:title="" />
 </menu>

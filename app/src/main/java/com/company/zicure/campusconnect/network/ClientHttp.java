@@ -304,9 +304,14 @@ public class ClientHttp {
         });
     }
 
-    public void requestProfile(String token) {
+    public void requestProfile(String token, String userId) {
         HashMap<String, String> map = new HashMap<>();
-        map.put("authToken", token);
+        if (userId == null){
+            map.put("authToken", token);
+        }else{
+            map.put("user_id", userId);
+        }
+
         Call<ResponseIDCard> profile = service.requestProfile(map);
         profile.enqueue(new Callback<ResponseIDCard>() {
             @Override

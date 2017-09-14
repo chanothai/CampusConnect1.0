@@ -2,6 +2,7 @@ package com.company.zicure.campusconnect.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.company.zicure.campusconnect.holder.ListFriendHolder;
 import java.util.List;
 
 import gallery.zicure.company.com.modellibrary.models.contact.ResponseContactList.ResultContactList.ContactListData;
+import gallery.zicure.company.com.modellibrary.utilize.VariableConnect;
 
 /**
  * Created by Pakgon on 7/31/2017 AD.
@@ -47,7 +49,11 @@ public class ListFriendAdapter extends RecyclerView.Adapter<ListFriendHolder> {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putString(VariableConnect.TITLE_CATEGORY , context.getString(R.string.title_activity_id_card_th));
+                bundle.putString("user_id", Integer.toString(contactList.get(position).getUserPersonal().getId()));
                 Intent intent = new Intent(context, IDCardActivity.class);
+                intent.putExtras(bundle);
                 context.startActivity(intent);
             }
         });

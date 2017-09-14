@@ -52,29 +52,29 @@
                 android:layout_marginTop="-8dp"/>
         </LinearLayout>
 
-        <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/padding_top_five">
-
-            <com.company.zicure.campusconnect.customView.EditTextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/citizen_id"
-                android:inputType="number"
-                android:maxLines="1"
-                android:maxLength="13"
-                android:imeOptions="actionNext"
-                android:padding="@dimen/padding_medium"
-                android:hint="@string/text_id_card_th" />
-
-        </android.support.design.widget.TextInputLayout>
-
         <LinearLayout
             android:id="@+id/layout_screenName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/padding_top_five">
+
+                <com.company.zicure.campusconnect.customView.EditTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/citizen_id"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:maxLength="13"
+                    android:imeOptions="actionNext"
+                    android:padding="@dimen/padding_medium"
+                    android:hint="@string/text_id_card_th" />
+
+            </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -114,6 +114,7 @@
         </LinearLayout>
         
         <android.support.design.widget.TextInputLayout
+            android:id="@+id/txt_layout_id_person"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/padding_top_five">

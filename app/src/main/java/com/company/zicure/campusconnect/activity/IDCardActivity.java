@@ -27,6 +27,7 @@ public class IDCardActivity extends BaseActivity {
 
     //Make: Properties
     private String titleBloc = null;
+    private String userId = null;
     private String token = null;
 
     @Override
@@ -37,13 +38,6 @@ public class IDCardActivity extends BaseActivity {
         bindView();
         iniBundle();
 
-        if (savedInstanceState == null){
-            token = ModelCart.getInstance().getKeyModel().getToken();
-            if (token != null){
-                showLoadingDialog();
-                ClientHttp.getInstance(this).requestProfile(token);
-            }
-        }
     }
 
     @Override
@@ -61,11 +55,16 @@ public class IDCardActivity extends BaseActivity {
         try{
             Bundle bundle = getIntent().getExtras();
             titleBloc = bundle.getString(VariableConnect.TITLE_CATEGORY);
+            userId = bundle.getString("user_id");
         }catch (NullPointerException e){
             e.printStackTrace();
         }
 
         setToolbar();
+
+        token = ModelCart.getInstance().getKeyModel().getToken();
+        showLoadingDialog();
+        ClientHttp.getInstance(this).requestProfile(token, userId);
     }
 
     private void setToolbar(){

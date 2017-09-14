@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.UiThread;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
 import android.util.Base64;
 import android.util.Log;
@@ -72,6 +73,8 @@ public class RegisterActivity extends BaseActivity implements CompoundButton.OnC
     EditText idCard;
     @Bind(R.id.birth_date)
     EditText birthDate;
+    @Bind(R.id.txt_layout_id_person)
+    TextInputLayout layoutIDPerson;
     @Bind(R.id.student_id)
     EditText studentID;
     @Bind(R.id.btn_register)
@@ -373,7 +376,9 @@ public class RegisterActivity extends BaseActivity implements CompoundButton.OnC
                     layoutScreenName.setVisibility(View.VISIBLE);
                     layoutScreenName.setVisibility(View.VISIBLE);
                     layoutUniversity.setVisibility(View.GONE);
+                    layoutIDPerson.setVisibility(View.GONE);
                 }else{
+                    layoutIDPerson.setVisibility(View.VISIBLE);
                     layoutScreenName.setVisibility(View.GONE);
                     layoutScreenName.setVisibility(View.GONE);
                     layoutUniversity.setVisibility(View.VISIBLE);

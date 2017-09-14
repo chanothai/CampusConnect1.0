@@ -60,7 +60,7 @@
     //Register Thai
     <string name="text_title_register">ลงทะเบียน</string>
     <string name="text_username_th">ชื่อผู้ใช้งาน</string>
-    <string name="text_student_id_th">รหัสนักศึกษา</string>
+    <string name="text_student_id_th">เลขประจำตัว</string>
     <string name="birth_date_th">วันเกิด</string>
     <string name="phone_number_th">หมายเลขโทรศัพท์</string>
     <string name="text_btn_confirm_th">ยืนยัน</string>
@@ -89,7 +89,7 @@
     <string name="title_forgot_password_th">ตรวจสอบข้อมูล</string>
 
     //ID Card thai
-    <string name="id_card_th">รหัสบัตร</string>
+    <string name="title_activity_id_card_th">บัตรประจำตัว</string>
 
     //Contact list
     <string name="topic_contact_list">เพื่อน</string>
